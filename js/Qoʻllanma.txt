@@ -1,0 +1,57 @@
+# TestPro — Setup Yo'riqnomasi
+
+## 🚀 Tez sozlash
+
+### 1. Firebase Console
+1. https://console.firebase.google.com ga kiring
+2. Loyihangizni oching (karoke-pro)
+3. **Authentication** → Sign-in method → Email/Password ✅ yoqing
+4. **Authentication** → Sign-in method → Google ✅ yoqing
+
+### 2. Firestore Rules
+1. **Firestore Database** → **Rules** tabiga o'ting
+2. `firestore.rules` faylidan qoidalarni nusxalab joylashtiring
+3. **Publish** tugmasini bosing
+
+### 3. Firestore Indexes
+Agar "requires index" xatosi chiqsa:
+1. Console xatolik havolasini bosing
+2. Yoki Firebase Console → Firestore → Indexes → composite index yarating
+
+### 4. GitHub Pages
+```
+git init
+git add .
+git commit -m "TestPro initial"
+git remote add origin https://github.com/USERNAME/REPO.git
+git push -u origin main
+```
+GitHub repo Settings → Pages → Branch: main → Save
+
+---
+
+## 📄 Matndan import formati
+
+```
+1. Savol matni?
+a) Variant A
+b) To'g'ri variant *
+c) Variant C
+d) Variant D
+
+2. Ikkinchi savol?
+a) Birinchi
+b) Ikkinchi *
+```
+
+`*` belgisi = to'g'ri javob
+
+---
+
+## 🐛 Xatolar
+
+| Xato | Yechim |
+|------|--------|
+| "Missing index" | Firebase Console → Indexes ga yoting |
+| "Permission denied" | Firestore Rules ni yangilang |
+| Test ko'rinmayapti | F5 bosing, console da xatolik ko'ring |
