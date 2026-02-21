@@ -8,12 +8,12 @@
 // These globals are available after loading Firebase compat scripts
 
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyAN0MyvVColeo5YTGQLAiC-3ullbBGvq24",
+  authDomain:        "testpro-121a6.firebaseapp.com",
+  projectId:         "testpro-121a6",
+  storageBucket:     "testpro-121a6.firebasestorage.app",
+  messagingSenderId: "497431811359",
+  appId:             "1:497431811359:web:4e5e6275090129ab35cc2a"
 };
 
 // Initialize Firebase
