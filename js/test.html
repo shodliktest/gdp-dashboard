@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestPro — Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .test-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .test-header-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 99px;
+      background: rgba(108,99,255,0.1);
+      border: 1px solid rgba(108,99,255,0.25);
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .timer-badge.warning {
+      background: rgba(231,76,60,0.12);
+      border-color: rgba(231,76,60,0.35);
+      color: #e74c3c;
+      animation: pulse-glow 1s infinite;
+    }
+
+    .test-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 0;
+    }
+
+    .test-progress-fill {
+      height: 100%;
+      background: var(--grad-1);
+      transition: width 0.5s var(--ease-out);
+    }
+
+    .test-body {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(16px);
+      transition: all var(--transition);
+      animation: fadeInUp 0.4s var(--ease-out) both;
+    }
+
+    .q-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .q-index {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .q-points {
+      font-size: 0.75rem;
+      color: var(--text-3);
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .option-btn:hover {
+      border-color: var(--accent);
+      background: rgba(108,99,255,0.06);
+      transform: translateX(4px);
+    }
+
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(108,99,255,0.12);
+      color: var(--accent);
+    }
+
+    .option-btn.correct {
+      border-color: #2ecc71;
+      background: rgba(46,204,113,0.12);
+      color: #2ecc71;
+    }
+
+    .option-btn.wrong {
+      border-color: #e74c3c;
+      background: rgba(231,76,60,0.1);
+      color: #e74c3c;
+    }
+
+    .option-btn.disabled {
+      pointer-events: none;
+    }
+
+    .option-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    .option-btn.selected .option-letter { background: var(--accent); color: white; }
+    .option-btn.correct .option-letter  { background: #2ecc71; color: white; }
+    .option-btn.wrong .option-letter    { background: #e74c3c; color: white; }
+
+    .text-answer {
+      width: 100%;
+      min-height: 80px;
+    }
+
+    /* Q Navigation */
+    .q-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .q-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--surface-2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+      font-family: 'Syne', sans-serif;
+    }
+
+    .q-dot:hover { border-color: var(--accent); }
+    .q-dot.answered { background: var(--accent); border-color: var(--accent); color: white; }
+    .q-dot.current  { border-color: var(--accent); color: var(--accent); }
+
+    /* Result screen */
+    .result-screen {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .result-circle {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      position: relative;
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+
+    .result-circle.pass {
+      background: radial-gradient(circle, rgba(67,233,123,0.2), transparent);
+      border: 4px solid #2ecc71;
+      color: #2ecc71;
+    }
+
+    .result-circle.fail {
+      background: radial-gradient(circle, rgba(231,76,60,0.15), transparent);
+      border: 4px solid #e74c3c;
+      color: #e74c3c;
+    }
+
+    .result-breakdown {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .result-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+    }
+
+    .result-stat-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .result-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-3);
+      margin-top: 0.25rem;
+    }
+
+    /* Loading screen */
+    .loading-screen {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--text-2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Progress bar -->
+  <div class="test-progress-bar" id="progress-bar">
+    <div class="test-progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Test header -->
+  <div class="test-header">
+    <div class="test-header-title" id="test-title-header">TestPro</div>
+    <div id="timer-display" class="timer-badge" style="display:none">⏱️ 00:00</div>
+    <button class="theme-toggle">🌙</button>
+    <button class="btn btn-danger btn-sm" id="finish-btn" style="display:none" onclick="finishTest()">Yakunlash</button>
+  </div>
+
+  <div class="page-wrapper" style="padding-top:0">
+
+    <!-- Loading -->
+    <div class="test-body" id="loading-screen">
+      <div class="loading-screen">
+        <div class="spinner" style="width:48px;height:48px"></div>
+        <p>Test yuklanmoqda...</p>
+      </div>
+    </div>
+
+    <!-- Test content (hidden until loaded) -->
+    <div class="test-body" id="test-content" style="display:none">
+
+      <!-- Question navigation dots -->
+      <div class="q-nav" id="q-nav"></div>
+
+      <!-- Questions -->
+      <div id="questions-area"></div>
+
+      <!-- Nav buttons -->
+      <div style="display:flex;gap:1rem;justify-content:space-between;margin-top:1.5rem;flex-wrap:wrap">
+        <button class="btn btn-secondary" id="prev-btn" onclick="navigate(-1)" style="display:none">← Oldingi</button>
+        <div style="flex:1"></div>
+        <button class="btn btn-primary" id="next-btn" onclick="navigate(1)">Keyingi →</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="finishTest()" style="display:none">✅ Testni yakunlash</button>
+      </div>
+
+    </div>
+
+    <!-- Result screen (hidden until done) -->
+    <div id="result-screen" style="display:none">
+      <div class="result-screen">
+        <div class="result-circle" id="result-circle">0%</div>
+        <h2 style="font-size:1.6rem;margin-bottom:0.5rem" id="result-title">Natija</h2>
+        <p style="color:var(--text-2)" id="result-msg"></p>
+
+        <div class="result-breakdown" id="result-breakdown"></div>
+
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem">
+          <button class="btn btn-secondary" onclick="reviewAnswers()">📋 Javoblarni ko'rish</button>
+          <a href="dashboard.html" class="btn btn-primary">🏠 Dashboard →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/test.js"></script>
+
+</body>
+</html>
