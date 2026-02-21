@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestPro — Professional Test Platform</title>
+  <meta name="description" content="Professional online test va quiz platformasi. Test yarat, o'tkaz, natijalarni tahlil qil." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      padding: 5rem 0 3rem;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 660px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.03em;
+      animation: fadeIn 0.6s var(--ease-out) both;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--accent-3);
+      border-radius: 50%;
+      animation: pulse-glow 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s var(--ease-out) 0.1s both;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      animation: fadeInUp 0.6s var(--ease-out) 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s var(--ease-out) 0.3s both;
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      max-width: 560px;
+      pointer-events: none;
+    }
+
+    .hero-card-stack {
+      position: relative;
+      height: 420px;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px var(--shadow);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .card-1 {
+      width: 260px;
+      top: 20px;
+      right: 20px;
+      animation-delay: 0s;
+    }
+
+    .card-2 {
+      width: 220px;
+      top: 160px;
+      right: 200px;
+      animation-delay: 1.5s;
+    }
+
+    .card-3 {
+      width: 180px;
+      bottom: 20px;
+      right: 60px;
+      animation-delay: 0.8s;
+    }
+
+    .card-mini-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .mini-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mini-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-2);
+    }
+
+    .mini-progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    .mini-score {
+      text-align: center;
+    }
+
+    .mini-score-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: var(--grad-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mini-score-label {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      position: relative;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── Stats Banner ── */
+    .stats-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      backdrop-filter: blur(20px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-banner-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: var(--grad-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-banner-label {
+      font-size: 0.85rem;
+      color: var(--text-3);
+      margin-top: 0.25rem;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--grad-1);
+      opacity: 0.05;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .cta-section p {
+      color: var(--text-2);
+      margin-bottom: 2.5rem;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--grad-1);
+      color: white;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 8px 24px rgba(108,99,255,0.4);
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 0.85rem;
+      color: var(--text-2);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .features-grid, .steps { grid-template-columns: repeat(2, 1fr); }
+      .stats-banner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .features-grid, .steps { grid-template-columns: 1fr; }
+      .stats-banner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <div class="nav-logo">Test<span>Pro</span></div>
+
+    <ul class="nav-links">
+      <li><a href="#features">Xususiyatlar</a></li>
+      <li><a href="#how-it-works">Qanday ishlaydi</a></li>
+      <li><a href="#stats">Statistika</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" title="Toggle theme">🌙</button>
+      <a href="login.html" class="btn btn-secondary btn-sm">Kirish</a>
+      <a href="login.html#register" class="btn btn-primary btn-sm">Boshlash →</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav">
+    <a href="#features">Xususiyatlar</a>
+    <a href="#how-it-works">Qanday ishlaydi</a>
+    <a href="login.html">Kirish</a>
+    <a href="login.html" class="btn btn-primary btn-sm" style="margin-top:0.5rem">Boshlash</a>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            Professional Test Platform
+          </div>
+
+          <h1>
+            Testlarni<br/>
+            <span class="gradient-text">professional</span><br/>
+            darajada o'tkazing
+          </h1>
+
+          <p>
+            TestPro — test yaratish, o'tkazish va natijalarni real-time tahlil qilish uchun
+            ishlab chiqilgan zamonaviy platforma. Har bir test — mukammal tajriba.
+          </p>
+
+          <div class="hero-actions">
+            <a href="login.html" class="btn btn-primary btn-lg">
+              Bepul boshlash →
+            </a>
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">
+              Qanday ishlaydi?
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero floating cards -->
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+
+          <div class="floating-card card-1">
+            <div class="card-mini-title">📊 Natijalar</div>
+            <div class="mini-progress">
+              <div class="mini-progress-row">
+                <span style="width:70px">HTML</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:90%;background:var(--grad-1)"></div>
+                </div>
+                <span>90%</span>
+              </div>
+              <div class="mini-progress-row">
+                <span style="width:70px">CSS</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:76%;background:var(--grad-2)"></div>
+                </div>
+                <span>76%</span>
+              </div>
+              <div class="mini-progress-row">
+                <span style="width:70px">JS</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:85%;background:var(--grad-3)"></div>
+                </div>
+                <span>85%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-card card-2">
+            <div class="mini-score">
+              <div class="mini-score-val">94%</div>
+              <div class="mini-score-label">Umumiy ball</div>
+            </div>
+            <div style="margin-top:0.75rem;display:flex;gap:0.4rem;justify-content:center">
+              <span class="badge badge-success">✓ A'lo</span>
+            </div>
+          </div>
+
+          <div class="floating-card card-3">
+            <div class="card-mini-title" style="font-size:0.78rem">🔥 Bugun</div>
+            <div style="font-size:0.75rem;color:var(--text-2)">128 ta test o'tkazildi</div>
+            <div style="margin-top:0.5rem">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:72%"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURES ── -->
+    <section class="section" id="features">
+      <div class="container">
+        <div style="margin-bottom:3rem">
+          <div class="hero-badge animate-on-scroll">⚡ Imkoniyatlar</div>
+          <h2 class="section-title animate-on-scroll">Barcha kerakli<br/><span class="gradient-text">vositalar</span></h2>
+          <p class="section-sub animate-on-scroll">Professional test platformasi uchun zarur bo'lgan hamma narsa bir joyda.</p>
+        </div>
+
+        <div class="features-grid">
+
+          <div class="glass-card animate-on-scroll">
+            <div class="feature-icon" style="background:rgba(108,99,255,0.12)">🎯</div>
+            <h3>Oson test yaratish</h3>
+            <p>Ko'p tanlovli, to'g'ri/noto'g'ri va ochiq savol turlarini qo'shing. Savollarni tartibga soling.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-1">
+            <div class="feature-icon" style="background:rgba(67,233,123,0.12)">📊</div>
+            <h3>Real-time statistika</h3>
+            <p>Test o'tkazilishi bilan natijalarni kuzating. Grafik va jadvallar bilan tahlil qiling.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-2">
+            <div class="feature-icon" style="background:rgba(255,101,132,0.12)">🔐</div>
+            <h3>Rol tizimi</h3>
+            <p>Admin va foydalanuvchi rollari. Private/public testlar. Xavfsiz Firebase autentifikatsiya.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-1">
+            <div class="feature-icon" style="background:rgba(247,183,49,0.12)">⏱️</div>
+            <h3>Vaqt limiti</h3>
+            <p>Har bir test uchun vaqt belgilang. Avtomatik yakunlash va natija saqlash.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-2">
+            <div class="feature-icon" style="background:rgba(52,152,219,0.12)">🌐</div>
+            <h3>Public/Private testlar</h3>
+            <p>Testni hammaga ochiq qiling yoki faqat link orqali kirish imkonini bering.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-3">
+            <div class="feature-icon" style="background:rgba(155,89,182,0.12)">📱</div>
+            <h3>Mobil mos</h3>
+            <p>Telefon, tablet yoki kompyuterdan muammosiz foydalanish. Responsive dizayn.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATS ── -->
+    <section class="section" id="stats">
+      <div class="container">
+        <div class="stats-banner animate-on-scroll">
+          <div>
+            <div class="stat-banner-val">10K+</div>
+            <div class="stat-banner-label">Foydalanuvchilar</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">50K+</div>
+            <div class="stat-banner-label">Testlar yaratildi</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">200K+</div>
+            <div class="stat-banner-label">Test o'tkazishlari</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">98%</div>
+            <div class="stat-banner-label">Mamnunlik darajasi</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:3rem">
+          <h2 class="section-title animate-on-scroll">Qanday <span class="gradient-text-2">ishlaydi?</span></h2>
+          <p class="section-sub animate-on-scroll" style="margin:0 auto">3 oddiy qadam bilan testingizni yarating va o'tkazing.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step animate-on-scroll">
+            <div class="step-number">1</div>
+            <h3>Ro'yxatdan o'ting</h3>
+            <p>Bepul hisob ochib, platformaga kiring. Google bilan ham kirish mumkin.</p>
+          </div>
+          <div class="step animate-on-scroll delay-1">
+            <div class="step-number">2</div>
+            <h3>Test yarating</h3>
+            <p>Savollar, variantlar va vaqt limitini belgilang. Bir necha daqiqada tayyor.</p>
+          </div>
+          <div class="step animate-on-scroll delay-2">
+            <div class="step-number">3</div>
+            <h3>Natijalarni ko'ring</h3>
+            <p>Test o'tkazilgandan so'ng statistika va natijalarni real-time kuzating.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section animate-on-scroll">
+          <h2>Hoziroq boshlang <span class="gradient-text">bepul</span></h2>
+          <p>Kredit karta kerak emas. Bir daqiqada hisob oching.</p>
+          <a href="login.html" class="btn btn-primary btn-lg" style="animation: pulse-glow 2s infinite">
+            Bepul ro'yxatdan o'tish →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- end page-wrapper -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:0.5rem">
+        <span style="background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</span>
+      </div>
+      <p>Professional test platformasi · Firebase powered</p>
+      <p style="margin-top:0.5rem">
+        <a href="login.html">Kirish</a> ·
+        <a href="dashboard.html">Dashboard</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/theme.js"></script>
+
+</body>
+</html>
