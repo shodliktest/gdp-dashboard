@@ -193,7 +193,7 @@ if (document.getElementById('auth-page')) {
     document.getElementById('google-login')?.addEventListener('click', async () => {
       try {
         await Auth.loginWithGoogle();
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
       } catch (err) {
         showAlert('Google bilan kirish muvaffaqiyatsiz: ' + err.message);
       }
@@ -210,3 +210,4 @@ document.addEventListener('click', async (e) => {
 });
 
 window.Auth = Auth;
+
