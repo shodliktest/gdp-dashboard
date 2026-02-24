@@ -1,280 +1,585 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>TestPro — Test Platformasi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
-<style>
-.hero{min-height:calc(100vh - 72px);display:flex;align-items:center;padding:4rem 0 2rem}
-.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.38rem 1rem;background:rgba(79,70,229,0.08);border:1px solid rgba(79,70,229,0.2);border-radius:99px;font-size:0.78rem;font-weight:700;color:var(--accent);margin-bottom:1.5rem;letter-spacing:0.02em}
-.dot-pulse{width:6px;height:6px;background:#10B981;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.4)}70%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
-.hero h1{margin-bottom:1.25rem}
-.hero p{font-size:1.05rem;color:var(--text-2);line-height:1.75;margin-bottom:2.25rem;max-width:500px}
-.hero-actions{display:flex;gap:0.85rem;flex-wrap:wrap}
-.hero-stats{display:flex;gap:2rem;margin-top:3rem;flex-wrap:wrap}
-.h-stat-val{font-family:'Unbounded',sans-serif;font-size:1.8rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.h-stat-lbl{font-size:0.75rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestPro — Professional Test Platform</title>
+  <meta name="description" content="Professional online test va quiz platformasi. Test yarat, o'tkaz, natijalarni tahlil qil." />
 
-/* Floating visual */
-.hero-visual{position:absolute;right:2%;top:50%;transform:translateY(-50%);width:420px;pointer-events:none}
-@media(max-width:1080px){.hero-visual{display:none}}
-.float-card{
-  position:absolute;background:var(--bg-card);border:1px solid var(--border-2);
-  border-radius:var(--radius);padding:1.1rem 1.25rem;backdrop-filter:blur(16px);
-  box-shadow:var(--shadow);
-}
-[data-theme="dark"] .float-card{background:var(--bg-2);border-color:var(--border)}
-.fc1{top:10px;right:20px;width:240px;animation:float 4s ease-in-out infinite}
-.fc2{top:180px;right:190px;width:200px;animation:float 4s ease-in-out 1.3s infinite}
-.fc3{bottom:10px;right:60px;width:220px;animation:float 4s ease-in-out 0.7s infinite}
-.fc-title{font-size:0.78rem;font-weight:700;margin-bottom:0.65rem;color:var(--text)}
-.mini-bar{height:5px;background:var(--border-2);border-radius:99px;overflow:hidden;margin-bottom:0.4rem}
-.mini-bar-fill{height:100%;border-radius:99px}
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
 
-/* Subject filter chips on home */
-.home-filter{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem}
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
 
-/* Section title */
-.sec-title{font-size:1.6rem;font-weight:900;letter-spacing:-0.04em;margin-bottom:0.35rem}
-.sec-sub{font-size:0.88rem;color:var(--text-2);margin-bottom:2.5rem}
-</style>
+  <style>
+    /* ── Hero ── */
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      padding: 5rem 0 3rem;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 660px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.75rem;
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.03em;
+      animation: fadeIn 0.6s var(--ease-out) both;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--accent-3);
+      border-radius: 50%;
+      animation: pulse-glow 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s var(--ease-out) 0.1s both;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      animation: fadeInUp 0.6s var(--ease-out) 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s var(--ease-out) 0.3s both;
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      max-width: 560px;
+      pointer-events: none;
+    }
+
+    .hero-card-stack {
+      position: relative;
+      height: 420px;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px var(--shadow);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .card-1 {
+      width: 260px;
+      top: 20px;
+      right: 20px;
+      animation-delay: 0s;
+    }
+
+    .card-2 {
+      width: 220px;
+      top: 160px;
+      right: 200px;
+      animation-delay: 1.5s;
+    }
+
+    .card-3 {
+      width: 180px;
+      bottom: 20px;
+      right: 60px;
+      animation-delay: 0.8s;
+    }
+
+    .card-mini-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .mini-progress {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .mini-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-2);
+    }
+
+    .mini-progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    .mini-score {
+      text-align: center;
+    }
+
+    .mini-score-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: var(--grad-2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mini-score-label {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      position: relative;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── Stats Banner ── */
+    .stats-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      backdrop-filter: blur(20px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-banner-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: var(--grad-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-banner-label {
+      font-size: 0.85rem;
+      color: var(--text-3);
+      margin-top: 0.25rem;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--grad-1);
+      opacity: 0.05;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .cta-section p {
+      color: var(--text-2);
+      margin-bottom: 2.5rem;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--grad-1);
+      color: white;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 8px 24px rgba(108,99,255,0.4);
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 0.85rem;
+      color: var(--text-2);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .features-grid, .steps { grid-template-columns: repeat(2, 1fr); }
+      .stats-banner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .features-grid, .steps { grid-template-columns: 1fr; }
+      .stats-banner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="nav-brand" onclick="location.href='index.html'">TestPro</div>
-  <ul class="nav-links">
-    <li><a href="#tests" class="active">Testlar</a></li>
-    <li><a href="/dashboard.html">Dashboard</a></li>
-  </ul>
-  <div class="nav-end">
-    <button class="theme-toggle">🌙</button>
-    <a href="login.html" class="btn btn-secondary btn-sm">Kirish</a>
-    <a href="login.html#register" class="btn btn-primary btn-sm">Boshlash →</a>
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <div class="nav-logo">Test<span>Pro</span></div>
+
+    <ul class="nav-links">
+      <li><a href="#features">Xususiyatlar</a></li>
+      <li><a href="#how-it-works">Qanday ishlaydi</a></li>
+      <li><a href="#stats">Statistika</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" title="Toggle theme">🌙</button>
+      <a href="login.html" class="btn btn-secondary btn-sm">Kirish</a>
+      <a href="login.html#register" class="btn btn-primary btn-sm">Boshlash →</a>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav">
+    <a href="#features">Xususiyatlar</a>
+    <a href="#how-it-works">Qanday ishlaydi</a>
+    <a href="login.html">Kirish</a>
+    <a href="login.html" class="btn btn-primary btn-sm" style="margin-top:0.5rem">Boshlash</a>
   </div>
-</nav>
 
-<div class="page-wrap">
+  <div class="page-wrapper">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container" style="position:relative">
-      <div class="hero-badge"><span class="dot-pulse"></span> Professional Test Platform</div>
-      <h1 class="heading-xl fade-in-up">
-        O'rganish endi<br/>
-        <span class="gradient-text">ancha oson</span>
-      </h1>
-      <p class="fade-in-up d1">
-        Fan bo'yicha guruhlangan testlar. Izohli savollar. Tahliliy natijalar.
-        Bepul va professional platforma.
-      </p>
-      <div class="hero-actions fade-in-up d2">
-        <a href="login.html" class="btn btn-primary btn-xl">Bepul boshlash →</a>
-        <a href="#tests" class="btn btn-secondary btn-xl">Testlarni ko'rish</a>
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            Professional Test Platform
+          </div>
+
+          <h1>
+            Testlarni<br/>
+            <span class="gradient-text">professional</span><br/>
+            darajada o'tkazing
+          </h1>
+
+          <p>
+            TestPro — test yaratish, o'tkazish va natijalarni real-time tahlil qilish uchun
+            ishlab chiqilgan zamonaviy platforma. Har bir test — mukammal tajriba.
+          </p>
+
+          <div class="hero-actions">
+            <a href="login.html" class="btn btn-primary btn-lg">
+              Bepul boshlash →
+            </a>
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">
+              Qanday ishlaydi?
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="hero-stats fade-in-up d3">
-        <div><div class="h-stat-val">10K+</div><div class="h-stat-lbl">Foydalanuvchi</div></div>
-        <div><div class="h-stat-val">50K+</div><div class="h-stat-lbl">Testlar</div></div>
-        <div><div class="h-stat-val">98%</div><div class="h-stat-lbl">Mamnun</div></div>
-      </div>
 
-      <!-- Floating cards -->
+      <!-- Hero floating cards -->
       <div class="hero-visual">
-        <div class="float-card fc1">
-          <div class="fc-title">📊 Test natijalari</div>
-          <div style="display:flex;justify-content:center;margin-bottom:0.5rem">
-            <div class="score-circle pass" style="width:80px;height:80px">
-              <div class="score-pct" style="font-size:1.3rem">94%</div>
-              <div class="score-lbl">Natija</div>
+        <div class="hero-card-stack">
+
+          <div class="floating-card card-1">
+            <div class="card-mini-title">📊 Natijalar</div>
+            <div class="mini-progress">
+              <div class="mini-progress-row">
+                <span style="width:70px">HTML</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:90%;background:var(--grad-1)"></div>
+                </div>
+                <span>90%</span>
+              </div>
+              <div class="mini-progress-row">
+                <span style="width:70px">CSS</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:76%;background:var(--grad-2)"></div>
+                </div>
+                <span>76%</span>
+              </div>
+              <div class="mini-progress-row">
+                <span style="width:70px">JS</span>
+                <div class="mini-progress-bar">
+                  <div class="mini-progress-fill" style="width:85%;background:var(--grad-3)"></div>
+                </div>
+                <span>85%</span>
+              </div>
             </div>
           </div>
-          <div style="text-align:center"><span class="badge badge-green">✓ A'lo darajasi</span></div>
-        </div>
-        <div class="float-card fc2">
-          <div class="fc-title">🇬🇧 English</div>
-          <div class="mini-bar"><div class="mini-bar-fill" style="width:88%;background:var(--grad-main)"></div></div>
-          <div class="mini-bar"><div class="mini-bar-fill" style="width:74%;background:var(--grad-teal)"></div></div>
-          <div class="mini-bar"><div class="mini-bar-fill" style="width:91%;background:var(--grad-green)"></div></div>
-          <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.4rem">3 ta test yakunlandi</div>
-        </div>
-        <div class="float-card fc3">
-          <div class="fc-title">🔥 Bugun faol</div>
-          <div style="font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem">128 ta test ishlandi</div>
-          <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- TESTS BY SUBJECT -->
-  <section class="section" id="tests">
-    <div class="container">
-      <h2 class="sec-title">Fan bo'yicha <span class="gradient-text">testlar</span></h2>
-      <p class="sec-sub">Kerakli fanni tanlang yoki pastga aylaning</p>
-
-      <!-- Filter chips -->
-      <div class="home-filter" id="home-filter">
-        <button class="filter-chip active" data-subj="all">🌐 Hammasi</button>
-      </div>
-
-      <!-- Loading -->
-      <div id="subjects-loading" style="text-align:center;padding:4rem">
-        <div class="spinner" style="margin:0 auto 1rem"></div>
-        <p style="color:var(--text-3)">Testlar yuklanmoqda...</p>
-      </div>
-
-      <!-- Subjects -->
-      <div id="subjects-container"></div>
-
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section">
-    <div class="container">
-      <div class="glass-card" style="text-align:center;padding:3.5rem 2rem;position:relative;overflow:hidden">
-        <div style="position:absolute;inset:0;background:var(--grad-main);opacity:0.04;pointer-events:none"></div>
-        <h2 style="font-size:clamp(1.4rem,3vw,2rem);margin-bottom:0.75rem;position:relative">
-          O'z testingizni <span class="gradient-text">yarating</span>
-        </h2>
-        <p style="color:var(--text-2);margin-bottom:2rem;position:relative">
-          Bepul hisob oching. Bir necha daqiqada tayyor.
-        </p>
-        <a href="login.html" class="btn btn-primary btn-xl" style="position:relative">
-          Boshlash →
-        </a>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<footer>
-  <div class="container">
-    <div style="font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:900;margin-bottom:0.5rem;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block">TestPro</div>
-    <p>Professional test platformasi · Bepul</p>
-  </div>
-</footer>
-
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase.js"></script>
-<script src="js/theme.js"></script>
-<script>
-(async () => {
-  let allTests = [];
-  let activeSubj = 'all';
-
-  try {
-    allTests = await DB.getPublicTests();
-  } catch(e) {
-    console.error(e);
-  }
-
-  // Build subject filter chips
-  const subjects = [...new Set(allTests.map(t => t.subject).filter(Boolean))];
-  const filterWrap = document.getElementById('home-filter');
-  subjects.forEach(s => {
-    const sub = getSubject(s);
-    const btn = document.createElement('button');
-    btn.className = 'filter-chip';
-    btn.dataset.subj = s;
-    btn.innerHTML = `${sub.emoji} ${sub.label}`;
-    filterWrap.appendChild(btn);
-  });
-
-  filterWrap.addEventListener('click', e => {
-    const chip = e.target.closest('.filter-chip');
-    if (!chip) return;
-    activeSubj = chip.dataset.subj;
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c === chip));
-    renderSubjects(activeSubj === 'all' ? allTests : allTests.filter(t => t.subject === activeSubj));
-  });
-
-  document.getElementById('subjects-loading').style.display = 'none';
-  renderSubjects(allTests);
-
-  function renderSubjects(tests) {
-    const container = document.getElementById('subjects-container');
-    container.innerHTML = '';
-
-    if (!tests.length) {
-      container.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><h3>Test topilmadi</h3><p>Hali ommaviy test yo'q</p></div>`;
-      return;
-    }
-
-    // Group by subject
-    const groups = {};
-    tests.forEach(t => {
-      const s = t.subject || 'other';
-      if (!groups[s]) groups[s] = [];
-      groups[s].push(t);
-    });
-
-    Object.entries(groups).forEach(([subj, subjTests]) => {
-      const sub = getSubject(subj);
-      const section = document.createElement('div');
-      section.className = 'subject-section fade-in-up';
-
-      section.innerHTML = `
-        <div class="subject-header">
-          <button class="subject-title-btn" onclick="location.href='subject.html?s=${subj}'">
-            <div class="subject-icon ${sub.cls}" style="background:var(--subj-bg,rgba(79,70,229,0.1))">
-              ${sub.emoji}
+          <div class="floating-card card-2">
+            <div class="mini-score">
+              <div class="mini-score-val">94%</div>
+              <div class="mini-score-label">Umumiy ball</div>
             </div>
-            <div>
-              <div class="subject-name">${esc(sub.label)}</div>
-              <div class="subject-count">${subjTests.length} ta test</div>
+            <div style="margin-top:0.75rem;display:flex;gap:0.4rem;justify-content:center">
+              <span class="badge badge-success">✓ A'lo</span>
             </div>
-          </button>
-          <button class="subject-view-all" onclick="location.href='subject.html?s=${subj}'">
-            Barchasini ko'rish <span>→</span>
-          </button>
-        </div>
-        <div class="carousel-wrap">
-          <button class="carousel-btn prev">‹</button>
-          <div class="carousel" id="carousel-${subj}"></div>
-          <button class="carousel-btn next">›</button>
-        </div>
-      `;
-      container.appendChild(section);
+          </div>
 
-      const rail = section.querySelector(`#carousel-${subj}`);
-      subjTests.slice(0, 12).forEach(t => {
-        rail.appendChild(buildTestCard(t, sub));
-      });
-      initCarousel(section.querySelector('.carousel-wrap'));
-    });
-  }
+          <div class="floating-card card-3">
+            <div class="card-mini-title" style="font-size:0.78rem">🔥 Bugun</div>
+            <div style="font-size:0.75rem;color:var(--text-2)">128 ta test o'tkazildi</div>
+            <div style="margin-top:0.5rem">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:72%"></div>
+              </div>
+            </div>
+          </div>
 
-  function buildTestCard(t, sub) {
-    const card = document.createElement('div');
-    card.className = 'test-card';
-    const scoreEl = t.averageScore ? `<span class="test-stat-chip">⭐ ${t.averageScore}%</span>` : '';
-    const vis = t.visibility === 'code' ? `<span class="badge badge-amber">🔒 Kodli</span>` :
-                t.visibility === 'private' ? `<span class="badge badge-gray">🔒 Shaxsiy</span>` : '';
-    card.innerHTML = `
-      <div class="test-card-accent"></div>
-      <div class="test-card-icon ${sub.cls}" style="background:var(--subj-bg,rgba(79,70,229,0.1))">${sub.emoji}</div>
-      <div class="test-card-title">${esc(t.title)}</div>
-      <div class="test-card-author">${esc(t.authorName || 'Anonim')}</div>
-      <div class="test-card-stats">
-        <span class="test-stat-chip">📝 ${t.questionCount||0} savol</span>
-        <span class="test-stat-chip">👁️ ${t.attempts||0}</span>
-        ${scoreEl}
+        </div>
       </div>
-      ${vis}
-      <a href="test.html?id=${t.id}" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.85rem">
-        Boshlash →
-      </a>
-    `;
-    return card;
-  }
-})();
-</script>
+    </section>
+
+    <!-- ── FEATURES ── -->
+    <section class="section" id="features">
+      <div class="container">
+        <div style="margin-bottom:3rem">
+          <div class="hero-badge animate-on-scroll">⚡ Imkoniyatlar</div>
+          <h2 class="section-title animate-on-scroll">Barcha kerakli<br/><span class="gradient-text">vositalar</span></h2>
+          <p class="section-sub animate-on-scroll">Professional test platformasi uchun zarur bo'lgan hamma narsa bir joyda.</p>
+        </div>
+
+        <div class="features-grid">
+
+          <div class="glass-card animate-on-scroll">
+            <div class="feature-icon" style="background:rgba(108,99,255,0.12)">🎯</div>
+            <h3>Oson test yaratish</h3>
+            <p>Ko'p tanlovli, to'g'ri/noto'g'ri va ochiq savol turlarini qo'shing. Savollarni tartibga soling.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-1">
+            <div class="feature-icon" style="background:rgba(67,233,123,0.12)">📊</div>
+            <h3>Real-time statistika</h3>
+            <p>Test o'tkazilishi bilan natijalarni kuzating. Grafik va jadvallar bilan tahlil qiling.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-2">
+            <div class="feature-icon" style="background:rgba(255,101,132,0.12)">🔐</div>
+            <h3>Rol tizimi</h3>
+            <p>Admin va foydalanuvchi rollari. Private/public testlar. Xavfsiz Firebase autentifikatsiya.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-1">
+            <div class="feature-icon" style="background:rgba(247,183,49,0.12)">⏱️</div>
+            <h3>Vaqt limiti</h3>
+            <p>Har bir test uchun vaqt belgilang. Avtomatik yakunlash va natija saqlash.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-2">
+            <div class="feature-icon" style="background:rgba(52,152,219,0.12)">🌐</div>
+            <h3>Public/Private testlar</h3>
+            <p>Testni hammaga ochiq qiling yoki faqat link orqali kirish imkonini bering.</p>
+          </div>
+
+          <div class="glass-card animate-on-scroll delay-3">
+            <div class="feature-icon" style="background:rgba(155,89,182,0.12)">📱</div>
+            <h3>Mobil mos</h3>
+            <p>Telefon, tablet yoki kompyuterdan muammosiz foydalanish. Responsive dizayn.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATS ── -->
+    <section class="section" id="stats">
+      <div class="container">
+        <div class="stats-banner animate-on-scroll">
+          <div>
+            <div class="stat-banner-val">10K+</div>
+            <div class="stat-banner-label">Foydalanuvchilar</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">50K+</div>
+            <div class="stat-banner-label">Testlar yaratildi</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">200K+</div>
+            <div class="stat-banner-label">Test o'tkazishlari</div>
+          </div>
+          <div>
+            <div class="stat-banner-val">98%</div>
+            <div class="stat-banner-label">Mamnunlik darajasi</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:3rem">
+          <h2 class="section-title animate-on-scroll">Qanday <span class="gradient-text-2">ishlaydi?</span></h2>
+          <p class="section-sub animate-on-scroll" style="margin:0 auto">3 oddiy qadam bilan testingizni yarating va o'tkazing.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step animate-on-scroll">
+            <div class="step-number">1</div>
+            <h3>Ro'yxatdan o'ting</h3>
+            <p>Bepul hisob ochib, platformaga kiring. Google bilan ham kirish mumkin.</p>
+          </div>
+          <div class="step animate-on-scroll delay-1">
+            <div class="step-number">2</div>
+            <h3>Test yarating</h3>
+            <p>Savollar, variantlar va vaqt limitini belgilang. Bir necha daqiqada tayyor.</p>
+          </div>
+          <div class="step animate-on-scroll delay-2">
+            <div class="step-number">3</div>
+            <h3>Natijalarni ko'ring</h3>
+            <p>Test o'tkazilgandan so'ng statistika va natijalarni real-time kuzating.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="section">
+      <div class="container">
+        <div class="cta-section animate-on-scroll">
+          <h2>Hoziroq boshlang <span class="gradient-text">bepul</span></h2>
+          <p>Kredit karta kerak emas. Bir daqiqada hisob oching.</p>
+          <a href="login.html" class="btn btn-primary btn-lg" style="animation: pulse-glow 2s infinite">
+            Bepul ro'yxatdan o'tish →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- end page-wrapper -->
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:0.5rem">
+        <span style="background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</span>
+      </div>
+      <p>Professional test platformasi · Firebase powered</p>
+      <p style="margin-top:0.5rem">
+        <a href="login.html">Kirish</a> ·
+        <a href="dashboard.html">Dashboard</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/theme.js"></script>
+
 </body>
-</html>
+        </html>
