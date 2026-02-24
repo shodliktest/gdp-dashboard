@@ -1,257 +1,623 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TestPro — Test Yaratish</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <style>
-    .topbar{display:none;position:fixed;top:0;left:0;right:0;height:64px;background:var(--navbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;padding:0 1.25rem;z-index:200;}
-    @media(max-width:1024px){.topbar{display:flex;}}
-    .topbar-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:99;}
-    .sidebar-overlay.show{display:block;}
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TestPro — Test Yaratish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.create-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start}
+.settings-sticky{position:sticky;top:1.5rem}
+@media(max-width:900px){.create-layout{grid-template-columns:1fr}.settings-sticky{position:static}}
 
-    .question-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      transition: all var(--transition);
-      backdrop-filter: blur(12px);
-    }
-    .question-card:hover { border-color: rgba(108,99,255,0.4); box-shadow: 0 8px 24px var(--shadow); }
+/* Subject selector */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:0.5rem;margin-bottom:0.75rem}
+.subj-btn{padding:0.55rem 0.65rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-2);background:var(--bg-2);cursor:pointer;transition:all var(--t);text-align:center;font-size:0.78rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2)}
+.subj-btn:hover,.subj-btn.active{border-color:var(--accent);background:rgba(79,70,229,0.08);color:var(--accent)}
+.subj-btn .emoji{display:block;font-size:1.2rem;margin-bottom:0.2rem}
 
-    .q-header { display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap; }
-    .q-number { width:32px;height:32px;background:var(--grad-1);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:0.85rem;flex-shrink:0; }
-    .q-delete-btn { margin-left:auto; }
+/* Visibility */
+.vis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
+.vis-btn{padding:0.6rem 0.4rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-2);background:var(--bg-2);cursor:pointer;transition:all var(--t);text-align:center;font-size:0.75rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2)}
+.vis-btn:hover,.vis-btn.active{border-color:var(--accent);background:rgba(79,70,229,0.08);color:var(--accent)}
+.vis-btn .vis-icon{display:block;font-size:1.2rem;margin-bottom:0.2rem}
 
-    .option-row { display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem; }
-    .option-correct { width:18px;height:18px;border-radius:50%;border:2px solid var(--border);cursor:pointer;flex-shrink:0;accent-color:var(--accent); }
-
-    .add-option-btn { font-size:0.82rem;color:var(--accent);background:none;border:1px dashed var(--border);border-radius:var(--radius-sm);padding:0.4rem 0.75rem;cursor:pointer;transition:all var(--transition);font-family:'DM Sans',sans-serif; }
-    .add-option-btn:hover { background:rgba(108,99,255,0.08);border-color:var(--accent); }
-
-    .add-question-area { border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer;transition:all var(--transition);margin-top:1.5rem; }
-    .add-question-area:hover { border-color:var(--accent);background:rgba(108,99,255,0.04); }
-
-    .q-type-selector { display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem; }
-    .q-type-btn { font-size:0.78rem;padding:0.3rem 0.75rem;border-radius:99px;border:1px solid var(--border);background:var(--surface-2);cursor:pointer;transition:all var(--transition);font-family:'DM Sans',sans-serif;color:var(--text-2); }
-    .q-type-btn.active,.q-type-btn:hover { background:var(--accent);color:white;border-color:var(--accent); }
-
-    .create-layout { display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start; }
-    @media(max-width:1024px){ .create-layout{grid-template-columns:1fr;} }
-
-    .settings-card { position:sticky;top:2rem; }
-    @media(max-width:1024px){ .settings-card{position:static;} }
-
-    .toggle-switch{position:relative;display:inline-block;width:40px;height:22px;}
-    .toggle-switch input{opacity:0;width:0;height:0;}
-    .toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:99px;transition:all 0.3s;}
-    .toggle-slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:white;border-radius:50%;transition:all 0.3s;}
-    .toggle-switch input:checked+.toggle-slider{background:var(--accent);}
-    .toggle-switch input:checked+.toggle-slider::before{transform:translateX(18px);}
-
-    /* Import modal */
-    .import-format-hint {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1rem;
-      font-family: monospace;
-      font-size: 0.8rem;
-      color: var(--text-2);
-      white-space: pre;
-      line-height: 1.7;
-      overflow-x: auto;
-      margin-bottom: 1rem;
-    }
-  </style>
+/* Import hint */
+.code-block{background:var(--bg-2);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:0.85rem;font-family:monospace;font-size:0.78rem;color:var(--text-2);white-space:pre;overflow-x:auto;line-height:1.65}
+</style>
 </head>
 <body>
-
-  <div class="topbar">
-    <div class="topbar-logo">TestPro</div>
-    <div style="display:flex;gap:0.75rem;align-items:center">
-      <button class="theme-toggle">🌙</button>
-      <button class="hamburger sidebar-toggle"><span></span><span></span><span></span></button>
+<div class="topbar">
+  <div class="topbar-brand">TestPro</div>
+  <div style="display:flex;gap:0.6rem;align-items:center">
+    <button class="theme-toggle">🌙</button>
+    <button class="hamburger sidebar-toggle"><span></span><span></span><span></span></button>
+  </div>
+</div>
+<div class="sidebar-overlay"></div>
+<aside class="sidebar">
+  <div style="padding:1.25rem 1rem 0.5rem;border-bottom:1px solid var(--border)">
+    <div style="font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
+  </div>
+  <div class="sidebar-inner">
+    <a href="dashboard.html" class="sidebar-nav-item">📊 Dashboard</a>
+    <a href="create.html" class="sidebar-nav-item active">✏️ Test yaratish</a>
+    <a href="history.html" class="sidebar-nav-item">📜 Tarix</a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="user-ava" id="ava">?</div>
+      <div style="flex:1;min-width:0"><div class="user-chip-name" id="uname">...</div></div>
+      <a href="profile.html" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
+      <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">🚪</button>
     </div>
   </div>
+</aside>
 
-  <div class="sidebar-overlay"></div>
+<main class="main-area">
+  <div class="page-hdr" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 id="page-title">Yangi test yaratish</h1>
+      <p>Savollar qo'shing va sozlang</p>
+    </div>
+    <div style="display:flex;gap:0.65rem;flex-wrap:wrap">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm">← Orqaga</a>
+      <button class="btn btn-secondary btn-sm" onclick="Modal.open('import-modal')">📄 Import</button>
+      <button class="btn btn-primary" id="save-btn">💾 Saqlash</button>
+    </div>
+  </div>
+  <div id="save-alert" style="margin-bottom:1rem"></div>
 
-  <aside class="sidebar">
-    <div class="sidebar-logo">TestPro</div>
-    <nav class="sidebar-nav">
-      <div class="sidebar-section-title">Asosiy</div>
-      <a href="dashboard.html" class="sidebar-nav-item"><span class="nav-icon">📊</span> Dashboard</a>
-      <a href="create.html" class="sidebar-nav-item active"><span class="nav-icon">✏️</span> Test yaratish</a>
-    </nav>
-    <div class="sidebar-footer">
-      <div class="user-info">
-        <div class="user-avatar" id="user-avatar">?</div>
-        <div>
-          <div class="user-name" id="user-name">...</div>
-          <div class="user-role" id="user-role">foydalanuvchi</div>
+  <div class="create-layout">
+    <!-- LEFT: test info + questions -->
+    <div>
+      <!-- Test info -->
+      <div class="glass-card" style="margin-bottom:1.25rem">
+        <h3 style="font-size:0.95rem;margin-bottom:1.1rem;font-family:'Unbounded',sans-serif">📋 Test haqida</h3>
+        <div class="form-group">
+          <label class="form-label">Test nomi *</label>
+          <input id="t-title" type="text" class="form-input" placeholder="Masalan: HTML & CSS asoslar"/>
         </div>
-        <button id="logout-btn" class="btn btn-ghost btn-sm" style="margin-left:auto">🚪</button>
+        <div class="form-group">
+          <label class="form-label">Tavsif (ixtiyoriy)</label>
+          <textarea id="t-desc" class="form-input" rows="2" placeholder="Test haqida qisqacha..."></textarea>
+        </div>
+
+        <!-- Subject selector -->
+        <div class="form-group">
+          <label class="form-label">Fan / Guruh *</label>
+          <div class="subj-grid" id="subj-grid"></div>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <input id="custom-subj" type="text" class="form-input" placeholder="Boshqa fan nomi yozing..." style="flex:1"/>
+            <button class="btn btn-secondary btn-sm" onclick="setCustomSubj()">✓</button>
+          </div>
+        </div>
+        <div id="selected-subj" style="display:none;margin-top:-0.5rem;margin-bottom:0.75rem"></div>
+      </div>
+
+      <!-- Questions -->
+      <div id="q-container"></div>
+
+      <!-- Add question buttons -->
+      <div style="border:2px dashed var(--border-2);border-radius:var(--radius);padding:1.25rem;text-align:center;margin-top:1rem;transition:all var(--t)" id="add-area" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-2)'">
+        <div style="font-size:1.3rem;margin-bottom:0.5rem">➕</div>
+        <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:0.75rem">Savol qo'shish</p>
+        <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm" onclick="addQ('multiple')">⭕ Ko'p tanlov</button>
+          <button class="btn btn-secondary btn-sm" onclick="addQ('truefalse')">✅ Ha/Yo'q</button>
+          <button class="btn btn-secondary btn-sm" onclick="addQ('text')">📝 Matn</button>
+        </div>
       </div>
     </div>
-  </aside>
 
-  <main class="main-content">
-    <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
-      <div>
-        <h1 id="page-title">Yangi test yaratish</h1>
-        <p>Savollar qo'shing, sozlang va saqlang.</p>
-      </div>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">← Orqaga</a>
-        <button class="btn btn-secondary btn-sm" onclick="openImportModal()">📄 Matndan import</button>
-        <button class="btn btn-primary" id="save-btn">💾 Saqlash</button>
+    <!-- RIGHT: settings -->
+    <div class="settings-sticky">
+      <div class="glass-card">
+        <h3 style="font-size:0.95rem;margin-bottom:1.1rem;font-family:'Unbounded',sans-serif">⚙️ Sozlamalar</h3>
+
+        <!-- Visibility -->
+        <div class="form-group">
+          <label class="form-label">Ko'rinish</label>
+          <div class="vis-grid">
+            <button class="vis-btn active" data-vis="public">
+              <span class="vis-icon">🌐</span>Ommaviy
+            </button>
+            <button class="vis-btn" data-vis="private">
+              <span class="vis-icon">🔒</span>Shaxsiy
+            </button>
+            <button class="vis-btn" data-vis="code">
+              <span class="vis-icon">🔑</span>Kodli
+            </button>
+          </div>
+          <div id="code-hint" style="display:none;margin-top:0.5rem" class="code-banner">
+            🔑 Kod avtomatik yaratiladi
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Vaqt limiti (daqiqa)</label>
+          <input id="t-time" type="number" class="form-input" value="0" min="0" max="180" placeholder="0 = cheksiz"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">O'tish bali (%)</label>
+          <input id="t-pass" type="number" class="form-input" value="60" min="0" max="100"/>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+          <span class="form-label" style="margin:0">Savollarni aralashtirish</span>
+          <label class="toggle"><input type="checkbox" id="t-shuffle"/><span class="toggle-slider"></span></label>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="form-label" style="margin:0">Natija ko'rsatish</span>
+          <label class="toggle"><input type="checkbox" id="t-result" checked/><span class="toggle-slider"></span></label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="text-align:center;padding:0.75rem;background:var(--bg-2);border-radius:var(--radius-sm);margin-bottom:1rem">
+          <div style="font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;color:var(--accent)" id="q-count">0</div>
+          <div style="font-size:0.72rem;color:var(--text-3);font-weight:600">ta savol</div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;justify-content:center" id="save-btn-2">💾 Saqlash</button>
       </div>
     </div>
+  </div>
+</main>
 
-    <div id="save-alert"></div>
-
-    <div class="create-layout">
-
-      <!-- Chap: Savollar -->
-      <div>
-        <div class="glass-card" style="margin-bottom:1.5rem">
-          <h2 style="font-size:1rem;margin-bottom:1.25rem">📋 Test ma'lumotlari</h2>
-          <div class="form-group">
-            <label class="form-label">Test nomi *</label>
-            <input type="text" id="test-title" class="form-input" placeholder="Masalan: HTML & CSS asoslar" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tavsif (ixtiyoriy)</label>
-            <textarea id="test-desc" class="form-input" placeholder="Test haqida qisqacha..." rows="2"></textarea>
-          </div>
-        </div>
-
-        <!-- Savollar -->
-        <div id="questions-container"></div>
-
-        <!-- Qo'shish -->
-        <div class="add-question-area">
-          <div style="font-size:1.5rem;margin-bottom:0.5rem">➕</div>
-          <p style="font-size:0.9rem;color:var(--text-2);margin-bottom:0.75rem">Savol qo'shish</p>
-          <div class="q-type-selector" style="justify-content:center">
-            <button class="q-type-btn" onclick="addQuestion('multiple')">⭕ Ko'p tanlov</button>
-            <button class="q-type-btn" onclick="addQuestion('truefalse')">✅ Ha/Yo'q</button>
-            <button class="q-type-btn" onclick="addQuestion('text')">📝 Matn</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- O'ng: Sozlamalar -->
-      <div class="settings-card">
-        <div class="glass-card">
-          <h2 style="font-size:1rem;margin-bottom:1.25rem">⚙️ Sozlamalar</h2>
-
-          <div class="form-group">
-            <label class="form-label">Ko'rinish</label>
-            <select id="test-visibility" class="form-input">
-              <option value="public">🌐 Ommaviy (hamma ko'ra oladi)</option>
-              <option value="private">🔒 Shaxsiy (faqat link orqali)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Vaqt limiti (daqiqa, 0 = cheksiz)</label>
-            <input type="number" id="test-time" class="form-input" value="0" min="0" max="180" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">O'tish bali (%)</label>
-            <input type="number" id="test-pass" class="form-input" value="60" min="0" max="100" />
-          </div>
-
-          <div class="divider"></div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.85rem">
-            <label class="form-label" style="margin:0">Savollarni aralashtirish</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="test-shuffle">
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div style="display:flex;align-items:center;justify-content:space-between">
-            <label class="form-label" style="margin:0">Natijani ko'rsatish</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="test-show-result" checked>
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div class="divider"></div>
-
-          <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem;font-size:0.85rem;color:var(--text-2);text-align:center">
-            <strong id="q-count" style="color:var(--accent);font-size:1.1rem">0</strong> ta savol
-          </div>
-
-          <button class="btn btn-primary" id="save-btn-2" style="width:100%;justify-content:center;margin-top:1rem"
-            onclick="document.getElementById('save-btn').click()">
-            💾 Saqlash
-          </button>
-        </div>
-      </div>
-
+<!-- Import modal -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal modal-md">
+    <div class="modal-header">
+      <span class="modal-title">📄 Matndan import</span>
+      <button class="modal-close">✕</button>
     </div>
-  </main>
 
-  <!-- ══════════════════════════════
-       MATNDAN IMPORT MODAL
-       ══════════════════════════════ -->
-  <div id="import-modal" class="modal-overlay" style="display:none">
-    <div class="modal-box" style="max-width:600px">
-      <div class="modal-header">
-        <h2 class="modal-title">📄 Matndan savollar import qilish</h2>
-        <button class="modal-close" onclick="closeImportModal()">✕</button>
+    <div style="display:flex;gap:0.5rem;background:var(--bg-2);padding:3px;border-radius:var(--radius-sm);margin-bottom:1.25rem;width:fit-content">
+      <button class="auth-tab active" id="imp-tab-txt" onclick="switchImpTab('txt')">📝 Matn</button>
+      <button class="auth-tab" id="imp-tab-file" onclick="switchImpTab('file')">📁 Fayl</button>
+    </div>
+    <style>.auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)}</style>
+
+    <!-- Text tab -->
+    <div id="imp-txt">
+      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:0.75rem">Format: <code>*</code> = to'g'ri javob, <code>Izoh:</code> = tushuntirish</p>
+      <div class="code-block">1. Savol matni?
+A) Variant A
+B) To'g'ri variant *
+C) Variant C
+D) Variant D
+Izoh: Bu yerda tushuntirish yoziladi.
+
+2. Keyingi savol...</div>
+      <div class="form-group" style="margin-top:1rem">
+        <label class="form-label">Savollarni kiriting:</label>
+        <textarea id="imp-textarea" class="form-input" rows="8" placeholder="1. Savol...&#10;A) Variant&#10;B) To'g'ri *&#10;C) Variant&#10;Izoh: Tushuntirish..."></textarea>
       </div>
-
-      <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:1rem">
-        Quyidagi formatda savollarni kiriting. <strong>*</strong> belgisi to'g'ri javobni bildiradi.
-      </p>
-
-      <div class="import-format-hint">1. Qaysi tag HTML da rasm qo'shadi?
-a) &lt;div&gt;
-b) &lt;img&gt; *
-c) &lt;span&gt;
-d) &lt;p&gt;
-
-2. CSS da rang berish uchun qaysi xususiyat?
-a) font-size
-b) background *
-c) margin
-d) padding</div>
-
-      <div class="form-group">
-        <label class="form-label">Savollaringizni kiriting:</label>
-        <textarea id="import-textarea" class="form-input" rows="10"
-          placeholder="1. Savol matni?&#10;a) Variant A&#10;b) To'g'ri variant *&#10;c) Variant C&#10;d) Variant D&#10;&#10;2. Keyingi savol..."></textarea>
-      </div>
-
       <div style="display:flex;gap:0.75rem;justify-content:flex-end">
-        <button class="btn btn-ghost" onclick="closeImportModal()">Bekor qilish</button>
-        <button class="btn btn-primary" onclick="importFromText()">✅ Import qilish</button>
+        <button class="btn btn-ghost" data-close-modal>Bekor</button>
+        <button class="btn btn-primary" onclick="importFromText()">✅ Import</button>
+      </div>
+    </div>
+
+    <!-- File tab -->
+    <div id="imp-file" style="display:none">
+      <div style="border:2px dashed var(--border-2);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all var(--t)" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div style="font-size:2rem;margin-bottom:0.65rem">📁</div>
+        <p style="font-weight:600;margin-bottom:0.3rem">.txt faylini yuklang</p>
+        <p style="font-size:0.8rem;color:var(--text-3)">Bosing yoki faylni bu yerga tashlang</p>
+        <input type="file" id="file-input" accept=".txt" style="display:none" onchange="handleFileImport(this)"/>
+      </div>
+      <div id="file-result" style="margin-top:1rem"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="btn btn-ghost" data-close-modal>Yopish</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="js/firebase.js"></script>
-  <script src="js/theme.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/create.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/theme.js"></script>
+<script>
+/* ============================================================
+   CREATE PAGE LOGIC
+   ============================================================ */
+let questions    = [];
+let selectedSubj = '';
+let selectedVis  = 'public';
+let currentUser  = null;
+let editId       = null;
+const params     = new URLSearchParams(location.search);
 
+(async () => {
+  currentUser = await AuthHelpers.requireAuth('login.html');
+  if (!currentUser) return;
+  const prof = await DB.getUser(currentUser.uid).catch(() => null);
+  document.getElementById('ava').textContent = (prof?.name || currentUser.displayName || 'U')[0].toUpperCase();
+  document.getElementById('uname').textContent = prof?.name || currentUser.displayName || '...';
+
+  buildSubjGrid();
+  bindVisButtons();
+
+  editId = params.get('id');
+  if (editId) {
+    document.getElementById('page-title').textContent = 'Testni tahrirlash';
+    await loadEdit(editId);
+  } else {
+    addQ('multiple');
+  }
+})();
+
+/* ── Subject grid ── */
+function buildSubjGrid() {
+  const grid = document.getElementById('subj-grid');
+  Object.entries(SUBJECTS).forEach(([key, s]) => {
+    const btn = document.createElement('button');
+    btn.className = 'subj-btn';
+    btn.dataset.key = key;
+    btn.innerHTML = `<span class="emoji">${s.emoji}</span>${s.label}`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedSubj = key;
+      showSelSubj(key);
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function showSelSubj(key) {
+  const el = document.getElementById('selected-subj');
+  if (!key) { el.style.display = 'none'; return; }
+  const s = getSubject(key);
+  el.style.display = 'flex';
+  el.innerHTML = `<span class="subj-badge ${s.cls}">${s.emoji} ${s.label}</span> <span style="font-size:0.8rem;color:var(--text-3);margin-left:0.5rem">seçildi</span>`;
+}
+
+window.setCustomSubj = function() {
+  const val = document.getElementById('custom-subj').value.trim();
+  if (!val) return;
+  document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
+  selectedSubj = val.toLowerCase().replace(/\s+/g, '-');
+  const el = document.getElementById('selected-subj');
+  el.style.display = 'flex';
+  el.innerHTML = `<span class="badge badge-gray">📝 ${esc(val)}</span> <span style="font-size:0.8rem;color:var(--text-3);margin-left:0.5rem">seçildi</span>`;
+};
+
+/* ── Visibility ── */
+function bindVisButtons() {
+  document.querySelectorAll('.vis-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedVis = btn.dataset.vis;
+      document.getElementById('code-hint').style.display = selectedVis === 'code' ? 'flex' : 'none';
+    });
+  });
+}
+
+/* ── Add question ── */
+window.addQ = function(type = 'multiple') {
+  const q = {
+    id:          Date.now() + Math.random(),
+    type,
+    text:        '',
+    options:     type === 'multiple'  ? ['','','',''] :
+                 type === 'truefalse' ? ['Ha',"Yo'q"] : [],
+    correct:     0,
+    explanation: '',
+    points:      1,
+  };
+  questions.push(q);
+  renderAll();
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.q-card');
+    if (cards.length) cards[cards.length-1].scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }, 80);
+};
+
+function renderAll() {
+  document.getElementById('q-container').innerHTML = '';
+  questions.forEach((q, i) => renderCard(q, i));
+  document.getElementById('q-count').textContent = questions.length;
+  document.getElementById('q-count-2') && (document.getElementById('q-count-2').textContent = questions.length);
+}
+
+function renderCard(q, idx) {
+  const wrap = document.getElementById('q-container');
+  const typeLabel = { multiple:'Ko\'p tanlov', truefalse:'Ha/Yo\'q', text:'Matn' };
+  const div = document.createElement('div');
+  div.className = 'q-card fade-in';
+  div.dataset.qid = q.id;
+
+  div.innerHTML = `
+    <div class="q-card-header">
+      <div class="q-num">${idx+1}</div>
+      <div class="q-type-tabs">
+        ${['multiple','truefalse','text'].map(t =>
+          `<button class="q-type-tab ${q.type===t?'active':''}" onclick="chType('${q.id}','${t}')">${typeLabel[t]}</button>`
+        ).join('')}
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;color:var(--text-3)" onclick="moveQ('${q.id}',-1)" data-tip="Yuqoriga">↑</button>
+      <button class="btn btn-ghost btn-sm" style="color:var(--text-3)" onclick="moveQ('${q.id}',1)" data-tip="Pastga">↓</button>
+      <button class="btn btn-danger btn-sm" onclick="delQ('${q.id}')">🗑️</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Savol *</label>
+      <textarea class="form-input q-text" data-qid="${q.id}" rows="2" placeholder="Savolni yozing...">${escAtt(q.text)}</textarea>
+    </div>
+
+    <div id="opts-${q.id}">${renderOpts(q)}</div>
+
+    <div class="q-explanation">
+      <details>
+        <summary style="cursor:pointer;font-size:0.82rem;color:var(--text-3);font-weight:600;user-select:none;list-style:none;display:flex;align-items:center;gap:0.4rem">
+          <span>💡 Izoh qo'shish (ixtiyoriy)</span>
+        </summary>
+        <div style="margin-top:0.75rem">
+          <textarea class="form-input q-expl" data-qid="${q.id}" rows="2"
+            placeholder="Bu savol bo'yicha tushuntirish...">${escAtt(q.explanation)}</textarea>
+        </div>
+      </details>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:0.65rem;margin-top:0.75rem;flex-wrap:wrap">
+      <label class="form-label" style="margin:0">Ball:</label>
+      <input type="number" class="form-input q-pts" style="width:68px" value="${q.points||1}" min="1" max="10" data-qid="${q.id}"/>
+    </div>
+  `;
+  wrap.appendChild(div);
+
+  // Bind events
+  div.querySelector('.q-text').addEventListener('input', function() {
+    const q = questions.find(x => String(x.id) === this.dataset.qid);
+    if (q) q.text = this.value;
+  });
+  div.querySelector('.q-expl').addEventListener('input', function() {
+    const q = questions.find(x => String(x.id) === this.dataset.qid);
+    if (q) q.explanation = this.value;
+  });
+  div.querySelector('.q-pts').addEventListener('change', function() {
+    const q = questions.find(x => String(x.id) === this.dataset.qid);
+    if (q) q.points = +this.value || 1;
+  });
+}
+
+function renderOpts(q) {
+  if (q.type === 'text') return `<p style="font-size:0.8rem;color:var(--text-3);font-style:italic">Foydalanuvchi matn yozadi</p>`;
+
+  if (q.type === 'truefalse') {
+    return q.options.map((o, i) => `
+      <div class="option-row">
+        <input type="radio" name="r-${q.id}" class="opt-radio" ${q.correct===i?'checked':''} onchange="setCorr('${q.id}',${i})"/>
+        <input type="text" class="form-input ${q.correct===i?'correct-opt':''}" value="${escAtt(o)}" readonly style="cursor:default"/>
+      </div>`).join('');
+  }
+
+  return q.options.map((o, i) => `
+    <div class="option-row">
+      <input type="radio" name="r-${q.id}" class="opt-radio" ${q.correct===i?'checked':''} onchange="setCorr('${q.id}',${i})"/>
+      <input type="text" class="form-input opt-inp ${q.correct===i?'correct-opt':''}"
+        value="${escAtt(o)}" placeholder="${String.fromCharCode(65+i)} variant"
+        data-qid="${q.id}" data-idx="${i}" oninput="updOpt(this)"/>
+      ${q.options.length > 2 ? `<button class="btn btn-ghost btn-sm" onclick="rmOpt('${q.id}',${i})" style="flex-shrink:0;color:var(--text-3)">✕</button>` : ''}
+    </div>
+  `).join('') + (q.options.length < 6 ? `<button class="add-opt-btn" onclick="addOpt('${q.id}')">+ Variant</button>` : '');
+}
+
+window.setCorr = function(qid, idx) {
+  const q = questions.find(x => String(x.id) === String(qid));
+  if (!q) return;
+  q.correct = idx;
+  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
+};
+window.updOpt = function(el) {
+  const q = questions.find(x => String(x.id) === el.dataset.qid);
+  if (q) q.options[+el.dataset.idx] = el.value;
+};
+window.addOpt = function(qid) {
+  const q = questions.find(x => String(x.id) === String(qid));
+  if (!q) return; q.options.push('');
+  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
+};
+window.rmOpt = function(qid, idx) {
+  const q = questions.find(x => String(x.id) === String(qid));
+  if (!q || q.options.length <= 2) return;
+  q.options.splice(idx, 1);
+  if (q.correct >= q.options.length) q.correct = 0;
+  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
+};
+window.chType = function(qid, type) {
+  const q = questions.find(x => String(x.id) === String(qid));
+  if (!q || q.type === type) return;
+  q.type = type;
+  q.options = type === 'truefalse' ? ['Ha',"Yo'q"] : type === 'text' ? [] : ['','','',''];
+  q.correct = 0;
+  renderAll();
+};
+window.delQ = function(qid) {
+  questions = questions.filter(x => String(x.id) !== String(qid));
+  renderAll();
+};
+window.moveQ = function(qid, dir) {
+  const idx = questions.findIndex(x => String(x.id) === String(qid));
+  const to = idx + dir;
+  if (to < 0 || to >= questions.length) return;
+  [questions[idx], questions[to]] = [questions[to], questions[idx]];
+  renderAll();
+};
+
+/* ── Load existing ── */
+async function loadEdit(id) {
+  try {
+    const [t, qs] = await Promise.all([DB.getTest(id), DB.getQuestions(id)]);
+    if (!t) { Toast.error('Test topilmadi'); return; }
+    document.getElementById('t-title').value = t.title || '';
+    document.getElementById('t-desc').value  = t.description || '';
+    document.getElementById('t-time').value  = t.timeLimit || 0;
+    document.getElementById('t-pass').value  = t.passScore || 60;
+    document.getElementById('t-shuffle').checked = !!t.shuffleQuestions;
+    document.getElementById('t-result').checked  = t.showResult !== false;
+    selectedVis  = t.visibility || 'public';
+    selectedSubj = t.subject    || '';
+    // Set vis btn
+    document.querySelectorAll('.vis-btn').forEach(b => b.classList.toggle('active', b.dataset.vis === selectedVis));
+    if (selectedVis === 'code') document.getElementById('code-hint').style.display = 'flex';
+    // Set subj btn
+    document.querySelectorAll('.subj-btn').forEach(b => {
+      if (b.dataset.key === selectedSubj) b.classList.add('active');
+    });
+    showSelSubj(selectedSubj);
+    questions = qs.map((q, i) => ({ ...q, id: q.id || Date.now()+i }));
+    renderAll();
+  } catch(e) { Toast.error(e.message); }
+}
+
+/* ── SAVE ── */
+async function doSave() {
+  const title = document.getElementById('t-title').value.trim();
+  if (!title) { Toast.error('Test nomini kiriting!'); document.getElementById('t-title').focus(); return; }
+  if (!selectedSubj) { Toast.error('Fan / guruh tanlang!'); return; }
+  if (!questions.length) { Toast.error('Kamida 1 savol qo\'shing!'); return; }
+
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    if (!q.text.trim()) { Toast.error(`${i+1}-savol matni bo'sh!`); return; }
+    if (q.type !== 'text' && q.options.some(o => !o.trim())) { Toast.error(`${i+1}-savoldagi variant bo'sh!`); return; }
+  }
+
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = '⏳ Saqlanmoqda...';
+
+  const accessCode = selectedVis === 'code' ? (editId ? undefined : randCode()) : '';
+  const data = {
+    title,
+    description:      document.getElementById('t-desc').value.trim(),
+    subject:          selectedSubj,
+    visibility:       selectedVis,
+    timeLimit:        +document.getElementById('t-time').value || 0,
+    passScore:        +document.getElementById('t-pass').value || 60,
+    shuffleQuestions: document.getElementById('t-shuffle').checked,
+    showResult:       document.getElementById('t-result').checked,
+    questionCount:    questions.length,
+    authorName:       currentUser.displayName || 'Anonim',
+  };
+  if (accessCode) data.accessCode = accessCode;
+
+  try {
+    if (editId) {
+      await DB.updateTest(editId, data);
+      await DB.saveQuestions(editId, questions);
+      Toast.success('✅ Yangilandi!');
+    } else {
+      const id = await DB.createTest(data, currentUser.uid);
+      await DB.saveQuestions(id, questions);
+      if (data.accessCode) Toast.info(`🔑 Test kodi: ${data.accessCode}`);
+      Toast.success('✅ Test yaratildi!');
+    }
+    setTimeout(() => location.href = 'dashboard.html', 1600);
+  } catch(e) {
+    console.error(e);
+    Toast.error('❌ ' + e.message);
+    btn.disabled = false; btn.textContent = '💾 Saqlash';
+  }
+}
+document.getElementById('save-btn').addEventListener('click', doSave);
+document.getElementById('save-btn-2').addEventListener('click', doSave);
+
+/* ── IMPORT ── */
+window.switchImpTab = function(tab) {
+  document.getElementById('imp-txt').style.display  = tab === 'txt'  ? 'block' : 'none';
+  document.getElementById('imp-file').style.display = tab === 'file' ? 'block' : 'none';
+  document.getElementById('imp-tab-txt').classList.toggle('active', tab === 'txt');
+  document.getElementById('imp-tab-file').classList.toggle('active', tab === 'file');
+};
+
+window.importFromText = function() {
+  const raw = document.getElementById('imp-textarea').value.trim();
+  if (!raw) { Toast.warning('Matn kiriting!'); return; }
+  const imported = parseTxt(raw);
+  if (!imported.length) { Toast.error('Format noto\'g\'ri. Misolga qarang.'); return; }
+  questions.push(...imported);
+  renderAll();
+  Modal.close('import-modal');
+  Toast.success(`✅ ${imported.length} savol import qilindi!`);
+  document.getElementById('imp-textarea').value = '';
+};
+
+window.handleFileImport = function(inp) {
+  const file = inp.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const imported = parseTxt(e.target.result);
+    if (!imported.length) {
+      document.getElementById('file-result').innerHTML = '<div class="alert alert-error">Format noto\'g\'ri</div>';
+      return;
+    }
+    questions.push(...imported);
+    renderAll();
+    document.getElementById('file-result').innerHTML = `<div class="alert alert-success">✅ ${imported.length} savol import qilindi!</div>`;
+    setTimeout(() => Modal.close('import-modal'), 1200);
+  };
+  reader.readAsText(file);
+};
+
+// Drag & drop
+const dz = document.getElementById('drop-zone');
+if (dz) {
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'var(--accent)'; });
+  dz.addEventListener('dragleave', () => { dz.style.borderColor = 'var(--border-2)'; });
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.style.borderColor = 'var(--border-2)';
+    const f = e.dataTransfer.files[0];
+    if (f) { const inp = document.getElementById('file-input'); const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; window.handleFileImport(inp); }
+  });
+}
+
+/* ── Text parser ── */
+function parseTxt(raw) {
+  const results = [];
+  const blocks = raw.split(/\n(?=\s*\d+[\.\)])/g);
+  for (const block of blocks) {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) continue;
+    let qText = '', options = [], correctIdx = 0, explanation = '', qStarted = false;
+    for (const line of lines) {
+      if (/^izoh\s*:/i.test(line)) { explanation = line.replace(/^izoh\s*:\s*/i, '').trim(); continue; }
+      const optM = line.match(/^([A-Da-d])\s*[\)\.]\s*(.+)/);
+      if (optM) {
+        qStarted = true;
+        let content = optM[2].trim();
+        let isCorr = false;
+        if (content.endsWith('*')) { isCorr = true; content = content.slice(0, -1).trim(); }
+        if (isCorr) correctIdx = options.length;
+        options.push(content);
+      } else if (!qStarted) {
+        qText += (qText ? ' ' : '') + line.replace(/^\d+[\.\)]\s*/, '');
+      }
+    }
+    if (!qText && lines[0]) qText = lines[0].replace(/^\d+[\.\)]\s*/, '');
+    if (!qText) continue;
+    let type = options.length >= 2 ? 'multiple' : 'text';
+    if (options.length === 2) {
+      const l = options.map(o => o.toLowerCase());
+      if ((l[0].includes('ha') || l[0].includes('to\'g\'ri')) && (l[1].includes("yo'q") || l[1].includes("noto'"))) type = 'truefalse';
+    }
+    results.push({ id: Date.now()+Math.random(), type, text: qText.trim(), options, correct: correctIdx, explanation, points: 1 });
+  }
+  return results;
+}
+
+function escAtt(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
 </body>
 </html>

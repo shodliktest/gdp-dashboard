@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TestPro — Fan Testlari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+.subj-hero{padding:3rem 0 2rem;border-bottom:1px solid var(--border-2)}
+.subj-hero-inner{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.subj-big-icon{width:72px;height:72px;border-radius:var(--radius);font-size:2.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.subj-info h1{font-size:1.8rem;margin-bottom:0.2rem}
+.subj-info p{color:var(--text-2);font-size:0.875rem}
+.test-card-sm{
+  background:var(--bg-card);border:1px solid var(--border-2);
+  border-radius:var(--radius);padding:1.1rem 1.25rem;
+  transition:all var(--t);cursor:pointer;position:relative;overflow:hidden;
+}
+[data-theme="dark"] .test-card-sm{background:var(--bg-2);border-color:var(--border)}
+.test-card-sm:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--accent)}
+.test-card-sm .accent-line{position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-main)}
+.tc-title{font-size:0.88rem;font-weight:700;margin-bottom:0.35rem;color:var(--text)}
+.tc-meta{font-size:0.72rem;color:var(--text-3);display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand" onclick="location.href='index.html'">TestPro</div>
+  <div class="nav-end">
+    <button class="theme-toggle">🌙</button>
+    <a href="dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
+    <a href="login.html" class="btn btn-primary btn-sm" id="nav-login">Kirish</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <!-- Subject hero -->
+  <div class="subj-hero">
+    <div class="container">
+      <div style="margin-bottom:0.75rem">
+        <a href="index.html" style="font-size:0.82rem;color:var(--text-3);display:inline-flex;align-items:center;gap:0.4rem">
+          ← Testlar
+        </a>
+      </div>
+      <div class="subj-hero-inner">
+        <div class="subj-big-icon" id="subj-icon">📚</div>
+        <div class="subj-info">
+          <h1 id="subj-name">Fan</h1>
+          <p id="subj-desc">Yuklanmoqda...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters + Search -->
+  <div style="padding:1.5rem 0;border-bottom:1px solid var(--border-2)">
+    <div class="container">
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+        <div class="search-bar" style="flex:1;min-width:200px">
+          <input type="text" class="form-input" id="search-inp" placeholder="Testlarni qidirish..."/>
+        </div>
+        <div class="filter-row" style="margin:0">
+          <button class="filter-chip active" data-sort="new">🕐 Yangi</button>
+          <button class="filter-chip" data-sort="popular">🔥 Mashhur</button>
+          <button class="filter-chip" data-sort="score">⭐ Reyting</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="section">
+    <div class="container">
+      <div id="loading" style="text-align:center;padding:3rem">
+        <div class="spinner" style="margin:0 auto"></div>
+      </div>
+      <div class="subject-grid" id="tests-grid" style="display:none"></div>
+      <div id="empty-state" class="empty" style="display:none">
+        <div class="empty-icon">🔍</div>
+        <h3>Test topilmadi</h3>
+        <p>Boshqa so'zlar bilan qidiring</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/theme.js"></script>
+<script>
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const subj   = params.get('s') || 'other';
+  const sub    = getSubject(subj);
+
+  // Update header
+  const iconEl = document.getElementById('subj-icon');
+  iconEl.textContent = sub.emoji;
+  iconEl.className += ` ${sub.cls}`;
+  iconEl.style.background = `var(--subj-bg,rgba(79,70,229,0.1))`;
+  document.getElementById('subj-name').textContent = sub.label;
+  document.title = `TestPro — ${sub.label}`;
+
+  // Check auth
+  const user = await AuthHelpers.getCurrentUser();
+  if (user) document.getElementById('nav-login').style.display = 'none';
+
+  // Load tests
+  let tests = [];
+  try {
+    const snap = await db.collection('tests').where('subject', '==', subj).get();
+    tests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    // Also include other visibility if logged in
+    if (!user) tests = tests.filter(t => t.visibility === 'public');
+    tests.sort((a, b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+  } catch(e) { console.error(e); }
+
+  document.getElementById('subj-desc').textContent = `${tests.length} ta test`;
+
+  let filtered = [...tests];
+  let sortBy   = 'new';
+
+  render(filtered);
+
+  // Search
+  document.getElementById('search-inp').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    filtered = tests.filter(t => (t.title||'').toLowerCase().includes(q));
+    sortAndRender();
+  });
+
+  // Sort
+  document.querySelectorAll('[data-sort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      sortBy = btn.dataset.sort;
+      document.querySelectorAll('[data-sort]').forEach(b => b.classList.toggle('active', b === btn));
+      sortAndRender();
+    });
+  });
+
+  function sortAndRender() {
+    let arr = [...filtered];
+    if (sortBy === 'popular') arr.sort((a, b) => (b.attempts||0) - (a.attempts||0));
+    else if (sortBy === 'score') arr.sort((a, b) => (b.averageScore||0) - (a.averageScore||0));
+    else arr.sort((a, b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    render(arr);
+  }
+
+  function render(arr) {
+    document.getElementById('loading').style.display      = 'none';
+    const grid   = document.getElementById('tests-grid');
+    const empty  = document.getElementById('empty-state');
+    if (!arr.length) { grid.style.display = 'none'; empty.style.display = 'block'; return; }
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+    grid.innerHTML = arr.map(t => `
+      <div class="test-card-sm" onclick="location.href='test.html?id=${t.id}'">
+        <div class="accent-line"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
+          <div class="tc-title">${esc(t.title)}</div>
+          ${t.visibility==='code'?'<span class="badge badge-amber" style="flex-shrink:0;margin-left:0.5rem">🔒</span>':''}
+        </div>
+        <div class="tc-meta">
+          <span>📝 ${t.questionCount||0}</span>
+          <span>👁️ ${t.attempts||0}</span>
+          ${t.averageScore?`<span>⭐ ${t.averageScore}%</span>`:''}
+          <span>${fmtDate(t.createdAt)}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="subj-badge ${sub.cls}">${sub.emoji} ${esc(sub.label)}</span>
+          <span style="font-size:0.78rem;color:var(--accent);font-weight:600">Boshlash →</span>
+        </div>
+      </div>
+    `).join('');
+  }
+})();
+</script>
+</body>
+</html>
