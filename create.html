@@ -41,15 +41,15 @@
     <div style="font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
   </div>
   <div class="sidebar-inner">
-    <a href="dashboard.html" class="sidebar-nav-item">📊 Dashboard</a>
-    <a href="create.html" class="sidebar-nav-item active">✏️ Test yaratish</a>
-    <a href="history.html" class="sidebar-nav-item">📜 Tarix</a>
+    <a onclick="goTo('dashboard.html');return false" href="#" class="sidebar-nav-item">📊 Dashboard</a>
+    <a onclick="goTo('create.html');return false" href="#" class="sidebar-nav-item active">✏️ Test yaratish</a>
+    <a onclick="goTo('history.html');return false" href="#" class="sidebar-nav-item">📜 Tarix</a>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
       <div class="user-ava" id="ava">?</div>
       <div style="flex:1;min-width:0"><div class="user-chip-name" id="uname">...</div></div>
-      <a href="profile.html" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
+      <a onclick="goTo('profile.html');return false" href="#" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
       <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">🚪</button>
     </div>
   </div>
@@ -62,7 +62,7 @@
       <p>Savollar qo'shing va sozlang</p>
     </div>
     <div style="display:flex;gap:0.65rem;flex-wrap:wrap">
-      <a href="dashboard.html" class="btn btn-ghost btn-sm">← Orqaga</a>
+      <a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-ghost btn-sm">← Orqaga</a>
       <button class="btn btn-secondary btn-sm" onclick="Modal.open('import-modal')">📄 Import</button>
       <button class="btn btn-primary" id="save-btn">💾 Saqlash</button>
     </div>
@@ -126,12 +126,9 @@
             <button class="vis-btn" data-vis="private">
               <span class="vis-icon">🔒</span>Shaxsiy
             </button>
-            <button class="vis-btn" data-vis="code">
-              <span class="vis-icon">🔑</span>Kodli
-            </button>
           </div>
-          <div id="code-hint" style="display:none;margin-top:0.5rem" class="code-banner">
-            🔑 Kod avtomatik yaratiladi
+          <div id="code-hint" style="margin-top:0.65rem;padding:0.6rem 0.85rem;border-radius:10px;background:rgba(124,58,237,0.08);border:1px dashed rgba(124,58,237,0.3);font-size:0.78rem;color:#7c3aed;font-weight:600">
+            🔑 Barcha testlar ulashish kodi bilan birga saqlanadi
           </div>
         </div>
 
@@ -169,51 +166,65 @@
   </div>
 </main>
 
-<!-- Import modal -->
+<!-- Import modal — beautiful redesign -->
 <div class="modal-overlay" id="import-modal">
   <div class="modal modal-md">
     <div class="modal-header">
-      <span class="modal-title">📄 Matndan import</span>
+      <span class="modal-title">📥 Savollarni import qilish</span>
       <button class="modal-close">✕</button>
     </div>
 
-    <div style="display:flex;gap:0.5rem;background:var(--bg-2);padding:3px;border-radius:var(--radius-sm);margin-bottom:1.25rem;width:fit-content">
-      <button class="auth-tab active" id="imp-tab-txt" onclick="switchImpTab('txt')">📝 Matn</button>
-      <button class="auth-tab" id="imp-tab-file" onclick="switchImpTab('file')">📁 Fayl</button>
+    <!-- Tab switcher -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.25rem">
+      <button id="imp-tab-txt" onclick="switchImpTab('txt')" style="padding:0.7rem;border-radius:12px;border:2px solid rgba(79,70,229,0.5);background:rgba(79,70,229,0.1);color:var(--accent);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;transition:all 0.2s">
+        📝 Matn yozish
+      </button>
+      <button id="imp-tab-file" onclick="switchImpTab('file')" style="padding:0.7rem;border-radius:12px;border:2px solid var(--border-2);background:var(--bg-2);color:var(--text-3);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;transition:all 0.2s">
+        📁 Fayl yuklash
+      </button>
     </div>
-    <style>.auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)}</style>
 
     <!-- Text tab -->
     <div id="imp-txt">
-      <p style="font-size:0.82rem;color:var(--text-2);margin-bottom:0.75rem">Format: <code>*</code> = to'g'ri javob, <code>Izoh:</code> = tushuntirish</p>
-      <div class="code-block">1. Savol matni?
+      <div style="background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.18);border-radius:12px;padding:0.85rem;margin-bottom:1rem">
+        <div style="font-size:0.75rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem">Format namunasi</div>
+        <div class="code-block" style="font-size:0.76rem;border:none;background:transparent;padding:0;margin:0">1. Savol matni?
 A) Variant A
 B) To'g'ri variant *
 C) Variant C
 D) Variant D
-Izoh: Bu yerda tushuntirish yoziladi.
-
-2. Keyingi savol...</div>
-      <div class="form-group" style="margin-top:1rem">
-        <label class="form-label">Savollarni kiriting:</label>
-        <textarea id="imp-textarea" class="form-input" rows="8" placeholder="1. Savol...&#10;A) Variant&#10;B) To'g'ri *&#10;C) Variant&#10;Izoh: Tushuntirish..."></textarea>
+Izoh: Bu yerda tushuntirish.</div>
+        <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.5rem">💡 <code>*</code> = to'g'ri javob · <code>Izoh:</code> = tushuntirish (ixtiyoriy)</div>
       </div>
-      <div style="display:flex;gap:0.75rem;justify-content:flex-end">
+      <textarea id="imp-textarea" class="form-input" rows="9" style="font-family:monospace;font-size:0.83rem;resize:vertical" placeholder="1. Savol matni?
+A) Variant
+B) To'g'ri javob *
+C) Variant
+D) Variant
+Izoh: Tushuntirish...
+
+2. Keyingi savol..."></textarea>
+      <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem">
         <button class="btn btn-ghost" data-close-modal>Bekor</button>
-        <button class="btn btn-primary" onclick="importFromText()">✅ Import</button>
+        <button class="btn btn-primary" onclick="importFromText()">✅ Importlash</button>
       </div>
     </div>
 
     <!-- File tab -->
     <div id="imp-file" style="display:none">
-      <div style="border:2px dashed var(--border-2);border-radius:var(--radius);padding:2.5rem;text-align:center;cursor:pointer;transition:all var(--t)" id="drop-zone" onclick="document.getElementById('file-input').click()">
-        <div style="font-size:2rem;margin-bottom:0.65rem">📁</div>
-        <p style="font-weight:600;margin-bottom:0.3rem">.txt faylini yuklang</p>
-        <p style="font-size:0.8rem;color:var(--text-3)">Bosing yoki faylni bu yerga tashlang</p>
+      <div id="drop-zone" onclick="document.getElementById('file-input').click()" 
+        style="border:2.5px dashed rgba(79,70,229,0.35);border-radius:16px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(79,70,229,0.03);user-select:none">
+        <div style="width:64px;height:64px;border-radius:50%;background:rgba(79,70,229,0.1);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1rem">📁</div>
+        <div style="font-weight:800;font-size:1rem;margin-bottom:0.35rem;color:var(--text)">Faylni bu yerga tashlang</div>
+        <div style="font-size:0.8rem;color:var(--text-3);margin-bottom:1.1rem">yoki quyidagi tugmani bosing</div>
+        <div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.35rem;border-radius:10px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;font-weight:700;font-size:0.85rem">
+          📂 .txt fayl tanlash
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.75rem">Qo'llab-quvvatlanadigan format: .txt</div>
         <input type="file" id="file-input" accept=".txt" style="display:none" onchange="handleFileImport(this)"/>
       </div>
-      <div id="file-result" style="margin-top:1rem"></div>
-      <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+      <div id="file-result" style="margin-top:0.85rem"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:0.85rem">
         <button class="btn btn-ghost" data-close-modal>Yopish</button>
       </div>
     </div>
@@ -298,7 +309,6 @@ function bindVisButtons() {
       document.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       selectedVis = btn.dataset.vis;
-      document.getElementById('code-hint').style.display = selectedVis === 'code' ? 'flex' : 'none';
     });
   });
 }
@@ -396,228 +406,4 @@ function renderOpts(q) {
 
   if (q.type === 'truefalse') {
     return q.options.map((o, i) => `
-      <div class="option-row">
-        <input type="radio" name="r-${q.id}" class="opt-radio" ${q.correct===i?'checked':''} onchange="setCorr('${q.id}',${i})"/>
-        <input type="text" class="form-input ${q.correct===i?'correct-opt':''}" value="${escAtt(o)}" readonly style="cursor:default"/>
-      </div>`).join('');
-  }
-
-  return q.options.map((o, i) => `
-    <div class="option-row">
-      <input type="radio" name="r-${q.id}" class="opt-radio" ${q.correct===i?'checked':''} onchange="setCorr('${q.id}',${i})"/>
-      <input type="text" class="form-input opt-inp ${q.correct===i?'correct-opt':''}"
-        value="${escAtt(o)}" placeholder="${String.fromCharCode(65+i)} variant"
-        data-qid="${q.id}" data-idx="${i}" oninput="updOpt(this)"/>
-      ${q.options.length > 2 ? `<button class="btn btn-ghost btn-sm" onclick="rmOpt('${q.id}',${i})" style="flex-shrink:0;color:var(--text-3)">✕</button>` : ''}
-    </div>
-  `).join('') + (q.options.length < 6 ? `<button class="add-opt-btn" onclick="addOpt('${q.id}')">+ Variant</button>` : '');
-}
-
-window.setCorr = function(qid, idx) {
-  const q = questions.find(x => String(x.id) === String(qid));
-  if (!q) return;
-  q.correct = idx;
-  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
-};
-window.updOpt = function(el) {
-  const q = questions.find(x => String(x.id) === el.dataset.qid);
-  if (q) q.options[+el.dataset.idx] = el.value;
-};
-window.addOpt = function(qid) {
-  const q = questions.find(x => String(x.id) === String(qid));
-  if (!q) return; q.options.push('');
-  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
-};
-window.rmOpt = function(qid, idx) {
-  const q = questions.find(x => String(x.id) === String(qid));
-  if (!q || q.options.length <= 2) return;
-  q.options.splice(idx, 1);
-  if (q.correct >= q.options.length) q.correct = 0;
-  document.getElementById(`opts-${qid}`).innerHTML = renderOpts(q);
-};
-window.chType = function(qid, type) {
-  const q = questions.find(x => String(x.id) === String(qid));
-  if (!q || q.type === type) return;
-  q.type = type;
-  q.options = type === 'truefalse' ? ['Ha',"Yo'q"] : type === 'text' ? [] : ['','','',''];
-  q.correct = 0;
-  renderAll();
-};
-window.delQ = function(qid) {
-  questions = questions.filter(x => String(x.id) !== String(qid));
-  renderAll();
-};
-window.moveQ = function(qid, dir) {
-  const idx = questions.findIndex(x => String(x.id) === String(qid));
-  const to = idx + dir;
-  if (to < 0 || to >= questions.length) return;
-  [questions[idx], questions[to]] = [questions[to], questions[idx]];
-  renderAll();
-};
-
-/* ── Load existing ── */
-async function loadEdit(id) {
-  try {
-    const [t, qs] = await Promise.all([DB.getTest(id), DB.getQuestions(id)]);
-    if (!t) { Toast.error('Test topilmadi'); return; }
-    document.getElementById('t-title').value = t.title || '';
-    document.getElementById('t-desc').value  = t.description || '';
-    document.getElementById('t-time').value  = t.timeLimit || 0;
-    document.getElementById('t-pass').value  = t.passScore || 60;
-    document.getElementById('t-shuffle').checked = !!t.shuffleQuestions;
-    document.getElementById('t-result').checked  = t.showResult !== false;
-    selectedVis  = t.visibility || 'public';
-    selectedSubj = t.subject    || '';
-    // Set vis btn
-    document.querySelectorAll('.vis-btn').forEach(b => b.classList.toggle('active', b.dataset.vis === selectedVis));
-    if (selectedVis === 'code') document.getElementById('code-hint').style.display = 'flex';
-    // Set subj btn
-    document.querySelectorAll('.subj-btn').forEach(b => {
-      if (b.dataset.key === selectedSubj) b.classList.add('active');
-    });
-    showSelSubj(selectedSubj);
-    questions = qs.map((q, i) => ({ ...q, id: q.id || Date.now()+i }));
-    renderAll();
-  } catch(e) { Toast.error(e.message); }
-}
-
-/* ── SAVE ── */
-async function doSave() {
-  const title = document.getElementById('t-title').value.trim();
-  if (!title) { Toast.error('Test nomini kiriting!'); document.getElementById('t-title').focus(); return; }
-  if (!selectedSubj) { Toast.error('Fan / guruh tanlang!'); return; }
-  if (!questions.length) { Toast.error('Kamida 1 savol qo\'shing!'); return; }
-
-  for (let i = 0; i < questions.length; i++) {
-    const q = questions[i];
-    if (!q.text.trim()) { Toast.error(`${i+1}-savol matni bo'sh!`); return; }
-    if (q.type !== 'text' && q.options.some(o => !o.trim())) { Toast.error(`${i+1}-savoldagi variant bo'sh!`); return; }
-  }
-
-  const btn = document.getElementById('save-btn');
-  btn.disabled = true; btn.textContent = '⏳ Saqlanmoqda...';
-
-  const accessCode = selectedVis === 'code' ? (editId ? undefined : randCode()) : '';
-  const data = {
-    title,
-    description:      document.getElementById('t-desc').value.trim(),
-    subject:          selectedSubj,
-    visibility:       selectedVis,
-    timeLimit:        +document.getElementById('t-time').value || 0,
-    passScore:        +document.getElementById('t-pass').value || 60,
-    shuffleQuestions: document.getElementById('t-shuffle').checked,
-    showResult:       document.getElementById('t-result').checked,
-    questionCount:    questions.length,
-    authorName:       currentUser.displayName || 'Anonim',
-  };
-  if (accessCode) data.accessCode = accessCode;
-
-  try {
-    if (editId) {
-      await DB.updateTest(editId, data);
-      await DB.saveQuestions(editId, questions);
-      Toast.success('✅ Yangilandi!');
-    } else {
-      const id = await DB.createTest(data, currentUser.uid);
-      await DB.saveQuestions(id, questions);
-      if (data.accessCode) Toast.info(`🔑 Test kodi: ${data.accessCode}`);
-      Toast.success('✅ Test yaratildi!');
-    }
-    setTimeout(() => location.href = 'dashboard.html', 1600);
-  } catch(e) {
-    console.error(e);
-    Toast.error('❌ ' + e.message);
-    btn.disabled = false; btn.textContent = '💾 Saqlash';
-  }
-}
-document.getElementById('save-btn').addEventListener('click', doSave);
-document.getElementById('save-btn-2').addEventListener('click', doSave);
-
-/* ── IMPORT ── */
-window.switchImpTab = function(tab) {
-  document.getElementById('imp-txt').style.display  = tab === 'txt'  ? 'block' : 'none';
-  document.getElementById('imp-file').style.display = tab === 'file' ? 'block' : 'none';
-  document.getElementById('imp-tab-txt').classList.toggle('active', tab === 'txt');
-  document.getElementById('imp-tab-file').classList.toggle('active', tab === 'file');
-};
-
-window.importFromText = function() {
-  const raw = document.getElementById('imp-textarea').value.trim();
-  if (!raw) { Toast.warning('Matn kiriting!'); return; }
-  const imported = parseTxt(raw);
-  if (!imported.length) { Toast.error('Format noto\'g\'ri. Misolga qarang.'); return; }
-  questions.push(...imported);
-  renderAll();
-  Modal.close('import-modal');
-  Toast.success(`✅ ${imported.length} savol import qilindi!`);
-  document.getElementById('imp-textarea').value = '';
-};
-
-window.handleFileImport = function(inp) {
-  const file = inp.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const imported = parseTxt(e.target.result);
-    if (!imported.length) {
-      document.getElementById('file-result').innerHTML = '<div class="alert alert-error">Format noto\'g\'ri</div>';
-      return;
-    }
-    questions.push(...imported);
-    renderAll();
-    document.getElementById('file-result').innerHTML = `<div class="alert alert-success">✅ ${imported.length} savol import qilindi!</div>`;
-    setTimeout(() => Modal.close('import-modal'), 1200);
-  };
-  reader.readAsText(file);
-};
-
-// Drag & drop
-const dz = document.getElementById('drop-zone');
-if (dz) {
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'var(--accent)'; });
-  dz.addEventListener('dragleave', () => { dz.style.borderColor = 'var(--border-2)'; });
-  dz.addEventListener('drop', e => {
-    e.preventDefault(); dz.style.borderColor = 'var(--border-2)';
-    const f = e.dataTransfer.files[0];
-    if (f) { const inp = document.getElementById('file-input'); const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; window.handleFileImport(inp); }
-  });
-}
-
-/* ── Text parser ── */
-function parseTxt(raw) {
-  const results = [];
-  const blocks = raw.split(/\n(?=\s*\d+[\.\)])/g);
-  for (const block of blocks) {
-    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
-    if (!lines.length) continue;
-    let qText = '', options = [], correctIdx = 0, explanation = '', qStarted = false;
-    for (const line of lines) {
-      if (/^izoh\s*:/i.test(line)) { explanation = line.replace(/^izoh\s*:\s*/i, '').trim(); continue; }
-      const optM = line.match(/^([A-Da-d])\s*[\)\.]\s*(.+)/);
-      if (optM) {
-        qStarted = true;
-        let content = optM[2].trim();
-        let isCorr = false;
-        if (content.endsWith('*')) { isCorr = true; content = content.slice(0, -1).trim(); }
-        if (isCorr) correctIdx = options.length;
-        options.push(content);
-      } else if (!qStarted) {
-        qText += (qText ? ' ' : '') + line.replace(/^\d+[\.\)]\s*/, '');
-      }
-    }
-    if (!qText && lines[0]) qText = lines[0].replace(/^\d+[\.\)]\s*/, '');
-    if (!qText) continue;
-    let type = options.length >= 2 ? 'multiple' : 'text';
-    if (options.length === 2) {
-      const l = options.map(o => o.toLowerCase());
-      if ((l[0].includes('ha') || l[0].includes('to\'g\'ri')) && (l[1].includes("yo'q") || l[1].includes("noto'"))) type = 'truefalse';
-    }
-    results.push({ id: Date.now()+Math.random(), type, text: qText.trim(), options, correct: correctIdx, explanation, points: 1 });
-  }
-  return results;
-}
-
-function escAtt(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-</script>
-</body>
-</html>
+      <div
