@@ -1,243 +1,348 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TestPro — Test Yaratish</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="css/style.css"/>
 <style>
-.create-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start}
-.settings-sticky{position:sticky;top:1.5rem}
-@media(max-width:900px){.create-layout{grid-template-columns:1fr}.settings-sticky{position:static}}
+/* ── Create page extras ── */
+.create-wrap{max-width:680px;margin:0 auto;padding:1.25rem 1rem 3rem}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem}
+.page-hdr h1{font-size:1.1rem;font-family:'Unbounded',sans-serif;font-weight:900;margin:0}
+.hdr-btns{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap}
 
-/* Subject selector */
-.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:0.5rem;margin-bottom:0.75rem}
-.subj-btn{padding:0.55rem 0.65rem;border-radius:var(--radius-sm);border:1.5px solid var(--border-2);background:var(--bg-2);cursor:pointer;transition:all var(--t);text-align:center;font-size:0.78rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2)}
-.subj-btn:hover,.subj-btn.active{border-color:var(--accent);background:rgba(79,70,229,0.08);color:var(--accent)}
-.subj-btn .emoji{display:block;font-size:1.2rem;margin-bottom:0.2rem}
+/* SECTION CARD */
+.sec{background:var(--bg-card);border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);padding:1.1rem 1.1rem 1.25rem;margin-bottom:1rem}
+.sec-title{font-size:.88rem;font-family:'Unbounded',sans-serif;font-weight:800;
+  margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
 
-/* Visibility */
-.vis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
-.vis-btn{padding:0.7rem 0.4rem;border-radius:12px;border:2px solid rgba(0,0,0,0.09);background:#f8f8ff;cursor:pointer;transition:all 0.2s;text-align:center;font-size:0.78rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;color:#6b7280;opacity:0.75}
-[data-theme="dark"] .vis-btn{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:#9ca3af}
-.vis-btn:hover{opacity:1;border-color:rgba(124,58,237,0.4)}
-.vis-btn.active{border-color:#7c3aed !important;background:rgba(124,58,237,0.12) !important;color:#7c3aed !important;opacity:1;box-shadow:0 0 0 3px rgba(124,58,237,0.15)}
-.vis-btn .vis-icon{display:block;font-size:1.3rem;margin-bottom:0.25rem}
+/* SUBJECT GRID */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.45rem;margin-bottom:.65rem}
+.subj-btn{padding:.55rem .45rem;border-radius:10px;border:2px solid var(--border-2);
+  background:var(--bg-2);cursor:pointer;transition:all .18s;
+  text-align:center;font-size:.75rem;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2)}
+.subj-btn:hover{border-color:var(--accent);color:var(--accent)}
+.subj-btn.active{border-color:var(--accent) !important;
+  background:rgba(79,70,229,.1) !important;color:var(--accent) !important;
+  box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+.subj-btn .sb-emoji{display:block;font-size:1.2rem;margin-bottom:.18rem}
 
-/* Import hint */
-.code-block{background:var(--bg-2);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:0.85rem;font-family:monospace;font-size:0.78rem;color:var(--text-2);white-space:pre;overflow-x:auto;line-height:1.65}
+/* VISIBILITY */
+.vis-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.65rem}
+.vis-btn{padding:.72rem .5rem;border-radius:12px;
+  border:2px solid var(--border-2);background:var(--bg-2);
+  cursor:pointer;transition:all .18s;text-align:center;
+  font-size:.78rem;font-weight:700;color:var(--text-2);
+  font-family:'Plus Jakarta Sans',sans-serif;opacity:.7}
+.vis-btn .vis-icon{display:block;font-size:1.3rem;margin-bottom:.22rem}
+.vis-btn:hover{opacity:1;border-color:rgba(79,70,229,.4)}
+.vis-btn.active{border-color:var(--accent) !important;
+  background:rgba(79,70,229,.1) !important;
+  color:var(--accent) !important;opacity:1;
+  box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+
+/* QUESTION CARD */
+.q-card{background:var(--bg-2);border:1.5px solid var(--border-2);
+  border-radius:var(--radius);padding:1rem;margin-bottom:.85rem;
+  position:relative;transition:border-color .2s}
+.q-card:focus-within{border-color:var(--accent)}
+.q-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap}
+.q-num{width:26px;height:26px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  font-size:.72rem;font-weight:800;font-family:'Unbounded',sans-serif;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-type-tabs{display:flex;gap:.35rem;flex-wrap:wrap}
+.qtt{padding:.3rem .62rem;border-radius:99px;border:1.5px solid var(--border-2);
+  background:var(--bg-card);font-size:.72rem;font-weight:700;
+  cursor:pointer;transition:all .18s;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2)}
+.qtt:hover,.qtt.active{border-color:var(--accent);background:rgba(79,70,229,.08);color:var(--accent)}
+.q-actions{display:flex;gap:.35rem;margin-left:auto}
+.opt-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem}
+.opt-radio{width:16px;height:16px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+.opt-input{flex:1}
+.opt-input.correct{border-color:#059669 !important;background:rgba(5,150,105,.06) !important}
+.add-opt-btn{width:100%;padding:.5rem;border-radius:9px;
+  border:1.5px dashed var(--border-2);background:transparent;
+  font-size:.78rem;color:var(--text-3);cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;
+  margin-top:.3rem;transition:all .18s}
+.add-opt-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ADD QUESTION AREA */
+.add-area{border:2px dashed rgba(79,70,229,.28);border-radius:16px;
+  padding:1.25rem 1rem;text-align:center;
+  background:rgba(79,70,229,.03);margin-top:.85rem}
+.add-area-label{font-size:.82rem;color:#6b7280;font-weight:600;margin-bottom:.85rem}
+.add-q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.aqbtn{padding:.72rem .35rem;border-radius:12px;cursor:pointer;
+  font-weight:700;font-size:.76rem;font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all .2s;border:2px solid;display:flex;
+  flex-direction:column;align-items:center;gap:.22rem}
+.aqbtn-m{border-color:rgba(79,70,229,.22);background:rgba(79,70,229,.07);color:#4f46e5}
+.aqbtn-m:hover{background:rgba(79,70,229,.16)}
+.aqbtn-t{border-color:rgba(5,150,105,.22);background:rgba(5,150,105,.07);color:#059669}
+.aqbtn-t:hover{background:rgba(5,150,105,.16)}
+.aqbtn-x{border-color:rgba(245,158,11,.22);background:rgba(245,158,11,.07);color:#d97706}
+.aqbtn-x:hover{background:rgba(245,158,11,.16)}
+
+/* IMPORT MODAL */
+.imp-modal-bg{display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:900;
+  align-items:center;justify-content:center;padding:1rem}
+.imp-modal-bg.show{display:flex}
+.imp-box{background:var(--bg-card);border-radius:20px;
+  width:100%;max-width:440px;max-height:88vh;
+  overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+[data-theme="dark"] .imp-box{background:#1a0d30}
+.imp-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 1.25rem .9rem;border-bottom:1px solid var(--border-2);position:sticky;top:0;
+  background:var(--bg-card);z-index:2}
+[data-theme="dark"] .imp-hdr{background:#1a0d30}
+.imp-body{padding:1.1rem 1.25rem}
+.imp-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1rem}
+.impt{padding:.65rem;border-radius:11px;border:2px solid var(--border-2);
+  background:var(--bg-2);font-weight:700;font-size:.82rem;
+  cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-2);
+  transition:all .2s;text-align:center}
+.impt.on{border-color:var(--accent);background:rgba(79,70,229,.1);color:var(--accent)}
+.fmt-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem}
+.fmtt{padding:.32rem .7rem;border-radius:99px;border:1.5px solid var(--border-2);
+  background:var(--bg-2);font-size:.72rem;font-weight:700;
+  cursor:pointer;color:var(--text-3);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.fmtt.on{border-color:var(--accent);background:rgba(79,70,229,.1);color:var(--accent)}
+.fmt-preview{background:var(--bg-2);border:1px solid var(--border-2);
+  border-radius:10px;padding:.75rem .85rem;font-family:monospace;
+  font-size:.74rem;line-height:1.7;color:var(--text-2);
+  max-height:130px;overflow-y:auto;margin-bottom:.65rem;white-space:pre-wrap}
+.drop-zone{border:2.5px dashed rgba(79,70,229,.32);border-radius:14px;
+  padding:2rem 1.25rem;text-align:center;cursor:pointer;
+  background:rgba(79,70,229,.03);transition:all .22s}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--accent);background:rgba(79,70,229,.08)}
+.drop-label{display:inline-flex;align-items:center;gap:.45rem;
+  padding:.62rem 1.35rem;border-radius:10px;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;
+  font-weight:700;font-size:.83rem;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;margin-top:.6rem}
+
+/* EXPLANATION TOGGLE */
+.expl-toggle{background:none;border:none;cursor:pointer;
+  font-size:.78rem;color:var(--text-3);font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;padding:.3rem 0;
+  display:flex;align-items:center;gap:.3rem;margin-top:.55rem}
+.expl-toggle:hover{color:var(--accent)}
+.expl-area{margin-top:.5rem;display:none}
+.expl-area.open{display:block}
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-brand">TestPro</div>
-  <div style="display:flex;gap:0.6rem;align-items:center">
+  <div class="topbar-brand" onclick="goTo('index.html')" style="cursor:pointer">TestPro</div>
+  <div style="display:flex;gap:.55rem;align-items:center">
     <button class="theme-toggle">🌙</button>
     <button class="hamburger sidebar-toggle"><span></span><span></span><span></span></button>
   </div>
 </div>
 <div class="sidebar-overlay"></div>
 <aside class="sidebar">
-  <div style="padding:1.25rem 1rem 0.5rem;border-bottom:1px solid var(--border)">
-    <div style="font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
+  <div style="padding:1.2rem 1rem .5rem;border-bottom:1px solid var(--border)">
+    <div style="font-family:'Unbounded',sans-serif;font-size:1.15rem;font-weight:900;
+      background:var(--grad-main);-webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
   </div>
   <div class="sidebar-inner">
-    <a onclick="goTo('dashboard.html');return false" href="#" class="sidebar-nav-item">📊 Dashboard</a>
-    <a onclick="goTo('create.html');return false" href="#" class="sidebar-nav-item active">✏️ Test yaratish</a>
-    <a onclick="goTo('history.html');return false" href="#" class="sidebar-nav-item">📜 Tarix</a>
+    <button class="sidebar-nav-item" onclick="goTo('dashboard.html')">📊 Dashboard</button>
+    <button class="sidebar-nav-item active">✏️ Test yaratish</button>
+    <button class="sidebar-nav-item" onclick="goTo('history.html')">📜 Tarix</button>
+    <button class="sidebar-nav-item" onclick="goTo('profile.html')">👤 Profil</button>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
-      <div class="user-ava" id="ava">?</div>
-      <div style="flex:1;min-width:0"><div class="user-chip-name" id="uname">...</div></div>
-      <a onclick="goTo('profile.html');return false" href="#" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
-      <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">🚪</button>
+      <div class="user-ava" id="side-ava">?</div>
+      <div style="flex:1;min-width:0"><div class="user-chip-name" id="side-name">...</div></div>
+      <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:.3rem .5rem">🚪</button>
     </div>
   </div>
 </aside>
 
-<main class="main-area">
-  <div class="page-hdr" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+<main style="padding-top:58px">
+<div class="create-wrap">
+
+  <!-- Header -->
+  <div class="page-hdr">
     <div>
       <h1 id="page-title">Yangi test yaratish</h1>
-      <p>Savollar qo'shing va sozlang</p>
+      <p style="font-size:.78rem;color:var(--text-3);margin-top:.15rem">Savollar qo'shing va sozlang</p>
     </div>
-    <div style="display:flex;gap:0.65rem;flex-wrap:wrap">
-      <a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-ghost btn-sm">← Orqaga</a>
-      <button class="btn btn-secondary btn-sm" onclick="Modal.open('import-modal')">📄 Import</button>
+    <div class="hdr-btns">
+      <button class="btn btn-ghost btn-sm" onclick="goTo('dashboard.html')">← Orqaga</button>
+      <button class="btn btn-secondary btn-sm" onclick="openImport()">📥 Import</button>
       <button class="btn btn-primary" id="save-btn">💾 Saqlash</button>
     </div>
   </div>
-  <div id="save-alert" style="margin-bottom:1rem"></div>
 
-  <div class="create-layout">
-    <!-- LEFT: test info + questions -->
-    <div>
-      <!-- Test info -->
-      <div class="glass-card" style="margin-bottom:1.25rem">
-        <h3 style="font-size:0.95rem;margin-bottom:1.1rem;font-family:'Unbounded',sans-serif">📋 Test haqida</h3>
-        <div class="form-group">
-          <label class="form-label">Test nomi *</label>
-          <input id="t-title" type="text" class="form-input" placeholder="Masalan: HTML & CSS asoslar"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tavsif (ixtiyoriy)</label>
-          <textarea id="t-desc" class="form-input" rows="2" placeholder="Test haqida qisqacha..."></textarea>
-        </div>
+  <div id="save-alert" style="margin-bottom:.85rem"></div>
 
-        <!-- Subject selector -->
-        <div class="form-group">
-          <label class="form-label">Fan / Guruh *</label>
-          <div class="subj-grid" id="subj-grid"></div>
-          <div style="display:flex;gap:0.5rem;align-items:center">
-            <input id="custom-subj" type="text" class="form-input" placeholder="Boshqa fan nomi yozing..." style="flex:1"/>
-            <button class="btn btn-secondary btn-sm" onclick="setCustomSubj()">✓</button>
-          </div>
-        </div>
-        <div id="selected-subj" style="display:none;margin-top:-0.5rem;margin-bottom:0.75rem"></div>
+  <!-- TEST INFO -->
+  <div class="sec">
+    <div class="sec-title">📋 Test haqida</div>
+    <div class="form-group">
+      <label class="form-label">Test nomi *</label>
+      <input id="t-title" type="text" class="form-input" placeholder="Masalan: English Grammar A2"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tavsif (ixtiyoriy)</label>
+      <textarea id="t-desc" class="form-input" rows="2" placeholder="Test haqida qisqacha..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fan / Guruh *</label>
+      <div class="subj-grid" id="subj-grid"></div>
+      <div style="display:flex;gap:.45rem;align-items:center;margin-top:.35rem">
+        <input id="custom-subj" type="text" class="form-input" style="flex:1"
+          placeholder="Boshqa (o'z nomingizni yozing)..."/>
+        <button class="btn btn-secondary btn-sm" onclick="setCustomSubj()">✓ Qo'llash</button>
       </div>
+    </div>
+    <div id="selected-subj-wrap" style="display:none;margin-top:-.35rem;margin-bottom:.65rem"></div>
+  </div>
 
-      <!-- Questions -->
-      <div id="q-container"></div>
+  <!-- SETTINGS -->
+  <div class="sec">
+    <div class="sec-title">⚙️ Sozlamalar</div>
 
-      <!-- Add question buttons -->
-      <div style="border:2px dashed rgba(124,58,237,0.3);border-radius:16px;padding:1.35rem;text-align:center;margin-top:1rem;background:rgba(124,58,237,0.03);transition:all 0.2s" id="add-area">
-        <div style="font-size:1.5rem;margin-bottom:0.4rem">➕</div>
-        <p style="font-size:0.82rem;color:#6b7280;margin-bottom:1rem;font-weight:600">Savol turi tanlang</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem">
-          <button onclick="addQ('multiple')" style="padding:0.75rem 0.4rem;border-radius:12px;border:2px solid rgba(124,58,237,0.2);background:rgba(124,58,237,0.06);color:#7c3aed;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;transition:all 0.2s" onmouseover="this.style.background='rgba(124,58,237,0.15)'" onmouseout="this.style.background='rgba(124,58,237,0.06)'">
-            <div style="font-size:1.3rem;margin-bottom:0.25rem">⭕</div>Ko'p tanlov
-          </button>
-          <button onclick="addQ('truefalse')" style="padding:0.75rem 0.4rem;border-radius:12px;border:2px solid rgba(16,185,129,0.2);background:rgba(16,185,129,0.06);color:#059669;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;transition:all 0.2s" onmouseover="this.style.background='rgba(16,185,129,0.15)'" onmouseout="this.style.background='rgba(16,185,129,0.06)'">
-            <div style="font-size:1.3rem;margin-bottom:0.25rem">✅</div>Ha / Yo'q
-          </button>
-          <button onclick="addQ('text')" style="padding:0.75rem 0.4rem;border-radius:12px;border:2px solid rgba(245,158,11,0.2);background:rgba(245,158,11,0.06);color:#d97706;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;transition:all 0.2s" onmouseover="this.style.background='rgba(245,158,11,0.15)'" onmouseout="this.style.background='rgba(245,158,11,0.06)'">
-            <div style="font-size:1.3rem;margin-bottom:0.25rem">📝</div>Matn
-          </button>
-        </div>
+    <!-- Visibility -->
+    <div class="form-group">
+      <label class="form-label">Ko'rinish</label>
+      <div class="vis-grid">
+        <button class="vis-btn active" id="vis-public" onclick="setVis('public')">
+          <span class="vis-icon">🌐</span>Ommaviy
+        </button>
+        <button class="vis-btn" id="vis-private" onclick="setVis('private')">
+          <span class="vis-icon">🔒</span>Shaxsiy
+        </button>
+      </div>
+      <div style="padding:.55rem .8rem;border-radius:10px;
+        background:rgba(79,70,229,.07);border:1px dashed rgba(79,70,229,.28);
+        font-size:.76rem;color:var(--accent);font-weight:600">
+        🔑 Barcha testlar ulashish kodi bilan birga saqlanadi
       </div>
     </div>
 
-    <!-- RIGHT: settings -->
-    <div class="settings-sticky">
-      <div class="glass-card">
-        <h3 style="font-size:0.95rem;margin-bottom:1.1rem;font-family:'Unbounded',sans-serif">⚙️ Sozlamalar</h3>
-
-        <!-- Visibility -->
-        <div class="form-group">
-          <label class="form-label">Ko'rinish</label>
-          <div class="vis-grid">
-            <button class="vis-btn active" data-vis="public">
-              <span class="vis-icon">🌐</span>Ommaviy
-            </button>
-            <button class="vis-btn" data-vis="private">
-              <span class="vis-icon">🔒</span>Shaxsiy
-            </button>
-          </div>
-          <div id="code-hint" style="margin-top:0.65rem;padding:0.6rem 0.85rem;border-radius:10px;background:rgba(124,58,237,0.08);border:1px dashed rgba(124,58,237,0.3);font-size:0.78rem;color:#7c3aed;font-weight:600">
-            🔑 Barcha testlar ulashish kodi bilan birga saqlanadi
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Vaqt limiti (daqiqa)</label>
-          <input id="t-time" type="number" class="form-input" value="0" min="0" max="180" placeholder="0 = cheksiz"/>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">O'tish bali (%)</label>
-          <input id="t-pass" type="number" class="form-input" value="60" min="0" max="100"/>
-        </div>
-
-        <div class="divider"></div>
-
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
-          <span class="form-label" style="margin:0">Savollarni aralashtirish</span>
-          <label class="toggle"><input type="checkbox" id="t-shuffle"/><span class="toggle-slider"></span></label>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span class="form-label" style="margin:0">Natija ko'rsatish</span>
-          <label class="toggle"><input type="checkbox" id="t-result" checked/><span class="toggle-slider"></span></label>
-        </div>
-
-        <div class="divider"></div>
-
-        <div style="text-align:center;padding:0.75rem;background:var(--bg-2);border-radius:var(--radius-sm);margin-bottom:1rem">
-          <div style="font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;color:var(--accent)" id="q-count">0</div>
-          <div style="font-size:0.72rem;color:var(--text-3);font-weight:600">ta savol</div>
-        </div>
-
-        <button class="btn btn-primary" style="width:100%;justify-content:center" id="save-btn-2">💾 Saqlash</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem">
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Vaqt (daqiqa)</label>
+        <input id="t-time" type="number" class="form-input" value="0" min="0" max="180" placeholder="0=cheksiz"/>
       </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label">O'tish bali (%)</label>
+        <input id="t-pass" type="number" class="form-input" value="60" min="0" max="100"/>
+      </div>
+    </div>
+
+    <div style="margin-top:.85rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+        <span class="form-label" style="margin:0">Savollarni aralashtirish</span>
+        <label class="toggle"><input type="checkbox" id="t-shuffle"/><span class="toggle-slider"></span></label>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="form-label" style="margin:0">Natijani ko'rsatish</span>
+        <label class="toggle"><input type="checkbox" id="t-result" checked/><span class="toggle-slider"></span></label>
+      </div>
+    </div>
+
+    <!-- Q count + Save -->
+    <div style="text-align:center;padding:.65rem;
+      background:var(--bg-2);border-radius:12px;margin-top:.85rem;margin-bottom:.85rem">
+      <div style="font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:900;color:var(--accent)" id="q-count">0</div>
+      <div style="font-size:.7rem;color:var(--text-3);font-weight:600">ta savol</div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" id="save-btn-2">💾 Saqlash</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="q-container"></div>
+
+  <!-- ADD QUESTION -->
+  <div class="add-area">
+    <div class="add-area-label">➕ Savol turi tanlang</div>
+    <div class="add-q-grid">
+      <button class="aqbtn aqbtn-m" onclick="addQ('multiple')">
+        <span style="font-size:1.3rem">⭕</span>Ko'p tanlov
+      </button>
+      <button class="aqbtn aqbtn-t" onclick="addQ('truefalse')">
+        <span style="font-size:1.3rem">✅</span>Ha / Yo'q
+      </button>
+      <button class="aqbtn aqbtn-x" onclick="addQ('text')">
+        <span style="font-size:1.3rem">📝</span>Matn
+      </button>
     </div>
   </div>
+
+</div>
 </main>
 
-<!-- Import modal — beautiful redesign -->
-<div class="modal-overlay" id="import-modal">
-  <div class="modal modal-md">
-    <div class="modal-header">
-      <span class="modal-title">📥 Savollarni import qilish</span>
-      <button class="modal-close">✕</button>
+<!-- IMPORT MODAL -->
+<div class="imp-modal-bg" id="imp-modal">
+  <div class="imp-box">
+    <div class="imp-hdr">
+      <span style="font-size:.95rem;font-weight:800">📥 Savollarni import qilish</span>
+      <button onclick="closeImport()"
+        style="background:none;border:1px solid var(--border-2);border-radius:8px;
+          width:28px;height:28px;cursor:pointer;font-size:.82rem;color:var(--text-3)">✕</button>
     </div>
-
-    <!-- Tab switcher -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1.25rem">
-      <button id="imp-tab-txt" onclick="switchImpTab('txt')" style="padding:0.7rem;border-radius:12px;border:2px solid rgba(79,70,229,0.5);background:rgba(79,70,229,0.1);color:var(--accent);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;transition:all 0.2s">
-        📝 Matn yozish
-      </button>
-      <button id="imp-tab-file" onclick="switchImpTab('file')" style="padding:0.7rem;border-radius:12px;border:2px solid var(--border-2);background:var(--bg-2);color:var(--text-3);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;transition:all 0.2s">
-        📁 Fayl yuklash
-      </button>
-    </div>
-
-    <!-- Text tab -->
-    <div id="imp-txt">
-      <!-- Format tabs -->
-      <div style="display:flex;gap:0.4rem;margin-bottom:0.85rem;overflow-x:auto;padding-bottom:3px">
-        <button onclick="showFmt(0,this)" class="fmt-tab" style="padding:0.35rem 0.75rem;border-radius:99px;border:1.5px solid rgba(79,70,229,0.4);background:rgba(79,70,229,0.1);color:var(--accent);font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif">A) * format</button>
-        <button onclick="showFmt(1,this)" class="fmt-tab" style="padding:0.35rem 0.75rem;border-radius:99px;border:1.5px solid var(--border-2);background:var(--bg-2);color:var(--text-3);font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif">1) [+] format</button>
-        <button onclick="showFmt(2,this)" class="fmt-tab" style="padding:0.35rem 0.75rem;border-radius:99px;border:1.5px solid var(--border-2);background:var(--bg-2);color:var(--text-3);font-size:0.72rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif">Ha/Yo'q</button>
+    <div class="imp-body">
+      <!-- Tab: Text / File -->
+      <div class="imp-tabs">
+        <button class="impt on" id="impt-txt" onclick="switchTab('txt')">📝 Matn yozish</button>
+        <button class="impt" id="impt-file" onclick="switchTab('file')">📁 Fayl yuklash</button>
       </div>
-      <div class="code-block" id="fmt-preview" style="font-size:0.75rem;margin-bottom:0.85rem;max-height:120px;overflow-y:auto">1. Savol matni?
-A) Variant A
-B) To'g'ri variant *
-C) Variant C
-D) Variant D
-Izoh: Bu yerda tushuntirish.</div>
-      <div style="font-size:0.72rem;color:var(--text-3);margin-bottom:0.75rem">💡 <b>*</b> yoki <b>[+]</b> = to'g'ri javob &nbsp;·&nbsp; <b>Izoh:</b> = tushuntirish (ixtiyoriy)</div>
-      <textarea id="imp-textarea" class="form-input" rows="8" style="font-family:monospace;font-size:0.83rem;resize:vertical" placeholder="1. Savol matni?
-A) Variant
-B) To'g'ri javob *
-C) Variant
-D) Variant
-Izoh: Tushuntirish...
 
-2. Keyingi savol..."></textarea>
-      <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem">
-        <button class="btn btn-ghost" data-close-modal>Bekor</button>
-        <button class="btn btn-primary" onclick="importFromText()">✅ Importlash</button>
-      </div>
-    </div>
-
-    <!-- File tab -->
-    <div id="imp-file" style="display:none">
-      <div id="drop-zone" style="border:2.5px dashed rgba(79,70,229,0.35);border-radius:16px;padding:2rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.25s;background:rgba(79,70,229,0.03);user-select:none;position:relative">
-        <div style="pointer-events:none">
-          <div style="width:60px;height:60px;border-radius:50%;background:rgba(79,70,229,0.1);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 0.85rem">📁</div>
-          <div style="font-weight:800;font-size:0.95rem;margin-bottom:0.3rem;color:var(--text)">Faylni bu yerga tashlang</div>
-          <div style="font-size:0.78rem;color:var(--text-3);margin-bottom:1rem">yoki tugmani bosing</div>
+      <!-- TEXT TAB -->
+      <div id="imp-txt-body">
+        <div class="fmt-tabs">
+          <button class="fmtt on" onclick="showFmt(0,this)">A) * format</button>
+          <button class="fmtt" onclick="showFmt(1,this)">1) [+] format</button>
+          <button class="fmtt" onclick="showFmt(2,this)">Ha/Yo'q</button>
         </div>
-        <label for="file-input" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.7rem 1.5rem;border-radius:10px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">
-          📂 .txt fayl tanlash
-        </label>
-        <div style="font-size:0.7rem;color:var(--text-3);margin-top:0.75rem">Format: .txt (plain text)</div>
-        <input type="file" id="file-input" accept=".txt,.text" style="display:none" onchange="handleFileImport(this)"/>
+        <div class="fmt-preview" id="fmt-preview"></div>
+        <div style="font-size:.71rem;color:var(--text-3);margin-bottom:.65rem">
+          💡 <b>*</b> yoki <b>[+]</b> = to'g'ri javob &nbsp;·&nbsp; <b>Izoh:</b> = tushuntirish (ixtiyoriy)
+        </div>
+        <div class="form-group">
+          <label class="form-label">Savollarni kiriting:</label>
+          <textarea id="imp-textarea" class="form-input"
+            rows="9" style="font-family:monospace;font-size:.82rem;resize:vertical"
+            placeholder="1. Savol matni?&#10;A) Variant&#10;B) To'g'ri javob *&#10;C) Variant&#10;D) Variant&#10;Izoh: Tushuntirish..."></textarea>
+        </div>
+        <div style="display:flex;gap:.65rem;justify-content:flex-end">
+          <button class="btn btn-ghost" onclick="closeImport()">Bekor</button>
+          <button class="btn btn-primary" onclick="doImport()">✅ Importlash</button>
+        </div>
       </div>
-      <div id="file-result" style="margin-top:0.85rem"></div>
-      <div style="display:flex;justify-content:flex-end;margin-top:0.85rem">
-        <button class="btn btn-ghost" data-close-modal>Yopish</button>
+
+      <!-- FILE TAB -->
+      <div id="imp-file-body" style="display:none">
+        <div class="drop-zone" id="drop-zone">
+          <div style="font-size:2rem;margin-bottom:.55rem;pointer-events:none">📁</div>
+          <div style="font-weight:800;font-size:.92rem;margin-bottom:.3rem;pointer-events:none">
+            Faylni bu yerga tashlang
+          </div>
+          <div style="font-size:.77rem;color:var(--text-3);pointer-events:none">yoki quyidagi tugmani bosing</div>
+          <label class="drop-label" for="file-input">📂 .txt fayl tanlash</label>
+          <input type="file" id="file-input" accept=".txt,.text" style="display:none" onchange="handleFile(this)"/>
+          <div style="font-size:.7rem;color:var(--text-3);margin-top:.65rem;pointer-events:none">Format: .txt</div>
+        </div>
+        <div id="file-result" style="margin-top:.75rem"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:.75rem">
+          <button class="btn btn-ghost" onclick="closeImport()">Yopish</button>
+        </div>
       </div>
     </div>
   </div>
@@ -249,26 +354,32 @@ Izoh: Tushuntirish...
 <script src="js/firebase.js"></script>
 <script src="js/theme.js"></script>
 <script>
-/* ============================================================
-   CREATE PAGE LOGIC
-   ============================================================ */
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
 let questions    = [];
 let selectedSubj = '';
 let selectedVis  = 'public';
 let currentUser  = null;
 let editId       = null;
-const params     = new URLSearchParams(location.search);
 
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
 (async () => {
   currentUser = await AuthHelpers.requireAuth('login.html');
   if (!currentUser) return;
+
   const prof = await DB.getUser(currentUser.uid).catch(() => null);
-  document.getElementById('ava').textContent = (prof?.name || currentUser.displayName || 'U')[0].toUpperCase();
-  document.getElementById('uname').textContent = prof?.name || currentUser.displayName || '...';
+  const name = prof?.name || currentUser.displayName || 'U';
+  document.getElementById('side-name').textContent = name;
+  document.getElementById('side-ava').textContent  = name[0].toUpperCase();
 
   buildSubjGrid();
-  bindVisButtons();
+  setVis('public');
+  initFmtPreviews();
 
+  const params = new URLSearchParams(location.search);
   editId = params.get('id');
   if (editId) {
     document.getElementById('page-title').textContent = 'Testni tahrirlash';
@@ -278,93 +389,37 @@ const params     = new URLSearchParams(location.search);
   }
 })();
 
-/* ── Subject grid ── */
+/* ═══════════════════════════════════════
+   SUBJECT GRID
+═══════════════════════════════════════ */
 function buildSubjGrid() {
   const grid = document.getElementById('subj-grid');
   Object.entries(SUBJECTS).forEach(([key, s]) => {
     const btn = document.createElement('button');
     btn.className = 'subj-btn';
     btn.dataset.key = key;
-    btn.innerHTML = `<span class="emoji">${s.emoji}</span>${s.label}`;
-    btn.addEventListener('click', () => {
+    btn.innerHTML = `<span class="sb-emoji">${s.emoji}</span>${s.label}`;
+    btn.onclick = () => {
       document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       selectedSubj = key;
       showSelSubj(key);
-    });
+    };
     grid.appendChild(btn);
   });
 }
 
 function showSelSubj(key) {
-  const el = document.getElementById('selected-subj');
+  const el = document.getElementById('selected-subj-wrap');
   if (!key) { el.style.display = 'none'; return; }
   const s = getSubject(key);
-  el.style.display = 'flex';
-  el.innerHTML = `<span class="subj-badge ${s.cls}">${s.emoji} ${s.label}</span> <span style="font-size:0.8rem;color:var(--text-3);margin-left:0.5rem">seçildi</span>`;
+  el.style.display = 'block';
+  el.innerHTML = `<span style="font-size:.78rem;color:var(--text-3)">Tanlangan: </span>
+    <strong style="font-size:.82rem;color:var(--accent)">${s.emoji} ${s.label}</strong>`;
 }
 
-window.setCustomSubj = function() {
+window.setCustomSubj = () => {
   const val = document.getElementById('custom-subj').value.trim();
   if (!val) return;
   document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
-  selectedSubj = val.toLowerCase().replace(/\s+/g, '-');
-  const el = document.getElementById('selected-subj');
-  el.style.display = 'flex';
-  el.innerHTML = `<span class="badge badge-gray">📝 ${esc(val)}</span> <span style="font-size:0.8rem;color:var(--text-3);margin-left:0.5rem">seçildi</span>`;
-};
-
-/* ── Visibility ── */
-function bindVisButtons() {
-  document.querySelectorAll('.vis-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedVis = btn.dataset.vis;
-    });
-  });
-}
-
-/* ── Add question ── */
-window.addQ = function(type = 'multiple') {
-  const q = {
-    id:          Date.now() + Math.random(),
-    type,
-    text:        '',
-    options:     type === 'multiple'  ? ['','','',''] :
-                 type === 'truefalse' ? ['Ha',"Yo'q"] : [],
-    correct:     0,
-    explanation: '',
-    points:      1,
-  };
-  questions.push(q);
-  renderAll();
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.q-card');
-    if (cards.length) cards[cards.length-1].scrollIntoView({ behavior:'smooth', block:'nearest' });
-  }, 80);
-};
-
-function renderAll() {
-  document.getElementById('q-container').innerHTML = '';
-  questions.forEach((q, i) => renderCard(q, i));
-  document.getElementById('q-count').textContent = questions.length;
-  document.getElementById('q-count-2') && (document.getElementById('q-count-2').textContent = questions.length);
-}
-
-function renderCard(q, idx) {
-  const wrap = document.getElementById('q-container');
-  const typeLabel = { multiple:'Ko\'p tanlov', truefalse:'Ha/Yo\'q', text:'Matn' };
-  const div = document.createElement('div');
-  div.className = 'q-card fade-in';
-  div.dataset.qid = q.id;
-
-  div.innerHTML = `
-    <div class="q-card-header">
-      <div class="q-num">${idx+1}</div>
-      <div class="q-type-tabs">
-        ${['multiple','truefalse','text'].map(t =>
-          `<button class="q-type-tab ${q.type===t?'active':''}" onclick="chType('${q.id}','${t}')">${typeLabel[t]}</button>`
-        ).join('')}
-      </div>
-      <button class="btn btn-ghost b
+  selectedSubj = val.toLowerCase().replace(/\s+/g, '-
