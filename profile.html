@@ -51,12 +51,12 @@
     <!-- Avatar + Basic info -->
     <div class="profile-hero">
       <div>
-        <div class="profile-avatar-wrap" id="avatar-wrap" onclick="document.getElementById('avatar-file').click()">
+        <label for="avatar-file" class="profile-avatar-wrap" id="avatar-wrap" style="cursor:pointer">
           <div id="avatar-text" style="font-size:2.2rem;font-weight:900;font-family:'Unbounded',sans-serif">?</div>
           <div class="avatar-edit-overlay">📷</div>
-        </div>
+        </label>
         <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/>
-        <div style="text-align:center;margin-top:0.5rem;font-size:0.72rem;color:var(--text-3)">Rasm yuklash</div>
+        <div style="text-align:center;margin-top:0.5rem;font-size:0.72rem;color:var(--text-3)">📷 Bosib rasm yuklang</div>
       </div>
       <div style="flex:1;min-width:0">
         <div id="profile-name" style="font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:0.25rem">...</div>
@@ -224,18 +224,27 @@ window.changePwd = async function() {
 window.uploadAvatar = async function(inp) {
   const file = inp.files[0];
   if (!file) return;
+  Toast.info('Rasm yuklanmoqda...');
 
-  // Convert to base64 and store in Firestore (no Storage needed)
-  const reader = new FileReader();
-  reader.onload = async e => {
-    const base64 = e.target.result;
+  // Compress to max 200px and 60% quality before saving to Firestore
+  const canvas = document.createElement('canvas');
+  const img = new Image();
+  img.onload = async function() {
+    const size = Math.min(img.width, img.height);
+    const sx = (img.width - size) / 2, sy = (img.height - size) / 2;
+    canvas.width = canvas.height = 200;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, sx, sy, size, size, 0, 0, 200, 200);
+    const base64 = canvas.toDataURL('image/jpeg', 0.65);
     try {
       await DB.updateUser(currentUser.uid, { avatarUrl: base64 });
       const avaText = document.getElementById('avatar-text');
       avaText.innerHTML = `<img src="${base64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;
-      Toast.success('Rasm saqlandi!');
-    } catch(err) { Toast.error(err.message); }
+      Toast.success('✅ Rasm saqlandi!');
+    } catch(err) { Toast.error('❌ ' + err.message); }
   };
+  const reader = new FileReader();
+  reader.onload = e => { img.src = e.target.result; };
   reader.readAsDataURL(file);
 };
 
