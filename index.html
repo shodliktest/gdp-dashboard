@@ -170,7 +170,7 @@
   let activeSubj = 'all';
 
   try {
-    allTests = await DB.getPublicTests();
+    allTests = (await DB.getPublicTests()).filter(t => t.visibility === 'public');
   } catch(e) {
     console.error(e);
   }
@@ -277,4 +277,5 @@
 })();
 </script>
 </body>
-</html>
+  </html>
+  
