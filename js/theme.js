@@ -146,7 +146,7 @@ function initCodeInput() {
 document.addEventListener('click', async e => {
   if (e.target.closest('#logout-btn')) {
     await auth.signOut().catch(() => {});
-    window.location.href = 'login.html';
+    if(typeof goTo==='function') goTo('login.html'); else window.location.href='login.html';
   }
 });
 
