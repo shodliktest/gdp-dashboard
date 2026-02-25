@@ -15,7 +15,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
-db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+// Enable offline persistence (optional, may not work in all browsers)
+try { db.enablePersistence({ synchronizeTabs: true }).catch(() => {}); } catch(e) {}
 
 /* BASE_PATH: avto aniqlash — GitHub Pages repo papkasi */
 const BASE_PATH = (() => {
@@ -177,4 +178,4 @@ window.fmtDate=fmtDate; window.fmtTime=fmtTime;
 window.randCode=randCode; window.goTo=goTo;
 window.BASE_PATH=BASE_PATH;
 window.FieldValue=firebase.firestore.FieldValue;
-     
+                      
