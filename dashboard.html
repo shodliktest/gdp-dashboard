@@ -4,134 +4,269 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TestPro — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;background:linear-gradient(135deg,#f5f3ff 0%,#fce7f3 50%,#eff6ff 100%);color:#1a1a2e;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+[data-theme="dark"] body{background:linear-gradient(135deg,#0d0820 0%,#140a20 50%,#080d1a 100%);color:#e8e0ff}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(124,58,237,.35);border-radius:9px}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:60px;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;background:rgba(245,243,255,.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(124,58,237,.1)}
+[data-theme="dark"] .nav{background:rgba(13,8,32,.9);border-color:rgba(124,58,237,.15)}
+.nav-logo{font-family:'Unbounded',sans-serif;font-size:1.25rem;font-weight:900;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer}
+.nav-r{display:flex;align-items:center;gap:.6rem}
+.nav-uname{font-size:.78rem;font-weight:700;color:#374151;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+[data-theme="dark"] .nav-uname{color:#c4b5fd}
+.ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.82rem;cursor:pointer;overflow:hidden;flex-shrink:0}
+.ava img{width:100%;height:100%;object-fit:cover}
+.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid rgba(0,0,0,.09);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s}
+[data-theme="dark"] .icon-btn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+.icon-btn:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.3)}
+.hamburger-icon{display:flex;flex-direction:column;gap:4px;pointer-events:none}
+.hamburger-icon span{width:16px;height:2px;background:#6b7280;border-radius:2px;display:block;transition:all .25s}
+[data-theme="dark"] .hamburger-icon span{background:#9ca3af}
+
+/* PAGE */
+.page{padding:60px 0 3rem}
+.wrap{max-width:460px;margin:0 auto;padding:1rem .9rem 0}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin:.9rem 0}
+.st{background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.6);border-radius:14px;padding:.8rem .5rem;text-align:center;backdrop-filter:blur(8px)}
+[data-theme="dark"] .st{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.09)}
+.st-v{font-family:'Unbounded',sans-serif;font-size:1.35rem;font-weight:900;background:linear-gradient(135deg,#7c3aed,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.st-l{font-size:.62rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* CARD */
+.card{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.6);border-radius:18px;padding:1rem;margin-bottom:.9rem;backdrop-filter:blur(10px)}
+[data-theme="dark"] .card{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;gap:.5rem}
+.card-title{font-size:.92rem;font-weight:800;display:flex;align-items:center;gap:.35rem}
+.cnt-badge{font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:99px;background:rgba(124,58,237,.1);color:#7c3aed;border:1px solid rgba(124,58,237,.18)}
+
+/* TEST ITEM */
+.ti{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:.9rem;margin-bottom:.6rem;transition:box-shadow .2s,transform .2s}
+[data-theme="dark"] .ti{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.ti:hover{box-shadow:0 4px 16px rgba(124,58,237,.12);transform:translateY(-1px)}
+.ti-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.ti-name{font-size:.88rem;font-weight:700;color:#111827;margin-bottom:.28rem;line-height:1.3}
+[data-theme="dark"] .ti-name{color:#e5e7eb}
+.ti-meta{font-size:.72rem;color:#9ca3af;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.vis-tag{display:inline-block;padding:.15rem .5rem;border-radius:99px;font-size:.65rem;font-weight:700;margin-top:.3rem}
+.vt-priv{background:rgba(245,158,11,.12);color:#d97706;border:1px solid rgba(245,158,11,.25)}
+.vt-pub{background:rgba(16,185,129,.12);color:#059669;border:1px solid rgba(16,185,129,.2)}
+.ti-acts{display:flex;gap:.35rem;flex-shrink:0;align-items:center}
+.sm-btn{width:34px;height:34px;border-radius:9px;border:1px solid rgba(0,0,0,.08);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;text-decoration:none}
+[data-theme="dark"] .sm-btn{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.13)}
+.sm-btn:hover{background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.3)}
+.sm-del{background:linear-gradient(135deg,#ef4444,#f97316);border:none;color:#fff}
+.sm-del:hover{opacity:.85;transform:scale(1.05)}
+
+/* SHARE ROW */
+.share-row{display:flex;align-items:center;gap:.5rem;margin-top:.55rem;padding:.5rem .75rem;background:rgba(124,58,237,.06);border:1px dashed rgba(124,58,237,.28);border-radius:9px}
+.share-code{font-family:'Unbounded',sans-serif;font-size:.88rem;font-weight:900;color:#7c3aed;letter-spacing:.12em;flex:1}
+.copy-btn{padding:.28rem .65rem;border-radius:7px;border:1px solid rgba(124,58,237,.3);background:rgba(124,58,237,.08);color:#7c3aed;font-size:.68rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;transition:all .2s}
+.copy-btn:hover{background:rgba(124,58,237,.18)}
+
+/* GRADIENT BTN */
+.g-btn{padding:.58rem 1rem;border-radius:11px;border:none;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:.3rem;text-decoration:none}
+.g-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,58,237,.32)}
+
+/* PUBLIC SWIPE GROUPS */
+.pub-group{margin-bottom:1rem}
+.grp-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:.45rem;display:flex;align-items:center;gap:.35rem;padding:0 .15rem}
+[data-theme="dark"] .grp-label{color:#6b7280}
+.grp-label .grp-cnt{font-size:.68rem;background:rgba(124,58,237,.1);color:#7c3aed;border-radius:99px;padding:.1rem .45rem;font-weight:700}
+.swipe-outer{overflow:hidden;border-radius:13px;position:relative}
+.swipe-rail{display:flex;transition:transform .32s cubic-bezier(.16,1,.3,1)}
+.swipe-card{min-width:100%;background:#fff;border:1.5px solid rgba(0,0,0,.07);border-radius:13px;padding:.9rem;flex-shrink:0}
+[data-theme="dark"] .swipe-card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.swipe-card .ti-name{margin-bottom:.3rem}
+.swipe-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem}
+.dots{display:flex;gap:4px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;transition:all .2s}
+.dot.on{background:#7c3aed;width:16px;border-radius:99px}
+.arr-btns{display:flex;gap:.35rem}
+.arr{width:28px;height:28px;border-radius:50%;border:1px solid rgba(124,58,237,.2);background:rgba(124,58,237,.07);color:#7c3aed;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.arr:hover:not(:disabled){background:rgba(124,58,237,.18)}
+.arr:disabled{opacity:.3;cursor:default}
+
+/* RESULTS */
+.ri{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:.8rem .9rem;margin-bottom:.55rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+[data-theme="dark"] .ri{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.09)}
+.ri-name{font-size:.86rem;font-weight:700;color:#111827;margin-bottom:.18rem}
+[data-theme="dark"] .ri-name{color:#e5e7eb}
+.ri-date{font-size:.7rem;color:#9ca3af}
+.ri-score{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900}
+.sc-r{color:#ef4444}.sc-a{color:#f59e0b}.sc-g{color:#10b981}
+
+/* QUICK */
+.qa{display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;padding:.82rem;border-radius:13px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none}
+.qa-p{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;margin-bottom:.55rem}
+.qa-p:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,58,237,.32)}
+.qa-s{background:#fff;border:1.5px solid rgba(0,0,0,.09);color:#374151}
+[data-theme="dark"] .qa-s{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.13);color:#d1d5db}
+.qa-s:hover{border-color:rgba(124,58,237,.4);color:#7c3aed}
+
+/* THEME ROW */
+.theme-row{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:.8rem 1rem;margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between}
+[data-theme="dark"] .theme-row{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.09)}
+.theme-lbl{font-size:.78rem;color:#9ca3af;font-weight:600}
+.sw{position:relative;display:inline-block;width:42px;height:23px}
+.sw input{opacity:0;width:0;height:0}
+.sw-s{position:absolute;cursor:pointer;inset:0;background:rgba(0,0,0,.15);border-radius:99px;transition:.3s}
+.sw-s::before{content:'';position:absolute;width:17px;height:17px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+.sw-s{background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.sw input:checked+.sw-s::before{transform:translateX(19px)}
+
+/* SLIDE MENU */
+.menu-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:1000}
+.menu-ov.on{display:block}
+.menu-panel{position:fixed;top:0;right:-100%;width:230px;height:100vh;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-left:1px solid rgba(0,0,0,.08);z-index:1001;transition:right .28s cubic-bezier(.16,1,.3,1);padding:1rem .9rem;display:flex;flex-direction:column}
+[data-theme="dark"] .menu-panel{background:rgba(15,10,32,.97);border-color:rgba(255,255,255,.1)}
+.menu-panel.on{right:0}
+.menu-user{display:flex;align-items:center;gap:.6rem;padding:.6rem .7rem;border-radius:12px;background:rgba(124,58,237,.07);margin-bottom:.65rem;margin-top:2.8rem}
+.menu-un{font-size:.84rem;font-weight:700}
+.menu-role{font-size:.68rem;color:#7c3aed;font-weight:600}
+.mi{display:flex;align-items:center;gap:.6rem;padding:.65rem .75rem;border-radius:10px;color:#374151;font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif;width:100%;text-align:left}
+[data-theme="dark"] .mi{color:#c4b5fd}
+.mi:hover,.mi.act{background:rgba(124,58,237,.09);color:#7c3aed}
+.mc{position:absolute;top:.9rem;right:.9rem;width:30px;height:30px;border-radius:8px;border:1px solid rgba(0,0,0,.09);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:.8rem}
+[data-theme="dark"] .mc{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+
+/* SPINNER */
+.sp{width:28px;height:28px;border:3px solid rgba(124,58,237,.15);border-top-color:#7c3aed;border-radius:50%;animation:spin .7s linear infinite;margin:1.2rem auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* EMPTY */
+.emp{text-align:center;padding:1.25rem;color:#9ca3af;font-size:.8rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:rgba(10,5,25,.88);color:#fff;padding:.7rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9999;backdrop-filter:blur(12px);animation:fadeUp .3s ease both;white-space:nowrap}
+@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* CODE MODAL */
+.code-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;align-items:center;justify-content:center;padding:1rem}
+.code-ov.on{display:flex}
+.code-box{background:#fff;border-radius:20px;padding:1.5rem;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+[data-theme="dark"] .code-box{background:#1a0d30}
+.ci{width:40px;height:46px;text-align:center;font-family:'Unbounded',sans-serif;font-weight:900;font-size:1.1rem;border:2px solid rgba(124,58,237,.25);border-radius:9px;background:rgba(124,58,237,.05);color:#1a1a2e;outline:none;transition:border-color .2s}
+[data-theme="dark"] .ci{color:#e8e0ff;background:rgba(124,58,237,.1)}
+.ci:focus{border-color:#7c3aed}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fin{animation:fadeInUp .4s ease both}
+</style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-brand">TestPro</div>
-  <div style="display:flex;gap:0.6rem;align-items:center">
-    <button class="theme-toggle">🌙</button>
-    <button class="hamburger sidebar-toggle"><span></span><span></span><span></span></button>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" onclick="goTo('index.html')">TestPro</div>
+  <div class="nav-r">
+    <span class="nav-uname" id="nav-nm" style="display:none"></span>
+    <div class="ava" id="nav-ava" onclick="goTo('profile.html')">?</div>
+    <button class="icon-btn theme-toggle" title="Mavzu">🌙</button>
+    <button class="icon-btn" id="hbtn">
+      <div class="hamburger-icon"><span></span><span></span><span></span></div>
+    </button>
   </div>
+</nav>
+
+<!-- MENU -->
+<div class="menu-ov" id="mOv"></div>
+<div class="menu-panel" id="mPanel">
+  <button class="mc" id="mClose">✕</button>
+  <div class="menu-user">
+    <div class="ava" id="m-ava">?</div>
+    <div><div class="menu-un" id="m-nm">...</div><div class="menu-role" id="m-role">Foydalanuvchi</div></div>
+  </div>
+  <a onclick="goTo('dashboard.html');return false" href="#" class="mi act">📊 Dashboard</a>
+  <a onclick="goTo('create.html');return false" href="#" class="mi">✏️ Test yaratish</a>
+  <a onclick="goTo('history.html');return false" href="#" class="mi">📜 Tarix</a>
+  <a onclick="goTo('profile.html');return false" href="#" class="mi">👤 Profil</a>
+  <a onclick="goTo('index.html');return false" href="#" class="mi">🌐 Bosh sahifa</a>
+  <div id="admin-link"></div>
+  <button id="logout-btn" class="mi" style="color:#ef4444;margin-top:auto">🚪 Chiqish</button>
 </div>
-<div class="sidebar-overlay"></div>
 
-<aside class="sidebar">
-  <div style="padding:1.25rem 1rem 0.5rem;border-bottom:1px solid var(--border)">
-    <div style="font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
-  </div>
-  <div class="sidebar-inner">
-    <div class="sidebar-section-label">Asosiy</div>
-    <a href="dashboard.html" class="sidebar-nav-item active">📊 Dashboard</a>
-    <a href="create.html" class="sidebar-nav-item">✏️ Test yaratish</a>
+<!-- PAGE -->
+<div class="page">
+ <div class="wrap">
 
-    <div class="sidebar-section-label" style="margin-top:0.5rem">Mening</div>
-    <a href="#" class="sidebar-nav-item" onclick="showTab('my-tests');return false">📝 Testlarim</a>
-    <a href="history.html" class="sidebar-nav-item">📜 Tarix</a>
-
-    <div class="sidebar-section-label" style="margin-top:0.5rem">Kirish</div>
-    <a href="#" class="sidebar-nav-item" onclick="Modal.open('code-modal');return false">🔑 Kod orqali kirish</a>
-    <a href="index.html" class="sidebar-nav-item">🌐 Testlar</a>
-  </div>
-  <div class="sidebar-footer">
-    <div class="user-chip">
-      <div class="user-ava" id="ava">?</div>
-      <div style="flex:1;min-width:0">
-        <div class="user-chip-name" id="uname">...</div>
-        <div class="user-chip-role" id="urole">foydalanuvchi</div>
-      </div>
-      <a href="profile.html" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem" data-tip="Profil">👤</a>
-      <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem" data-tip="Chiqish">🚪</button>
-    </div>
-  </div>
-</aside>
-
-<main class="main-area">
-  <div class="page-hdr" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-    <div>
-      <h1>Dashboard</h1>
-      <p>Faoliyatingiz statistikasi</p>
-    </div>
-    <a href="create.html" class="btn btn-primary">+ Yangi test</a>
+  <!-- Greeting -->
+  <div style="padding-top:.5rem;margin-bottom:.75rem" class="fin">
+    <div style="font-family:'Unbounded',sans-serif;font-size:1.15rem;font-weight:900" id="greet">Salom! 👋</div>
+    <div style="font-size:.75rem;color:#9ca3af;margin-top:.15rem">Bugun ham muvaffaqiyat tilayman</div>
   </div>
 
   <!-- Stats -->
-  <div class="grid-4" style="margin-bottom:1.75rem">
-    <div class="stat-card fade-in">
-      <div class="stat-icon" style="background:rgba(79,70,229,0.1)">📝</div>
-      <div class="stat-val" id="s-tests">0</div>
-      <div class="stat-lbl">Testlarim</div>
-    </div>
-    <div class="stat-card fade-in d1">
-      <div class="stat-icon" style="background:rgba(16,185,129,0.1)">✅</div>
-      <div class="stat-val" id="s-done">0</div>
-      <div class="stat-lbl">Ishlangan</div>
-    </div>
-    <div class="stat-card fade-in d2">
-      <div class="stat-icon" style="background:rgba(245,158,11,0.1)">⭐</div>
-      <div class="stat-val" id="s-avg">—</div>
-      <div class="stat-lbl">O'rtacha ball</div>
-    </div>
-    <div class="stat-card fade-in d3">
-      <div class="stat-icon" style="background:rgba(6,182,212,0.1)">🔥</div>
-      <div class="stat-val" id="s-streak">0</div>
-      <div class="stat-lbl">Kun ketma-ket</div>
-    </div>
+  <div class="stats fin">
+    <div class="st"><div class="st-v" id="s-t">0</div><div class="st-l">Testlarim</div></div>
+    <div class="st"><div class="st-v" id="s-d">0</div><div class="st-l">Ishlangan</div></div>
+    <div class="st"><div class="st-v" id="s-a">—</div><div class="st-l">O'rtacha</div></div>
   </div>
-
-  <!-- Tabs -->
-  <div style="display:flex;gap:0.35rem;background:var(--bg-2);padding:3px;border-radius:var(--radius-sm);width:fit-content;margin-bottom:1.5rem">
-    <button class="auth-tab active" id="tab-my" onclick="showTab('my-tests')" style="padding:0.5rem 1.1rem;font-size:0.82rem;font-weight:600;border-radius:8px;border:none;cursor:pointer;transition:all var(--t);font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-3)">📝 Testlarim</button>
-    <button class="auth-tab" id="tab-pub" onclick="showTab('public')" style="padding:0.5rem 1.1rem;font-size:0.82rem;font-weight:600;border-radius:8px;border:none;cursor:pointer;transition:all var(--t);font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-3)">🌐 Ommaviy</button>
-    <button class="auth-tab" id="tab-coded" onclick="showTab('coded')" style="padding:0.5rem 1.1rem;font-size:0.82rem;font-weight:600;border-radius:8px;border:none;cursor:pointer;transition:all var(--t);font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-3)">🔑 Kodli</button>
-  </div>
-  <style>.auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)} [data-theme="dark"] .auth-tab.active{background:var(--bg)}</style>
 
   <!-- My tests -->
-  <div id="tab-my-tests">
-    <div id="my-tests-list">
-      <div class="empty"><div class="empty-icon">📭</div><h3>Test yo'q</h3><p><a href="create.html" class="btn btn-primary btn-sm" style="margin-top:0.75rem;display:inline-flex">Test yaratish</a></p></div>
+  <div class="card fin">
+    <div class="card-hdr">
+      <div class="card-title">📝 Mening testlarim</div>
+      <a onclick="goTo('create.html');return false" href="#" class="g-btn">+ Yangi test</a>
     </div>
+    <div id="my-list"><div class="sp"></div></div>
   </div>
 
-  <!-- Public tests by subject (carousel) -->
-  <div id="tab-public" style="display:none">
-    <div id="pub-loading" style="text-align:center;padding:2rem"><div class="spinner" style="margin:0 auto"></div></div>
-    <div id="pub-container"></div>
-  </div>
-
-  <!-- Coded tests (unlocked) -->
-  <div id="tab-coded" style="display:none">
-    <div class="glass-card" style="text-align:center;padding:2.5rem 1.5rem">
-      <div style="font-size:2rem;margin-bottom:0.75rem">🔑</div>
-      <h3 style="font-size:1rem;margin-bottom:0.5rem">Kod orqali kirish</h3>
-      <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:1.25rem">Do'stingiz bergan 6 xonali kodni kiriting</p>
-      <button class="btn btn-primary" onclick="Modal.open('code-modal')">Kod kiritish</button>
+  <!-- Public tests -->
+  <div class="card fin">
+    <div class="card-hdr">
+      <div class="card-title">🌐 Ommaviy testlar</div>
+      <div class="cnt-badge" id="pub-cnt">—</div>
     </div>
-    <div id="unlocked-list" style="margin-top:1.25rem"></div>
+    <div id="pub-wrap"><div class="sp"></div></div>
   </div>
 
-</main>
+  <!-- Results -->
+  <div class="card fin" id="res-card" style="display:none">
+    <div class="card-hdr">
+      <div class="card-title">🏆 So'nggi natijalar</div>
+      <a onclick="goTo('history.html');return false" href="#" style="font-size:.75rem;color:#7c3aed;font-weight:700">Barchasi →</a>
+    </div>
+    <div id="res-list"></div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="card fin">
+    <div class="card-title" style="margin-bottom:.8rem">⚡ Tezkor harakatlar</div>
+    <a onclick="goTo('create.html');return false" href="#" class="qa qa-p">✏️ Yangi test yaratish</a>
+    <button class="qa qa-s" onclick="openCodeModal()">🔑 Kod orqali kirish</button>
+  </div>
+
+  <!-- Theme -->
+  <div class="theme-row fin">
+    <span class="theme-lbl">Interfeys rejimi</span>
+    <label class="sw"><input type="checkbox" id="theme-sw" onchange="Theme.toggle()"/><span class="sw-s"></span></label>
+  </div>
+
+ </div>
+</div>
 
 <!-- Code modal -->
-<div class="modal-overlay" id="code-modal">
-  <div class="modal modal-sm">
-    <div class="modal-header">
-      <span class="modal-title">🔑 Test kodi</span>
-      <button class="modal-close">✕</button>
+<div class="code-ov" id="code-ov">
+  <div class="code-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-weight:800;font-size:.98rem">🔑 Kod kiritish</div>
+      <button onclick="closeCodeModal()" style="background:none;border:none;cursor:pointer;font-size:1rem;color:#6b7280">✕</button>
     </div>
-    <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:1rem">6 xonali kodni kiriting:</p>
-    <div class="code-input" id="code-inputs">
-      <input maxlength="1"/><input maxlength="1"/><input maxlength="1"/>
-      <input maxlength="1"/><input maxlength="1"/><input maxlength="1"/>
+    <p style="font-size:.8rem;color:#6b7280;margin-bottom:.9rem">6 xonali ulashish kodini kiriting:</p>
+    <div style="display:flex;gap:.35rem;justify-content:center;margin-bottom:.85rem" id="ci-wrap">
+      <input class="ci" maxlength="1"/><input class="ci" maxlength="1"/><input class="ci" maxlength="1"/>
+      <input class="ci" maxlength="1"/><input class="ci" maxlength="1"/><input class="ci" maxlength="1"/>
     </div>
-    <div id="code-result" style="margin-bottom:1rem"></div>
-    <div style="display:flex;gap:0.75rem;justify-content:flex-end">
-      <button class="btn btn-ghost" data-close-modal>Bekor</button>
-      <button class="btn btn-primary" id="enter-code-btn">Qidirish →</button>
-    </div>
+    <div id="code-msg" style="min-height:18px;font-size:.78rem;text-align:center;margin-bottom:.75rem;font-weight:600"></div>
+    <button onclick="enterCode()" style="width:100%;padding:.82rem;border-radius:11px;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">Qidirish →</button>
   </div>
 </div>
 
@@ -139,197 +274,32 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase.js"></script>
-<script src="js/theme.js"></script>
 <script>
-let currentUser = null;
+/* ── Theme ── */
+const Theme = {
+  get(){ return localStorage.getItem('tp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'); },
+  set(t){ document.documentElement.setAttribute('data-theme',t); localStorage.setItem('tp_theme',t);
+    document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=t==='dark'?'☀️':'🌙');
+    const sw=document.getElementById('theme-sw'); if(sw) sw.checked=t==='dark';
+  },
+  toggle(){ this.set(this.get()==='dark'?'light':'dark'); }
+};
+Theme.set(Theme.get());
 
-(async () => {
-  currentUser = await AuthHelpers.requireAuth('login.html');
-  if (!currentUser) return;
+/* ── Menu ── */
+const mPanel=document.getElementById('mPanel'), mOv=document.getElementById('mOv');
+function openMenu(){ mPanel.classList.add('on'); mOv.classList.add('on'); }
+function closeMenu(){ mPanel.classList.remove('on'); mOv.classList.remove('on'); }
+document.getElementById('hbtn').onclick=openMenu;
+document.getElementById('mClose').onclick=closeMenu;
+mOv.onclick=closeMenu;
 
-  const profile = await DB.getUser(currentUser.uid).catch(() => null);
-  const name = profile?.name || currentUser.displayName || 'Foydalanuvchi';
-  document.getElementById('ava').textContent = name[0].toUpperCase();
-  document.getElementById('uname').textContent = name;
-  document.getElementById('urole').textContent = profile?.role === 'admin' ? '👑 Admin' : 'Foydalanuvchi';
-
-  if (profile?.role === 'admin') {
-    const nav = document.querySelector('.sidebar-inner');
-    nav.insertAdjacentHTML('afterbegin', '<a href="admin.html" class="sidebar-nav-item" style="color:#D97706;margin-bottom:0.25rem">👑 Admin panel</a>');
-  }
-
-  // Load data
-  const [myTests, results] = await Promise.all([
-    DB.getTests({ authorId: currentUser.uid }).catch(() => []),
-    DB.getResults({ userId: currentUser.uid, limit: 50 }).catch(() => []),
-  ]);
-
-  // Stats
-  document.getElementById('s-tests').textContent = myTests.length;
-  document.getElementById('s-done').textContent  = results.length;
-  if (results.length) {
-    const avg = Math.round(results.reduce((s,r) => s+(r.score||0), 0) / results.length);
-    document.getElementById('s-avg').textContent = avg + '%';
-  }
-
-  renderMyTests(myTests);
-
-  // Coded (from localStorage)
-  const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
-  if (unlocked.length) {
-    const items = await Promise.all(unlocked.map(id => DB.getTest(id).catch(() => null)));
-    const valid = items.filter(Boolean);
-    if (valid.length) {
-      document.getElementById('unlocked-list').innerHTML = `<h3 style="font-size:0.9rem;margin-bottom:0.85rem;color:var(--text-2)">Ochilgan testlar</h3>` +
-        valid.map(t => testRow(t)).join('');
-    }
-  }
-})();
-
-function renderMyTests(tests) {
-  const wrap = document.getElementById('my-tests-list');
-  if (!tests.length) return;
-  wrap.innerHTML = `<div style="display:flex;flex-direction:column;gap:0.75rem">` +
-    tests.map(t => {
-      const sub = getSubject(t.subject);
-      const vis = t.visibility === 'public' ? `<span class="badge badge-green">🌐 Public</span>` :
-                  t.visibility === 'code'   ? `<span class="badge badge-amber">🔒 Kodli</span>` :
-                                              `<span class="badge badge-gray">🔒 Shaxsiy</span>`;
-      const share = t.visibility === 'code' && t.accessCode
-        ? `<button class="btn btn-teal btn-sm" onclick="copyCode('${t.accessCode}')">📋 ${t.accessCode}</button>` : '';
-      return `
-        <div class="history-item">
-          <div class="history-info">
-            <div class="history-title">${esc(t.title)}</div>
-            <div class="history-meta">
-              <span class="subj-badge ${sub.cls}">${sub.emoji} ${esc(sub.label)}</span>
-              📝 ${t.questionCount||0} savol · 👁️ ${t.attempts||0} · ${fmtDate(t.createdAt)}
-              ${vis}
-            </div>
-          </div>
-          <div style="display:flex;gap:0.5rem;flex-shrink:0;flex-wrap:wrap">
-            ${share}
-            <a href="test.html?id=${t.id}" class="btn btn-secondary btn-sm">▶️</a>
-            <a href="create.html?id=${t.id}" class="btn btn-ghost btn-sm">✏️</a>
-            <button class="btn btn-danger btn-sm" onclick="delTest('${t.id}')">🗑️</button>
-          </div>
-        </div>`;
-    }).join('') + `</div>`;
-}
-
-function testRow(t) {
-  const sub = getSubject(t.subject);
-  return `<div class="history-item" style="margin-bottom:0.75rem">
-    <div class="history-info">
-      <div class="history-title">${esc(t.title)}</div>
-      <div class="history-meta"><span class="subj-badge ${sub.cls}">${sub.emoji} ${esc(sub.label)}</span></div>
-    </div>
-    <a href="test.html?id=${t.id}" class="btn btn-primary btn-sm">Boshlash →</a>
-  </div>`;
-}
-
-function showTab(tab) {
-  ['my-tests','public','coded'].forEach(t => {
-    const el = document.getElementById('tab-' + t);
-    if (el) el.style.display = t === tab ? 'block' : 'none';
-  });
-  ['tab-my','tab-pub','tab-coded-btn'].forEach(id => {
-    const b = document.getElementById(id);
-    if (b) b.classList.remove('active');
-  });
-  const map = { 'my-tests':'tab-my', 'public':'tab-pub', 'coded':'tab-coded-btn' };
-  const activeBtn = document.getElementById(map[tab]);
-  if (activeBtn) activeBtn.classList.add('active');
-
-  if (tab === 'public') loadPublic();
-}
-
-let pubLoaded = false;
-async function loadPublic() {
-  if (pubLoaded) return;
-  pubLoaded = true;
-  try {
-    const tests = await DB.getPublicTests();
-    document.getElementById('pub-loading').style.display = 'none';
-    const container = document.getElementById('pub-container');
-    const groups = {};
-    tests.forEach(t => { const s = t.subject||'other'; if(!groups[s]) groups[s]=[]; groups[s].push(t); });
-    Object.entries(groups).forEach(([subj, arr]) => {
-      const sub = getSubject(subj);
-      const sec = document.createElement('div');
-      sec.className = 'subject-section fade-in-up';
-      sec.innerHTML = `
-        <div class="subject-header">
-          <button class="subject-title-btn" onclick="location.href='subject.html?s=${subj}'">
-            <div class="subject-icon ${sub.cls}" style="background:var(--subj-bg,rgba(79,70,229,0.1))">${sub.emoji}</div>
-            <div><div class="subject-name">${esc(sub.label)}</div><div class="subject-count">${arr.length} ta test</div></div>
-          </button>
-          <button class="subject-view-all" onclick="location.href='subject.html?s=${subj}'">Ko'proq →</button>
-        </div>
-        <div class="carousel-wrap">
-          <button class="carousel-btn prev">‹</button>
-          <div class="carousel" id="pc-${subj}"></div>
-          <button class="carousel-btn next">›</button>
-        </div>`;
-      container.appendChild(sec);
-      const rail = sec.querySelector(`#pc-${subj}`);
-      arr.slice(0,10).forEach(t => { rail.appendChild(buildCard(t, sub)); });
-      initCarousel(sec.querySelector('.carousel-wrap'));
-    });
-  } catch(e) { document.getElementById('pub-loading').innerHTML = '<p style="color:var(--text-3)">Yuklanmadi</p>'; }
-}
-
-function buildCard(t, sub) {
-  const card = document.createElement('div');
-  card.className = 'test-card';
-  card.innerHTML = `
-    <div class="test-card-accent"></div>
-    <div class="test-card-icon ${sub.cls}" style="background:var(--subj-bg,rgba(79,70,229,0.1))">${sub.emoji}</div>
-    <div class="test-card-title">${esc(t.title)}</div>
-    <div class="test-card-stats">
-      <span class="test-stat-chip">📝 ${t.questionCount||0}</span>
-      <span class="test-stat-chip">👁️ ${t.attempts||0}</span>
-      ${t.averageScore?`<span class="test-stat-chip">⭐ ${t.averageScore}%</span>`:''}
-    </div>
-    <a href="test.html?id=${t.id}" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.75rem">Boshlash →</a>`;
-  return card;
-}
-
-window.delTest = async function(id) {
-  if (!confirm('O\'chirilsinmi?')) return;
-  try { await DB.deleteTest(id); Toast.success('O\'chirildi'); setTimeout(() => location.reload(), 1000); }
-  catch(e) { Toast.error(e.message); }
+/* ── Logout ── */
+document.getElementById('logout-btn').onclick=async()=>{
+  await auth.signOut().catch(()=>{});
+  goTo('login.html');
 };
 
-window.copyCode = function(code) {
-  navigator.clipboard.writeText(code).then(() => Toast.info(`Kod nusxalandi: ${code}`));
-};
-
-// Enter code
-document.getElementById('enter-code-btn').addEventListener('click', async () => {
-  const inputs = document.querySelectorAll('#code-inputs input');
-  const code = [...inputs].map(i => i.value).join('').toUpperCase().trim();
-  if (code.length < 6) { document.getElementById('code-result').innerHTML = '<div class="alert alert-warn">6 xonali kod kiriting</div>'; return; }
-
-  const btn = document.getElementById('enter-code-btn');
-  btn.disabled = true; btn.textContent = '⏳';
-
-  try {
-    const test = await DB.getTestByCode(code);
-    if (!test) {
-      document.getElementById('code-result').innerHTML = '<div class="alert alert-error">❌ Kod topilmadi</div>';
-    } else {
-      // Save to localStorage
-      const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
-      if (!unlocked.includes(test.id)) { unlocked.push(test.id); localStorage.setItem('tp_unlocked', JSON.stringify(unlocked)); }
-      document.getElementById('code-result').innerHTML = `<div class="alert alert-success">✅ "${esc(test.title)}" test topildi!</div>`;
-      setTimeout(() => { Modal.close('code-modal'); location.href = `test.html?id=${test.id}`; }, 1200);
-    }
-  } catch(e) {
-    document.getElementById('code-result').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
-  }
-  btn.disabled = false; btn.textContent = 'Qidirish →';
-});
-</script>
-</body>
-</html>
+/* ── Code modal ── */
+function openCodeModal(){ document.getElementById('code-ov').classList.add('on'); setTimeout(()=>document.querySelectorAll('.ci')[0]?.focus(),100); }
+function closeCodeModal(){ document.getElementById('code-ov').classList.remove('on'); document.getElementById('c
