@@ -51,11 +51,11 @@
   </div>
   <div class="sidebar-inner">
     <div class="sidebar-section-label">Admin</div>
-    <a href="admin.html" class="sidebar-nav-item active">📊 Statistika</a>
+    <a onclick="goTo('admin.html');return false" href="#" class="sidebar-nav-item active">📊 Statistika</a>
     <div class="sidebar-section-label" style="margin-top:0.5rem">Sahifalar</div>
-    <a href="dashboard.html" class="sidebar-nav-item">🏠 Dashboard</a>
-    <a href="create.html" class="sidebar-nav-item">✏️ Test yaratish</a>
-    <a href="index.html" class="sidebar-nav-item">🌐 Bosh sahifa</a>
+    <a onclick="goTo('dashboard.html');return false" href="#" class="sidebar-nav-item">🏠 Dashboard</a>
+    <a onclick="goTo('create.html');return false" href="#" class="sidebar-nav-item">✏️ Test yaratish</a>
+    <a onclick="goTo('index.html');return false" href="#" class="sidebar-nav-item">🌐 Bosh sahifa</a>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
@@ -64,7 +64,7 @@
         <div class="user-chip-name" id="uname">Admin</div>
         <div class="user-chip-role" style="color:#D97706">👑 Admin</div>
       </div>
-      <a href="profile.html" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
+      <a onclick="goTo('profile.html');return false" href="#" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">👤</a>
       <button id="logout-btn" class="btn btn-ghost btn-sm" style="padding:0.3rem 0.5rem">🚪</button>
     </div>
   </div>
@@ -215,7 +215,7 @@ let activeCharts = [];
   const profile = await DB.getUser(user.uid).catch(() => null);
   if (profile?.role !== 'admin') {
     Toast.error('Admin huquqi yo\'q!');
-    setTimeout(() => location.href = 'dashboard.html', 1500);
+    setTimeout(() => goTo('dashboard.html'), 1500);
     return;
   }
   document.getElementById('ava').textContent = (profile.name || 'A')[0].toUpperCase();
@@ -358,8 +358,8 @@ function renderSubjectAccordions() {
                   <td>${t.averageScore ? t.averageScore+'%' : '—'}</td>
                   <td>
                     <div style="display:flex;gap:0.35rem">
-                      <a href="test.html?id=${t.id}" class="btn btn-secondary btn-sm" data-tip="Ko'rish">▶️</a>
-                      <a href="create.html?id=${t.id}" class="btn btn-ghost btn-sm" data-tip="Tahrirlash">✏️</a>
+                      <a onclick="goTo('test.html?id='+t.id);return false" href="#" class="btn btn-secondary btn-sm" data-tip="Ko'rish">▶️</a>
+                      <a onclick="goTo('create.html?id='+t.id);return false" href="#" class="btn btn-ghost btn-sm" data-tip="Tahrirlash">✏️</a>
                       <button class="btn btn-danger btn-sm" onclick="confirmDelTest('${t.id}','${esc(t.title)}')" data-tip="O'chirish">🗑️</button>
                     </div>
                   </td>
@@ -421,234 +421,4 @@ function renderUsers(users) {
 function renderAllTests(tests) {
   const tbody = document.getElementById('tests-tbody');
   if (!tests.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-3)">Test topilmadi</td></tr>';
-    return;
-  }
-  tbody.innerHTML = tests.map(t => {
-    const sub = getSubject(t.subject);
-    return `
-      <tr>
-        <td>
-          <div style="font-weight:600;font-size:0.875rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.title)}</div>
-        </td>
-        <td><span class="subj-badge ${sub.cls}">${sub.emoji} ${esc(sub.label)}</span></td>
-        <td>${visBadge(t.visibility, t.accessCode)}</td>
-        <td><span class="badge badge-indigo">${t.questionCount||0}</span></td>
-        <td>${t.attempts||0}</td>
-        <td style="font-size:0.78rem;color:var(--text-3)">${fmtDate(t.createdAt)}</td>
-        <td>
-          <div style="display:flex;gap:0.35rem">
-            <a href="test.html?id=${t.id}" class="btn btn-secondary btn-sm">▶️</a>
-            <a href="create.html?id=${t.id}" class="btn btn-ghost btn-sm">✏️</a>
-            <button class="btn btn-danger btn-sm" onclick="confirmDelTest('${t.id}','${esc(t.title)}')">🗑️</button>
-          </div>
-        </td>
-      </tr>`;
-  }).join('');
-
-  // Populate subject filter
-  const sel = document.getElementById('test-subj-filter');
-  const subjects = [...new Set(allTests.map(t => t.subject).filter(Boolean))];
-  subjects.forEach(s => {
-    const sub = getSubject(s);
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = `${sub.emoji} ${sub.label}`;
-    sel.appendChild(opt);
-  });
-}
-
-/* ══════════════ RESULTS ══════════════ */
-function renderResults(results) {
-  const tbody = document.getElementById('results-tbody');
-  if (!results.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-3)">Natija topilmadi</td></tr>';
-    return;
-  }
-  tbody.innerHTML = results.slice(0, 100).map(r => {
-    const sc = r.score >= 80 ? 'score-high' : r.score >= 50 ? 'score-mid' : 'score-low';
-    return `
-      <tr>
-        <td style="font-size:0.875rem;font-weight:600;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.testTitle||'—')}</td>
-        <td style="font-size:0.8rem;color:var(--text-2)">${esc(r.userId?.slice(0,8)||'—')}...</td>
-        <td><span class="score-pill ${sc}" style="font-size:0.78rem;padding:0.2rem 0.65rem">${r.score||0}%</span></td>
-        <td><span class="badge ${r.passed ? 'badge-green':'badge-rose'}">${r.passed ? '✓ O\'tdi':'✗ O\'tmadi'}</span></td>
-        <td style="font-size:0.8rem;color:var(--text-3)">${fmtTime(r.duration||0)}</td>
-        <td style="font-size:0.78rem;color:var(--text-3)">${fmtDate(r.completedAt)}</td>
-      </tr>`;
-  }).join('');
-}
-
-/* ══════════════ FILTERS ══════════════ */
-function setupFilters() {
-  // User search
-  document.getElementById('user-search').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    const role = document.getElementById('user-role-filter').value;
-    let filtered = allUsers.filter(u =>
-      (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q)
-    );
-    if (role !== 'all') filtered = filtered.filter(u => u.role === role);
-    renderUsers(filtered);
-  });
-  document.getElementById('user-role-filter').addEventListener('change', e => {
-    const q = document.getElementById('user-search').value.toLowerCase();
-    const role = e.target.value;
-    let filtered = allUsers.filter(u => (u.name||'').toLowerCase().includes(q));
-    if (role !== 'all') filtered = filtered.filter(u => u.role === role);
-    renderUsers(filtered);
-  });
-
-  // Test search
-  document.getElementById('test-search').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    const subj = document.getElementById('test-subj-filter').value;
-    let filtered = allTests.filter(t => (t.title||'').toLowerCase().includes(q));
-    if (subj !== 'all') filtered = filtered.filter(t => t.subject === subj);
-    renderAllTests(filtered);
-  });
-  document.getElementById('test-subj-filter').addEventListener('change', e => {
-    const q = document.getElementById('test-search').value.toLowerCase();
-    const subj = e.target.value;
-    let filtered = allTests.filter(t => (t.title||'').toLowerCase().includes(q));
-    if (subj !== 'all') filtered = filtered.filter(t => t.subject === subj);
-    renderAllTests(filtered);
-  });
-}
-
-/* ══════════════ TAB SWITCHING ══════════════ */
-document.querySelectorAll('.t-tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.t-tab').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('show'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('show');
-  });
-});
-
-/* ══════════════ USER ACTIONS ══════════════ */
-window.viewUser = async function(uid) {
-  Modal.open('user-modal');
-  document.getElementById('user-modal-body').innerHTML = '<div style="text-align:center;padding:1.5rem"><div class="spinner" style="margin:0 auto"></div></div>';
-  try {
-    const u = allUsers.find(x => x.id === uid);
-    if (!u) { document.getElementById('user-modal-body').innerHTML = '<p>Topilmadi</p>'; return; }
-
-    const [myTests, results] = await Promise.all([
-      DB.getTests({ authorId: uid }).catch(() => []),
-      DB.getResults({ userId: uid, limit: 10 }).catch(() => []),
-    ]);
-    const avg = results.length ? Math.round(results.reduce((s,r)=>s+(r.score||0),0)/results.length) : null;
-
-    document.getElementById('user-modal-body').innerHTML = `
-      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-        <div style="width:56px;height:56px;border-radius:50%;background:var(--grad-main);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;font-weight:900;font-family:'Unbounded',sans-serif;flex-shrink:0">
-          ${(u.name||'U')[0].toUpperCase()}
-        </div>
-        <div>
-          <div style="font-weight:800;font-size:1rem">${esc(u.name||'—')}</div>
-          <div style="font-size:0.8rem;color:var(--text-3)">${esc(u.email||'—')}</div>
-          <div style="margin-top:0.25rem">${u.role==='admin'?'<span class="badge badge-amber">👑 Admin</span>':'<span class="badge badge-indigo">👤 User</span>'}</div>
-        </div>
-      </div>
-      <div>
-        <div class="info-row"><span class="info-lbl">Yosh</span><span class="info-val">${u.age||'—'}</span></div>
-        <div class="info-row"><span class="info-lbl">Testlar</span><span class="info-val">${myTests.length}</span></div>
-        <div class="info-row"><span class="info-lbl">Ishlangan</span><span class="info-val">${results.length}</span></div>
-        <div class="info-row"><span class="info-lbl">O'rtacha ball</span><span class="info-val">${avg !== null ? avg+'%' : '—'}</span></div>
-        <div class="info-row"><span class="info-lbl">Ro'yxatdan</span><span class="info-val">${fmtDate(u.createdAt)}</span></div>
-      </div>
-      <div style="display:flex;gap:0.65rem;margin-top:1.5rem;flex-wrap:wrap">
-        ${u.role !== 'admin'
-          ? `<button class="btn btn-secondary btn-sm" onclick="promoteUser('${u.id}','${esc(u.name||'')}');Modal.close('user-modal')">👑 Admin qilish</button>`
-          : `<button class="btn btn-secondary btn-sm" onclick="demoteUser('${u.id}','${esc(u.name||'')}');Modal.close('user-modal')">⬇️ User qilish</button>`}
-        <button class="btn btn-danger btn-sm" onclick="confirmDelUser('${u.id}','${esc(u.name||'')}');Modal.close('user-modal')">🗑️ O'chirish</button>
-      </div>`;
-  } catch(e) {
-    document.getElementById('user-modal-body').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
-  }
-};
-
-window.promoteUser = async function(uid, name) {
-  if (!confirm(`"${name}" ni admin qilasizmi?`)) return;
-  try {
-    await DB.updateUser(uid, { role: 'admin' });
-    allUsers = allUsers.map(u => u.id === uid ? { ...u, role: 'admin' } : u);
-    renderUsers(allUsers);
-    Toast.success(`✅ ${name} endi admin!`);
-  } catch(e) { Toast.error(e.message); }
-};
-
-window.demoteUser = async function(uid, name) {
-  if (!confirm(`"${name}" ni oddiy user qilasizmi?`)) return;
-  try {
-    await DB.updateUser(uid, { role: 'user' });
-    allUsers = allUsers.map(u => u.id === uid ? { ...u, role: 'user' } : u);
-    renderUsers(allUsers);
-    Toast.success(`✅ ${name} roli o'zgartirildi`);
-  } catch(e) { Toast.error(e.message); }
-};
-
-function confirmDelUser(uid, name) {
-  document.getElementById('confirm-title').textContent = 'Foydalanuvchini o\'chirish';
-  document.getElementById('confirm-msg').textContent = `"${name}" foydalanuvchisini o'chirishni tasdiqlaysizmi?`;
-  document.getElementById('confirm-ok').onclick = async () => {
-    try {
-      await db.collection('users').doc(uid).delete();
-      allUsers = allUsers.filter(u => u.id !== uid);
-      renderUsers(allUsers);
-      Modal.close('confirm-modal');
-      Toast.success('Foydalanuvchi o\'chirildi');
-    } catch(e) { Toast.error(e.message); }
-  };
-  Modal.open('confirm-modal');
-}
-window.confirmDelUser = confirmDelUser;
-
-/* ══════════════ TEST DELETE ══════════════ */
-function confirmDelTest(testId, title) {
-  document.getElementById('confirm-title').textContent = 'Testni o\'chirish';
-  document.getElementById('confirm-msg').textContent = `"${title}" testini o'chirishni tasdiqlaysizmi? Bu amalni qaytarib bo'lmaydi.`;
-  document.getElementById('confirm-ok').onclick = async () => {
-    try {
-      await DB.deleteTest(testId);
-      allTests = allTests.filter(t => t.id !== testId);
-      renderSubjectAccordions();
-      renderAllTests(allTests);
-      Modal.close('confirm-modal');
-      Toast.success('Test o\'chirildi');
-      document.getElementById('as-tests').textContent = allTests.length;
-    } catch(e) { Toast.error(e.message); }
-  };
-  Modal.open('confirm-modal');
-}
-window.confirmDelTest = confirmDelTest;
-
-/* ══════════════ SUBJECT DELETE ══════════════ */
-function confirmDeleteSubject(subj, label) {
-  const tests = allTests.filter(t => (t.subject||'other') === subj);
-  document.getElementById('confirm-title').textContent = `"${label}" fanini o'chirish`;
-  document.getElementById('confirm-msg').textContent = `Bu fan ostidagi ${tests.length} ta test ham o'chiriladi. Tasdiqlaysizmi?`;
-  document.getElementById('confirm-ok').onclick = async () => {
-    try {
-      await Promise.all(tests.map(t => DB.deleteTest(t.id)));
-      allTests = allTests.filter(t => (t.subject||'other') !== subj);
-      renderSubjectAccordions();
-      renderAllTests(allTests);
-      Modal.close('confirm-modal');
-      Toast.success(`${tests.length} ta test o'chirildi!`);
-      document.getElementById('as-tests').textContent = allTests.length;
-    } catch(e) { Toast.error(e.message); }
-  };
-  Modal.open('confirm-modal');
-}
-window.confirmDeleteSubject = confirmDeleteSubject;
-
-/* ══════════════ HELPERS ══════════════ */
-function visBadge(vis, code) {
-  if (vis === 'public')  return '<span class="badge badge-green">🌐 Ommaviy</span>';
-  if (vis === 'code')    return `<span class="badge badge-amber">🔑 ${code||'Kodli'}</span>`;
-  return '<span class="badge badge-gray">🔒 Shaxsiy</span>';
-}
-</script>
-</body>
-</html>
+    tbody.innerHTML = '<tr><td colspan="7" sty
