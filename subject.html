@@ -26,11 +26,11 @@
 </head>
 <body>
 <nav class="navbar">
-  <div class="nav-brand" onclick="location.href='index.html'">TestPro</div>
+  <div class="nav-brand" onclick="goTo('index.html')">TestPro</div>
   <div class="nav-end">
     <button class="theme-toggle">🌙</button>
-    <a href="dashboard.html" class="btn btn-secondary btn-sm">Dashboard</a>
-    <a href="login.html" class="btn btn-primary btn-sm" id="nav-login">Kirish</a>
+    <a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-secondary btn-sm">Dashboard</a>
+    <a onclick="goTo('login.html');return false" href="#" class="btn btn-primary btn-sm" id="nav-login">Kirish</a>
   </div>
 </nav>
 
@@ -39,7 +39,7 @@
   <div class="subj-hero">
     <div class="container">
       <div style="margin-bottom:0.75rem">
-        <a href="index.html" style="font-size:0.82rem;color:var(--text-3);display:inline-flex;align-items:center;gap:0.4rem">
+        <a onclick="goTo('index.html');return false" href="#" style="font-size:0.82rem;color:var(--text-3);display:inline-flex;align-items:center;gap:0.4rem">
           ← Testlar
         </a>
       </div>
