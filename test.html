@@ -1,120 +1,188 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TestPro — Test</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
 <style>
-.test-topbar{position:sticky;top:0;z-index:100;background:var(--navbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-2);padding:0.85rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-.test-title-txt{font-size:0.9rem;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.timer{display:flex;align-items:center;gap:0.4rem;padding:0.35rem 0.85rem;border-radius:99px;background:rgba(79,70,229,0.08);border:1px solid rgba(79,70,229,0.2);color:var(--accent);font-family:'Unbounded',sans-serif;font-weight:800;font-size:0.85rem}
-.timer.warn{background:rgba(244,63,94,0.1);border-color:rgba(244,63,94,0.3);color:#E11D48;animation:pulse 1s infinite}
-.prog-strip{height:3px;background:var(--border-2)}
-.prog-strip-fill{height:100%;background:var(--grad-main);transition:width 0.4s var(--ease-out)}
-.test-body{max-width:720px;margin:0 auto;padding:2rem 1.25rem}
-.q-dot-wrap{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem}
-.q-dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--border-2);background:var(--bg-2);font-size:0.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--t);font-family:'Unbounded',sans-serif;color:var(--text-3)}
-.q-dot:hover{border-color:var(--accent)}
-.q-dot.answered{background:var(--accent);border-color:var(--accent);color:#fff}
-.q-dot.current{border-color:var(--accent);color:var(--accent)}
-.q-panel{background:var(--bg-card);border:1px solid var(--border-2);border-radius:var(--radius-lg);padding:1.75rem;margin-bottom:1.25rem;animation:fadeInUp 0.3s var(--ease-out)}
-[data-theme="dark"] .q-panel{background:var(--bg-2);border-color:var(--border)}
-.q-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem}
-.q-label{font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em}
-.q-pts{font-size:0.75rem;color:var(--text-3)}
-.q-text-disp{font-size:1rem;font-weight:600;line-height:1.6;margin-bottom:1.4rem;color:var(--text)}
-.opt-btn{
-  width:100%;text-align:left;padding:0.9rem 1.1rem;
-  border:2px solid var(--border-2);border-radius:var(--radius-sm);
-  background:var(--bg-2);color:var(--text);
-  font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;
-  cursor:pointer;transition:all var(--t);display:flex;align-items:center;gap:0.85rem;
-  margin-bottom:0.55rem;
-}
-[data-theme="dark"] .opt-btn{background:var(--bg);border-color:var(--border)}
-.opt-btn:hover{border-color:var(--accent);background:rgba(79,70,229,0.05);transform:translateX(4px)}
-.opt-btn.sel{border-color:var(--accent);background:rgba(79,70,229,0.08);color:var(--accent)}
-.opt-btn.correct{border-color:#059669;background:rgba(16,185,129,0.08);color:#059669}
-.opt-btn.wrong{border-color:#E11D48;background:rgba(244,63,94,0.07);color:#E11D48}
-.opt-btn.disabled{pointer-events:none}
-.opt-letter{width:26px;height:26px;border-radius:50%;background:var(--border-2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.75rem;flex-shrink:0;font-family:'Unbounded',sans-serif}
-.opt-btn.sel .opt-letter{background:var(--accent);color:#fff}
-.opt-btn.correct .opt-letter{background:#059669;color:#fff}
-.opt-btn.wrong .opt-letter{background:#E11D48;color:#fff}
-.nav-row{display:flex;gap:0.75rem;justify-content:space-between;flex-wrap:wrap;margin-top:1.25rem}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;
+  background:linear-gradient(135deg,#f5f3ff 0%,#fce7f3 50%,#eff6ff 100%);
+  color:#1a1a2e}
+[data-theme="dark"] body{background:linear-gradient(135deg,#0d0820,#140a20,#080d1a);color:#e8e0ff}
+
+.nav{position:fixed;top:0;left:0;right:0;height:54px;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;padding:0 1rem;
+  background:rgba(245,243,255,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(124,58,237,.1)}
+[data-theme="dark"] .nav{background:rgba(13,8,32,.92)}
+.logo{font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:900;
+  background:linear-gradient(135deg,#7c3aed,#ec4899);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tbtn{width:31px;height:31px;border-radius:8px;border:1.5px solid rgba(0,0,0,.1);
+  background:#fff;cursor:pointer;font-size:.82rem}
+[data-theme="dark"] .tbtn{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+
+.page{padding:70px 1rem 3rem;max-width:680px;margin:0 auto}
+
+/* Loading / Error */
+.center-card{text-align:center;padding:3rem 1.5rem;
+  background:#fff;border-radius:20px;margin-top:1rem;
+  box-shadow:0 8px 32px rgba(124,58,237,.1)}
+[data-theme="dark"] .center-card{background:rgba(255,255,255,.06)}
+.sp{width:36px;height:36px;border:3px solid rgba(124,58,237,.2);
+  border-top-color:#7c3aed;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Test header */
+.test-hdr{background:#fff;border-radius:18px;padding:1.1rem;margin-bottom:1rem;
+  box-shadow:0 4px 16px rgba(124,58,237,.08)}
+[data-theme="dark"] .test-hdr{background:rgba(255,255,255,.06)}
+.test-title{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;margin-bottom:.35rem}
+.test-meta{display:flex;gap:.55rem;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;padding:.18rem .5rem;border-radius:99px;
+  font-size:.68rem;font-weight:600;background:rgba(124,58,237,.08);color:#7c3aed;border:1px solid rgba(124,58,237,.15)}
+.timer-box{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;
+  color:#7c3aed;background:rgba(124,58,237,.08);border-radius:9px;
+  padding:.35rem .75rem;display:inline-flex;align-items:center;gap:.35rem}
+.timer-box.warn{color:#ef4444;background:rgba(239,68,68,.1);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.6}}
+
+/* Progress */
+.prog-wrap{background:rgba(124,58,237,.1);border-radius:99px;height:6px;margin-bottom:.85rem;overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:99px;transition:width .4s}
+
+/* Question card */
+.q-card{background:#fff;border-radius:18px;padding:1.25rem;margin-bottom:1rem;
+  box-shadow:0 4px 16px rgba(124,58,237,.06)}
+[data-theme="dark"] .q-card{background:rgba(255,255,255,.06)}
+.q-num{font-size:.72rem;color:#9ca3af;font-weight:700;margin-bottom:.45rem}
+.q-text{font-size:.95rem;font-weight:700;line-height:1.5;margin-bottom:.9rem;color:#111827}
+[data-theme="dark"] .q-text{color:#e5e7eb}
+.opt{display:flex;align-items:center;gap:.75rem;padding:.82rem .95rem;
+  border-radius:12px;border:2px solid rgba(0,0,0,.08);background:#fff;
+  cursor:pointer;transition:all .22s;margin-bottom:.5rem;text-align:left;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:500;width:100%}
+[data-theme="dark"] .opt{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+.opt:hover{border-color:rgba(124,58,237,.35);transform:translateX(3px)}
+.opt.sel{border-color:#7c3aed;background:rgba(124,58,237,.07);color:#7c3aed}
+.opt.correct{border-color:#059669;background:rgba(5,150,105,.08);color:#059669}
+.opt.wrong{border-color:#ef4444;background:rgba(239,68,68,.07);color:#ef4444}
+.opt.disabled{cursor:default;transform:none}
+.opt-letter{width:28px;height:28px;border-radius:50%;border:2px solid currentColor;
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;
+  flex-shrink:0;transition:all .22s}
+.opt.sel .opt-letter,.opt.correct .opt-letter,.opt.wrong .opt-letter{background:currentColor;color:#fff}
+
+/* Text answer */
+.text-inp{width:100%;padding:.75rem .9rem;border-radius:11px;
+  border:2px solid rgba(0,0,0,.09);background:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:#111827;outline:none;transition:border-color .2s}
+[data-theme="dark"] .text-inp{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#e8e0ff}
+.text-inp:focus{border-color:#7c3aed}
+
+/* Explanation */
+.expl-box{margin-top:.65rem;padding:.75rem;border-radius:10px;
+  background:rgba(124,58,237,.06);border-left:3px solid #7c3aed;
+  font-size:.8rem;color:#374151;line-height:1.55}
+[data-theme="dark"] .expl-box{color:#c4b5fd;background:rgba(124,58,237,.12)}
+
+/* Nav buttons */
+.nav-btns{display:flex;gap:.65rem;justify-content:flex-end;margin-top:1.25rem}
+.nbtn{padding:.72rem 1.35rem;border-radius:12px;font-size:.85rem;font-weight:700;
+  cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.nbtn-g{background:#fff;color:#374151;border:1.5px solid rgba(0,0,0,.1)}
+[data-theme="dark"] .nbtn-g{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#e5e7eb}
+.nbtn-g:hover{border-color:#7c3aed;color:#7c3aed}
+.nbtn-p{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff}
+.nbtn-p:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,58,237,.32)}
+.nbtn-p:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* Result */
-.result-wrap{max-width:620px;margin:0 auto;padding:2rem 1.25rem;text-align:center}
-.result-big{font-family:'Unbounded',sans-serif;font-size:3.5rem;font-weight:900;margin:1rem 0 0.25rem}
-.result-card{background:var(--bg-card);border:1px solid var(--border-2);border-radius:var(--radius-lg);padding:2rem;margin-bottom:1.5rem}
-[data-theme="dark"] .result-card{background:var(--bg-2);border-color:var(--border)}
-.review-q{background:var(--bg-card);border:1px solid var(--border-2);border-radius:var(--radius);padding:1.25rem;margin-bottom:0.85rem;text-align:left}
-[data-theme="dark"] .review-q{background:var(--bg-2);border-color:var(--border)}
-.expl-box{margin-top:0.75rem;padding:0.85rem;background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.15);border-radius:var(--radius-xs);font-size:0.82rem;color:var(--text-2);line-height:1.6}
+.res-card{background:#fff;border-radius:20px;padding:1.75rem;text-align:center;
+  box-shadow:0 12px 40px rgba(124,58,237,.12)}
+[data-theme="dark"] .res-card{background:rgba(255,255,255,.06)}
+.score-circle{width:120px;height:120px;border-radius:50%;margin:0 auto 1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sc-pass{border:4px solid #059669;background:rgba(5,150,105,.08);color:#059669}
+.sc-fail{border:4px solid #ef4444;background:rgba(239,68,68,.08);color:#ef4444}
+.sc-pct{font-family:'Unbounded',sans-serif;font-size:2rem;font-weight:900}
+.sc-lbl{font-size:.62rem;letter-spacing:.05em;font-weight:700;opacity:.7}
+.stats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin:1rem 0}
+.sg{background:rgba(124,58,237,.06);border-radius:12px;padding:.75rem .5rem;text-align:center}
+.sv{font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:900;color:#7c3aed}
+.sl{font-size:.65rem;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.12rem}
+.res-btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin:1.25rem 0}
+.rbtn{padding:.65rem 1.4rem;border-radius:11px;font-size:.83rem;font-weight:700;
+  cursor:pointer;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.rbtn-g{background:#fff;color:#374151;border:1.5px solid rgba(0,0,0,.1)}
+[data-theme="dark"] .rbtn-g{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#e5e7eb}
+.rbtn-g:hover{border-color:#7c3aed;color:#7c3aed}
+.rbtn-p{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff}
+
+/* Review */
+.review-item{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;
+  padding:1rem;margin-bottom:.75rem;text-align:left}
+[data-theme="dark"] .review-item{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.09)}
+.ri-correct{border-left:3px solid #059669}
+.ri-wrong{border-left:3px solid #ef4444}
+.ri-q{font-size:.88rem;font-weight:700;margin-bottom:.55rem;color:#111827}
+[data-theme="dark"] .ri-q{color:#e5e7eb}
+.ri-ans{font-size:.8rem;padding:.35rem .65rem;border-radius:8px;margin-bottom:.28rem;font-weight:600}
+.ans-c{background:rgba(5,150,105,.1);color:#059669}
+.ans-w{background:rgba(239,68,68,.1);color:#ef4444}
+.ans-r{background:rgba(124,58,237,.08);color:#7c3aed}
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div id="loading-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem">
-  <div class="spinner" style="width:48px;height:48px"></div>
-  <p style="color:var(--text-3)">Test yuklanmoqda...</p>
-</div>
-
-<!-- Test UI -->
-<div id="test-ui" style="display:none">
-  <div class="prog-strip"><div class="prog-strip-fill" id="prog-fill" style="width:0%"></div></div>
-  <div class="test-topbar">
-    <div class="test-title-txt" id="t-title">TestPro</div>
-    <div class="timer" id="timer" style="display:none">⏱️ 00:00</div>
-    <button class="theme-toggle">🌙</button>
-    <button class="btn btn-danger btn-sm" id="finish-early-btn" onclick="finish(false)" style="display:none">Yakunlash</button>
+<nav class="nav">
+  <div class="logo" onclick="goTo('index.html')">TestPro</div>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <div id="timer-wrap" style="display:none"></div>
+    <button class="tbtn" id="tbtn">🌙</button>
   </div>
+</nav>
 
-  <div class="test-body">
-    <div class="q-dot-wrap" id="q-dots"></div>
-    <div id="q-area"></div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" id="prev-btn" onclick="nav(-1)" style="display:none">← Oldingi</button>
-      <div style="flex:1"></div>
-      <button class="btn btn-primary" id="next-btn" onclick="nav(1)">Keyingi →</button>
-      <button class="btn btn-success" id="submit-btn" onclick="finish(false)" style="display:none">✅ Yakunlash</button>
+<div class="page">
+  <div id="screen-loading">
+    <div class="center-card"><div class="sp"></div><div>Yuklanmoqda...</div></div>
+  </div>
+  <div id="screen-test" style="display:none">
+    <div class="test-hdr">
+      <div class="test-title" id="t-title"></div>
+      <div class="test-meta" id="t-meta"></div>
+    </div>
+    <div class="prog-wrap"><div class="prog-bar" id="prog-bar" style="width:0"></div></div>
+    <div id="q-wrap"></div>
+    <div class="nav-btns">
+      <button class="nbtn nbtn-g" id="prev-btn" onclick="prev()">← Oldingi</button>
+      <button class="nbtn nbtn-p" id="next-btn" onclick="next()">Keyingi →</button>
     </div>
   </div>
-</div>
-
-<!-- Result -->
-<div id="result-ui" style="display:none">
-  <div style="background:var(--navbar-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-2);padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem">
-    <div style="font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
-    <div style="flex:1"></div>
-    <button class="theme-toggle">🌙</button>
-  </div>
-  <div class="result-wrap">
-    <div id="result-score-circle"></div>
-    <div class="result-big" id="res-pct">0%</div>
-    <h2 id="res-title" style="font-size:1.3rem;margin-bottom:0.35rem"></h2>
-    <p id="res-sub" style="color:var(--text-2);margin-bottom:1.75rem;font-size:0.9rem"></p>
-
-    <div class="result-card">
-      <div class="grid-3" style="gap:0.85rem">
-        <div><div class="stat-val" id="res-correct" style="font-size:1.5rem">0</div><div class="stat-lbl">To'g'ri</div></div>
-        <div><div class="stat-val" id="res-wrong" style="font-size:1.5rem">0</div><div class="stat-lbl">Noto'g'ri</div></div>
-        <div><div class="stat-val" id="res-time" style="font-size:1.5rem">0:00</div><div class="stat-lbl">Vaqt</div></div>
+  <div id="screen-result" style="display:none">
+    <div class="res-card">
+      <div class="score-circle" id="score-circle">
+        <div class="sc-pct" id="sc-pct">0%</div>
+        <div class="sc-lbl" id="sc-lbl">NATIJA</div>
       </div>
-    </div>
-
-    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">
-      <a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-secondary">🏠 Dashboard</a>
-      <button class="btn btn-primary" id="review-btn">📋 Tahlil</button>
-    </div>
-
-    <!-- Review -->
-    <div id="review-section" style="display:none;text-align:left">
-      <h3 style="margin-bottom:1.25rem;font-size:1rem">Javoblar tahlili</h3>
-      <div id="review-list"></div>
+      <div style="font-family:'Unbounded',sans-serif;font-size:1.1rem;font-weight:900;margin-bottom:.25rem" id="res-title"></div>
+      <div style="font-size:.8rem;color:#9ca3af" id="res-sub"></div>
+      <div class="stats-g">
+        <div class="sg"><div class="sv" id="r-correct">0</div><div class="sl">To'g'ri</div></div>
+        <div class="sg"><div class="sv" id="r-wrong">0</div><div class="sl">Noto'g'ri</div></div>
+        <div class="sg"><div class="sv" id="r-time">0:00</div><div class="sl">Vaqt</div></div>
+      </div>
+      <div class="res-btns">
+        <button class="rbtn rbtn-g" onclick="goTo('dashboard.html')">🏠 Dashboard</button>
+        <button class="rbtn rbtn-p" id="review-btn" onclick="showReview()">📋 Ko'rib chiqish</button>
+      </div>
+      <div id="review-section" style="display:none;text-align:left;margin-top:.85rem">
+        <div style="font-size:.88rem;font-weight:800;margin-bottom:.85rem">Javoblar tahlili:</div>
+        <div id="review-list"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -123,210 +191,203 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase.js"></script>
-<script src="js/theme.js"></script>
 <script>
-let testDoc = null, questions = [], answers = {}, curIdx = 0;
-let startTime, timerInterval, timeLeft, currentUser = null, finished = false;
-const params = new URLSearchParams(location.search);
-const testId = params.get('id');
+const T={get(){return localStorage.getItem('tp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')},
+  set(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tp_theme',t);
+    document.getElementById('tbtn').textContent=t==='dark'?'☀️':'🌙'},
+  toggle(){this.set(this.get()==='dark'?'light':'dark')}};
+T.set(T.get());
+document.getElementById('tbtn').onclick=()=>T.toggle();
 
-(async () => {
-  currentUser = await AuthHelpers.getCurrentUser();
-  if (!testId) { showErr('Test ID topilmadi'); return; }
-  try {
-    [testDoc, questions] = await Promise.all([DB.getTest(testId), DB.getQuestions(testId)]);
-    if (!testDoc) { showErr('Test topilmadi'); return; }
-    // Private access: owner, admin, or anyone with the code
-    if (testDoc.visibility === 'private') {
-      const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
-      const isOwner = currentUser && currentUser.uid === testDoc.authorId;
-      const isUnlocked = unlocked.includes(testId);
-      if (!isOwner && !isUnlocked) {
-        // Check if admin
-        const profile = currentUser ? await DB.getUser(currentUser.uid).catch(()=>null) : null;
-        const isAdmin = profile?.role === 'admin';
-        if (!isAdmin) { showErr('Bu test shaxsiy. Kod orqali kirish uchun dashboardga qayting.'); return; }
+let testData=null,questions=[],answers={},curIdx=0,startTime=Date.now(),timerInterval=null,currentUser=null;
+
+function showErr(msg){
+  document.getElementById('screen-loading').innerHTML=`
+    <div class="center-card">
+      <div style="font-size:2rem;margin-bottom:.75rem">❌</div>
+      <div style="font-weight:700;margin-bottom:.5rem">${msg}</div>
+      <button onclick="goTo('dashboard.html')" style="margin-top:.85rem;padding:.65rem 1.35rem;border-radius:11px;
+        border:none;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
+        font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Dashboard →</button>
+    </div>`;
+}
+
+(async()=>{
+  currentUser=await AuthHelpers.getCurrentUser().catch(()=>null);
+  const id=new URLSearchParams(location.search).get('id');
+  if(!id){showErr('Test ID topilmadi');return;}
+
+  try{
+    testData=await DB.getTest(id);
+    if(!testData){showErr('Test topilmadi');return;}
+
+    /* Access check */
+    if(testData.visibility==='private'){
+      const unlocked=JSON.parse(localStorage.getItem('tp_unlocked')||'[]');
+      const isOwner=currentUser&&currentUser.uid===testData.authorId;
+      const isUnlocked=unlocked.includes(id);
+      if(!isOwner&&!isUnlocked){
+        if(currentUser){
+          const prof=await DB.getUser(currentUser.uid).catch(()=>null);
+          if(prof?.role!=='admin'){showErr('Bu test shaxsiy. Kod orqali kiring.');return;}
+        }else{showErr('Bu test shaxsiy. Kod orqali kiring.');return;}
       }
     }
-    if (testDoc.visibility === 'code') {
-      const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
-      if (!unlocked.includes(testId) && (!currentUser || currentUser.uid !== testDoc.authorId)) {
-        showErr('Bu test kodli. Dashboarddan kod kiriting.'); return;
-      }
+
+    let qs=await DB.getQuestions(id);
+    if(!qs.length){showErr('Savollar topilmadi');return;}
+    if(testData.shuffleQuestions){qs=qs.sort(()=>Math.random()-.5);}
+    questions=qs;
+
+    /* Timer */
+    if(testData.timeLimit>0){
+      let rem=testData.timeLimit*60;
+      document.getElementById('timer-wrap').style.display='block';
+      timerInterval=setInterval(()=>{
+        rem--;
+        const el=document.getElementById('timer-wrap');
+        el.innerHTML=`<div class="timer-box ${rem<60?'warn':''}">${fmtTime(rem)}</div>`;
+        if(rem<=0){clearInterval(timerInterval);finish();}
+      },1000);
+      document.getElementById('timer-wrap').innerHTML=`<div class="timer-box">${fmtTime(rem)}</div>`;
     }
-    if (testDoc.shuffleQuestions) questions = questions.sort(() => Math.random() - 0.5);
-    initTest();
-  } catch(e) { showErr(e.message); }
+
+    /* Show test */
+    document.getElementById('screen-loading').style.display='none';
+    document.getElementById('screen-test').style.display='block';
+    document.getElementById('t-title').textContent=testData.title||'Test';
+    const sub=getSubject(testData.subject||'other');
+    document.getElementById('t-meta').innerHTML=`
+      <span class="chip">${sub.emoji} ${sub.label}</span>
+      <span class="chip">📝 ${questions.length} savol</span>
+      ${testData.timeLimit?`<span class="chip">⏱️ ${testData.timeLimit} daq</span>`:''}`;
+    renderQ();
+  }catch(e){showErr('Xato: '+e.message);}
 })();
 
-function initTest() {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('test-ui').style.display = 'block';
-  document.getElementById('t-title').textContent = testDoc.title;
-  document.title = 'TestPro — ' + testDoc.title;
-  startTime = Date.now();
-  if (testDoc.timeLimit > 0) {
-    timeLeft = testDoc.timeLimit * 60;
-    document.getElementById('timer').style.display = 'flex';
-    document.getElementById('finish-early-btn').style.display = 'inline-flex';
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      const el = document.getElementById('timer');
-      el.innerHTML = `⏱️ ${fmtTime(timeLeft)}`;
-      el.classList.toggle('warn', timeLeft < 60);
-      if (timeLeft <= 0) { clearInterval(timerInterval); finish(true); }
-    }, 1000);
+function renderQ(){
+  const q=questions[curIdx];
+  const prog=(curIdx+1)/questions.length*100;
+  document.getElementById('prog-bar').style.width=prog+'%';
+  document.getElementById('prev-btn').disabled=curIdx===0;
+  const isLast=curIdx===questions.length-1;
+  document.getElementById('next-btn').textContent=isLast?'✅ Tugatish':'Keyingi →';
+
+  const answered=answers[curIdx]!==undefined;
+  const wrap=document.getElementById('q-wrap');
+
+  let optsHtml='';
+  if(q.type==='text'){
+    const val=answers[curIdx]||'';
+    optsHtml=`<textarea class="text-inp" id="text-ans" rows="3" placeholder="Javobingizni yozing...">${esc(val)}</textarea>`;
+  }else{
+    optsHtml=q.options.map((o,i)=>{
+      let cls='opt';
+      if(answered&&testData.showResult!==false){
+        if(i===q.correct)cls+=' correct';
+        else if(i===answers[curIdx]&&i!==q.correct)cls+=' wrong';
+        cls+=' disabled';
+      }else if(answers[curIdx]===i){cls+=' sel';}
+      const letter=String.fromCharCode(65+i);
+      return `<button class="${cls}" onclick="selectOpt(${i})" ${answered&&testData.showResult!==false?'disabled':''}>
+        <span class="opt-letter">${letter}</span>${esc(o)}</button>`;
+    }).join('');
+    if(answered&&testData.showResult!==false&&q.explanation){
+      optsHtml+=`<div class="expl-box">💡 ${esc(q.explanation)}</div>`;
+    }
   }
-  renderDots(); renderQ();
-}
 
-function renderDots() {
-  document.getElementById('q-dots').innerHTML = questions.map((q, i) => `
-    <div class="q-dot ${answers[q.id]!==undefined?'answered':''} ${i===curIdx?'current':''}"
-      onclick="gotoQ(${i})">${i+1}</div>
-  `).join('');
-  const pct = (Object.keys(answers).length / questions.length) * 100;
-  document.getElementById('prog-fill').style.width = pct + '%';
-}
+  wrap.innerHTML=`<div class="q-card">
+    <div class="q-num">${curIdx+1} / ${questions.length}</div>
+    <div class="q-text">${esc(q.text)}</div>
+    ${optsHtml}
+    ${q.type==='text'&&answered&&q.explanation?`<div class="expl-box">💡 ${esc(q.explanation)}</div>`:''}
+  </div>`;
 
-function renderQ() {
-  const q = questions[curIdx];
-  const isAnswered = answers[q.id] !== undefined;
-  document.getElementById('q-area').innerHTML = `
-    <div class="q-panel">
-      <div class="q-panel-head">
-        <span class="q-label">Savol ${curIdx+1} / ${questions.length}</span>
-        <span class="q-pts">${q.points||1} ball</span>
-      </div>
-      <div class="q-text-disp">${esc(q.text)}</div>
-      <div id="opts-area">
-        ${buildOpts(q)}
-      </div>
-    </div>`;
-
-  document.getElementById('prev-btn').style.display   = curIdx > 0 ? 'inline-flex' : 'none';
-  document.getElementById('next-btn').style.display   = curIdx < questions.length-1 ? 'inline-flex' : 'none';
-  document.getElementById('submit-btn').style.display = curIdx === questions.length-1 ? 'inline-flex' : 'none';
-}
-
-function buildOpts(q) {
-  if (q.type === 'text') {
-    return `<textarea class="form-input" style="min-height:80px" placeholder="Javobingizni yozing..."
-      oninput="saveAns('${q.id}',this.value)">${esc(answers[q.id]||'')}</textarea>`;
+  if(q.type==='text'){
+    const ta=document.getElementById('text-ans');
+    if(ta){ta.oninput=()=>{answers[curIdx]=ta.value;};}
   }
-  return q.options.map((o, i) => {
-    const sel = answers[q.id] === i;
-    return `<button class="opt-btn ${sel?'sel':''}" onclick="pickOpt('${q.id}',${i})">
-      <span class="opt-letter">${String.fromCharCode(65+i)}</span>${esc(o)}
-    </button>`;
-  }).join('');
 }
 
-window.pickOpt = function(qid, idx) {
-  answers[qid] = idx;
-  renderDots(); renderQ();
-  if (curIdx < questions.length-1) setTimeout(() => nav(1), 350);
+window.selectOpt=(i)=>{
+  if(answers[curIdx]!==undefined)return;
+  answers[curIdx]=i;
+  renderQ();
 };
-window.saveAns = function(qid, val) { answers[qid] = val; renderDots(); };
-window.nav = function(d) { curIdx = Math.max(0, Math.min(questions.length-1, curIdx+d)); renderDots(); renderQ(); };
-window.gotoQ = function(i) { curIdx = i; renderDots(); renderQ(); };
 
-/* ── Finish ── */
-window.finish = async function(timeUp) {
-  if (finished) return;
-  const unanswered = questions.length - Object.keys(answers).length;
-  if (!timeUp && unanswered > 0) {
-    if (!confirm(`Hali ${unanswered} savol javobsiz. Yakunlaysizmi?`)) return;
+window.prev=()=>{if(curIdx>0){curIdx--;renderQ();}};
+window.next=()=>{
+  if(questions[curIdx].type==='text'){
+    const ta=document.getElementById('text-ans');
+    if(ta&&ta.value.trim())answers[curIdx]=ta.value.trim();
   }
-  finished = true;
+  if(curIdx<questions.length-1){curIdx++;renderQ();}
+  else{if(confirm('Testni tugatmoqchimisiz?'))finish();}
+};
+
+function finish(){
   clearInterval(timerInterval);
-  const dur = Math.round((Date.now() - startTime) / 1000);
-
-  let correct = 0, total = questions.filter(q => q.type !== 'text').length;
-  questions.forEach(q => {
-    if (q.type === 'text') return;
-    if (answers[q.id] === q.correct) correct++;
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  let correct=0;
+  questions.forEach((q,i)=>{
+    if(q.type==='text')return;
+    if(answers[i]===q.correct)correct++;
   });
-  const score = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const passed = score >= (testDoc.passScore || 60);
+  const total=questions.filter(q=>q.type!=='text').length||1;
+  const score=Math.round(correct/total*100);
+  const pass=score>=(testData.passScore||60);
 
-  if (currentUser) {
-    try {
-      await DB.saveResult({
-        testId, testTitle: testDoc.title, userId: currentUser.uid,
-        score, correct, total: questions.length, duration: dur, passed,
-        answers: Object.fromEntries(Object.entries(answers).map(([k,v]) => [k, v])),
-      });
-    } catch(e) { console.warn(e); }
+  document.getElementById('screen-test').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  const sc=document.getElementById('score-circle');
+  sc.className='score-circle '+(pass?'sc-pass':'sc-fail');
+  document.getElementById('sc-pct').textContent=score+'%';
+  document.getElementById('sc-lbl').textContent=pass?'O\'TDINGIZ!':'MUVAFFAQIYATSIZ';
+  document.getElementById('res-title').textContent=testData.title||'Test';
+  document.getElementById('res-sub').textContent=pass?'Tabriklaymiz! Yaxshi natija!':'Yana urinib ko\'ring!';
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=total-correct;
+  document.getElementById('r-time').textContent=fmtTime(elapsed);
+
+  /* Save result */
+  if(currentUser){
+    DB.saveResult({
+      userId:currentUser.uid,testId:testData.id,
+      testTitle:testData.title||'Test',
+      score,correct,total,elapsed,
+      answers:Object.keys(answers).length
+    }).catch(()=>{});
   }
-
-  if (testDoc.showResult !== false) showResult(score, correct, total, passed, dur);
-  else goTo('dashboard.html');
-};
-
-function showResult(score, correct, wrong_cnt, passed, dur) {
-  document.getElementById('test-ui').style.display = 'none';
-  document.getElementById('result-ui').style.display = 'block';
-
-  const el = document.getElementById('result-score-circle');
-  el.className = `score-circle ${passed?'pass':'fail'}`;
-  el.style.cssText = 'width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-family:"Unbounded",sans-serif;' +
-    (passed ? 'border:4px solid #059669;background:rgba(16,185,129,0.08);color:#059669' : 'border:4px solid #E11D48;background:rgba(244,63,94,0.08);color:#E11D48');
-  el.innerHTML = `<div style="font-size:2rem;font-weight:900;line-height:1">${score}%</div><div style="font-size:0.6rem;letter-spacing:0.05em;font-family:'Plus Jakarta Sans',sans-serif">Natija</div>`;
-
-  document.getElementById('res-pct').textContent   = '';
-  document.getElementById('res-title').textContent = passed ? "🎉 A'lo natija!" : "😔 Muvaffaqiyatsiz";
-  document.getElementById('res-sub').textContent   = passed
-    ? `O'tish bali: ${testDoc.passScore||60}% — siz qabul qildingiz!`
-    : `O'tish bali: ${testDoc.passScore||60}% — yana bir bor urinib ko'ring`;
-  document.getElementById('res-correct').textContent = correct;
-  document.getElementById('res-wrong').textContent   = questions.filter(q=>q.type!=='text').length - correct;
-  document.getElementById('res-time').textContent    = fmtTime(dur);
-
-  document.getElementById('review-btn').addEventListener('click', () => {
-    const sec = document.getElementById('review-section');
-    if (sec.style.display === 'none') { sec.style.display = 'block'; buildReview(); }
-    else sec.style.display = 'none';
-  });
 }
 
-function buildReview() {
-  const list = document.getElementById('review-list');
-  list.innerHTML = questions.map((q, i) => {
-    const userAns = answers[q.id];
-    const isCorr  = q.type !== 'text' && userAns === q.correct;
-    const badge   = q.type === 'text' ? `<span class="badge badge-teal">📝 Matn</span>` :
-                    isCorr ? `<span class="badge badge-green">✓ To'g'ri</span>` :
-                             `<span class="badge badge-rose">✗ Noto'g'ri</span>`;
-
-    const optsHtml = q.type === 'text'
-      ? `<div class="form-input" style="min-height:50px;margin-top:0.5rem;pointer-events:none">${esc(userAns||'(Javob berilmadi)')}</div>`
-      : q.options.map((o, j) => {
-          const cls = j === q.correct ? 'correct' : (j === userAns && j !== q.correct ? 'wrong' : '');
-          return `<div class="opt-btn ${cls} disabled">
-            <span class="opt-letter">${String.fromCharCode(65+j)}</span>${esc(o)}
-            ${j === q.correct ? ' ✓' : ''}
-          </div>`;
-        }).join('');
-
-    const explHtml = q.explanation
-      ? `<div class="expl-box">💡 <strong>Izoh:</strong> ${esc(q.explanation)}</div>` : '';
-
-    return `<div class="review-q fade-in">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.75rem">
-        <div style="font-size:0.85rem;font-weight:600">${i+1}. ${esc(q.text)}</div>
-        ${badge}
-      </div>
-      ${optsHtml}
-      ${explHtml}
+window.showReview=()=>{
+  const sec=document.getElementById('review-section');
+  if(sec.style.display!=='none'){sec.style.display='none';document.getElementById('review-btn').textContent='📋 Ko\'rib chiqish';return;}
+  sec.style.display='block';
+  document.getElementById('review-btn').textContent='▲ Yopish';
+  const list=document.getElementById('review-list');
+  list.innerHTML=questions.map((q,i)=>{
+    if(q.type==='text'){
+      const ua=answers[i]||'(javob berilmadi)';
+      return `<div class="review-item">
+        <div class="ri-q">${i+1}. ${esc(q.text)}</div>
+        <div class="ri-ans ans-c">📝 Sizning javobingiz: ${esc(ua)}</div>
+        ${q.explanation?`<div class="expl-box">💡 ${esc(q.explanation)}</div>`:''}
+      </div>`;
+    }
+    const ua=answers[i];
+    const correct=ua===q.correct;
+    return `<div class="review-item ${correct?'ri-correct':'ri-wrong'}">
+      <div class="ri-q">${i+1}. ${esc(q.text)}</div>
+      ${ua!==undefined?`<div class="ri-ans ${correct?'ans-c':'ans-w'}">
+        ${correct?'✅':'❌'} Sizning: ${esc(q.options[ua]||'?')}
+      </div>`:'<div class="ri-ans ans-w">⏭️ O\'tkazib yuborildi</div>'}
+      ${!correct?`<div class="ri-ans ans-r">✅ To\'g\'ri: ${esc(q.options[q.correct]||'?')}</div>`:''}
+      ${q.explanation?`<div class="expl-box">💡 ${esc(q.explanation)}</div>`:''}
     </div>`;
   }).join('');
-}
-
-function showErr(msg) {
-  document.getElementById('loading-screen').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><h3>${msg}</h3><a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-primary" style="margin-top:1rem">Dashboard →</a></div>`;
-}
+};
 </script>
 </body>
-        </html>
-               
+</html>
