@@ -274,17 +274,9 @@ a{text-decoration:none;color:inherit}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase.js"></script>
+<script src="js/theme.js"></script>
 <script>
-/* ── Theme ── */
-const Theme = {
-  get(){ return localStorage.getItem('tp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'); },
-  set(t){ document.documentElement.setAttribute('data-theme',t); localStorage.setItem('tp_theme',t);
-    document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=t==='dark'?'☀️':'🌙');
-    const sw=document.getElementById('theme-sw'); if(sw) sw.checked=t==='dark';
-  },
-  toggle(){ this.set(this.get()==='dark'?'light':'dark'); }
-};
-Theme.set(Theme.get());
+// Theme handled by theme.js
 
 /* ── Menu ── */
 const mPanel=document.getElementById('mPanel'), mOv=document.getElementById('mOv');
@@ -302,4 +294,13 @@ document.getElementById('logout-btn').onclick=async()=>{
 
 /* ── Code modal ── */
 function openCodeModal(){ document.getElementById('code-ov').classList.add('on'); setTimeout(()=>document.querySelectorAll('.ci')[0]?.focus(),100); }
-function closeCodeModal(){ document.getElementById('code-ov').classList.remove('on'); document.getElementById('c
+function closeCodeModal(){ document.getElementById('code-ov').classList.remove('on'); document.getElementById('code-msg').textContent=''; document.querySelectorAll('.ci').forEach(i=>i.value=''); }
+window.openCodeModal=openCodeModal;
+// code input auto-focus
+document.querySelectorAll('.ci').forEach((inp,i,all)=>{
+  inp.oninput=()=>{ inp.value=inp.value.toUpperCase().slice(-1); if(inp.value&&all[i+1]) all[i+1].focus(); };
+  inp.onkeydown=e=>{ if(e.key==='Backspace'&&!inp.value&&all[i-1]) all[i-1].focus(); };
+});
+
+/* ── Toast ── */
+function toast(msg){ const t=docume
