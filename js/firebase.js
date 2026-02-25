@@ -1,5 +1,5 @@
 /* ================================================================
-   TestPro — firebase.js  v3  (ishonchli, composite index yo'q)
+   TestPro 2.0 — firebase.js  (COMPLETE & CLEAN)
    ================================================================ */
 
 const firebaseConfig = {
@@ -11,24 +11,22 @@ const firebaseConfig = {
   appId:             "1:696087699873:web:81f18119449f25cbceabe0"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
-/* ── BASE_PATH: GitHub Pages uchun avto aniqlash ── */
+/* ── Navigation ── */
 const BASE_PATH = (() => {
   const p = window.location.pathname;
   return p.substring(0, p.lastIndexOf('/') + 1);
 })();
-function goTo(page) {
-  window.location.href = BASE_PATH + page;
-}
+function goTo(page) { window.location.href = BASE_PATH + page; }
 
 /* ── Auth ── */
 const AuthHelpers = {
   getCurrentUser() {
-    return new Promise((resolve, reject) => {
-      const unsub = auth.onAuthStateChanged(user => { unsub(); resolve(user); }, reject);
+    return new Promise((res, rej) => {
+      const u = auth.onAuthStateChanged(user => { u(); res(user); }, rej);
     });
   },
   async requireAuth(fallback = 'login.html') {
@@ -38,23 +36,23 @@ const AuthHelpers = {
   }
 };
 
-/* ── Fan/Guruhlar ── */
+/* ── Subject map ── */
 const SUBJECTS = {
-  english:  { label: 'English',     emoji: '🇬🇧', cls: 'subj-english'  },
-  arabic:   { label: 'Arabic',      emoji: '🕌',  cls: 'subj-arabic'   },
-  russian:  { label: 'Russian',     emoji: '🇷🇺', cls: 'subj-russian'  },
-  turkish:  { label: 'Turkish',     emoji: '🇹🇷', cls: 'subj-turkish'  },
-  math:     { label: 'Math',        emoji: '🧮',  cls: 'subj-math'     },
-  it:       { label: 'IT / CS',     emoji: '💻',  cls: 'subj-it'       },
-  science:  { label: 'Science',     emoji: '🔬',  cls: 'subj-science'  },
-  religion: { label: 'Din / Tarix', emoji: '📖',  cls: 'subj-religion' },
-  other:    { label: 'Boshqa',      emoji: '📚',  cls: 'subj-custom'   },
+  english:  { label: 'English',     emoji: '🇬🇧' },
+  arabic:   { label: 'Arabcha',     emoji: '🕌'  },
+  russian:  { label: 'Ruscha',      emoji: '🇷🇺' },
+  turkish:  { label: 'Turkcha',     emoji: '🇹🇷' },
+  math:     { label: 'Matematika',  emoji: '🧮'  },
+  it:       { label: 'IT / CS',     emoji: '💻'  },
+  science:  { label: 'Fanlar',      emoji: '🔬'  },
+  religion: { label: 'Din',         emoji: '📖'  },
+  other:    { label: 'Boshqa',      emoji: '📚'  },
 };
 function getSubject(k) {
-  return SUBJECTS[k] || { label: k || 'Boshqa', emoji: '📝', cls: 'subj-custom' };
+  return SUBJECTS[k] || { label: k || 'Boshqa', emoji: '📚' };
 }
 
-/* ── Yordamchi funksiyalar ── */
+/* ── Helpers ── */
 function esc(s) {
   const d = document.createElement('div');
   d.textContent = String(s || '');
@@ -63,26 +61,30 @@ function esc(s) {
 function fmtDate(ts) {
   if (!ts) return '—';
   try {
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    const d = ts.toDate ? ts.toDate() : new Date(ts.seconds ? ts.seconds * 1000 : ts);
     return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'short', year: 'numeric' });
   } catch { return '—'; }
 }
 function fmtTime(secs) {
   secs = secs || 0;
-  return String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 function randCode(n = 6) {
   const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({ length: n }, () => c[Math.floor(Math.random() * c.length)]).join('');
+  return Array.from({length:n}, () => c[Math.floor(Math.random()*c.length)]).join('');
 }
 
 /* ── DB ── */
 const DB = {
 
-  /* USERS */
+  /* ── USERS ── */
   async getUser(uid) {
-    const d = await db.collection('users').doc(uid).get();
-    return d.exists ? { id: d.id, ...d.data() } : null;
+    try {
+      const d = await db.collection('users').doc(uid).get();
+      return d.exists ? { id: d.id, ...d.data() } : null;
+    } catch(e) { console.warn('getUser:', e.message); return null; }
   },
   async createUser(uid, data) {
     await db.collection('users').doc(uid).set({
@@ -92,48 +94,49 @@ const DB = {
     });
   },
   async updateUser(uid, data) {
-    await db.collection('users').doc(uid).update({
-      ...data,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('users').doc(uid).set(
+      { ...data, updatedAt: firebase.firestore.FieldValue.serverTimestamp() },
+      { merge: true }
+    );
   },
-  async getAllUsers(limit = 200) {
-    const snap = await db.collection('users').limit(limit).get();
+  async getAllUsers() {
+    const snap = await db.collection('users').get();
     return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-      .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      .sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
   },
 
-  /* TESTS */
+  /* ── TESTS ── */
   async getTest(id) {
     const d = await db.collection('tests').doc(id).get();
     return d.exists ? { id: d.id, ...d.data() } : null;
   },
 
-  /* Foydalanuvchi o'z testlarini oladi — faqat authorId filter, composite index yo'q */
+  // Mening testlarim — faqat authorId filteri (index shart emas)
   async getMyTests(authorId) {
-    const snap = await db.collection('tests').where('authorId', '==', authorId).get();
+    const snap = await db.collection('tests')
+      .where('authorId', '==', authorId)
+      .get();
     const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    return list;
+    return list.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
   },
 
-  /* Ommaviy testlar — faqat public */
+  // Ommaviy testlar
   async getPublicTests() {
-    const snap = await db.collection('tests').where('visibility', '==', 'public').get();
+    const snap = await db.collection('tests')
+      .where('visibility', '==', 'public')
+      .get();
     const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    return list;
+    return list.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
   },
 
-  /* Barcha testlar (admin uchun) */
-  async getAllTests(limit = 200) {
-    const snap = await db.collection('tests').limit(limit).get();
+  // Admin: barcha testlar
+  async getAllTests() {
+    const snap = await db.collection('tests').get();
     const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    return list;
+    return list.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
   },
 
-  /* Kod orqali test topish */
+  // Kod orqali
   async getTestByCode(code) {
     const snap = await db.collection('tests')
       .where('accessCode', '==', code.toUpperCase().trim())
@@ -143,19 +146,18 @@ const DB = {
     return { id: d.id, ...d.data() };
   },
 
-  /* Test yaratish — har doim accessCode */
   async createTest(data, authorId) {
-    const accessCode = data.accessCode || randCode(6);
+    const code = data.accessCode || randCode(6);
     const ref = await db.collection('tests').add({
       ...data,
-      accessCode,
-      authorId,
+      accessCode:   code,
+      authorId:     authorId,
       attempts:     0,
       averageScore: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt:    firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:    firebase.firestore.FieldValue.serverTimestamp(),
     });
-    return { id: ref.id, accessCode };
+    return { id: ref.id, accessCode: code };
   },
 
   async updateTest(id, data) {
@@ -166,39 +168,33 @@ const DB = {
   },
 
   async deleteTest(id) {
-    /* Avval savollar subcollection o'chiriladi */
     const qs = await db.collection('tests').doc(id).collection('questions').get();
     if (qs.size > 0) {
-      const batch = db.batch();
-      qs.forEach(d => batch.delete(d.ref));
-      await batch.commit();
+      const b = db.batch();
+      qs.forEach(d => b.delete(d.ref));
+      await b.commit();
     }
     await db.collection('tests').doc(id).delete();
   },
 
-  /* QUESTIONS */
+  /* ── QUESTIONS ── */
   async getQuestions(testId) {
     const snap = await db.collection('tests').doc(testId).collection('questions').get();
     return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
+      .sort((a,b) => (a.order||0) - (b.order||0));
   },
 
   async saveQuestions(testId, questions) {
     const col = db.collection('tests').doc(testId).collection('questions');
-    /* Eskilarini o'chirish */
     const existing = await col.get();
     if (existing.size > 0) {
-      const b = db.batch();
-      existing.forEach(d => b.delete(d.ref));
-      await b.commit();
+      const b = db.batch(); existing.forEach(d => b.delete(d.ref)); await b.commit();
     }
     if (!questions.length) return;
-
-    /* 499 tadan batch */
-    for (let i = 0; i < questions.length; i += 499) {
+    for (let i = 0; i < questions.length; i += 400) {
       const b = db.batch();
-      questions.slice(i, i + 499).forEach((q, j) => {
-        const { id: _localId, ...clean } = q;
+      questions.slice(i, i+400).forEach((q, j) => {
+        const { id: _id, ...clean } = q;
         b.set(col.doc(), {
           ...clean,
           order:       i + j,
@@ -215,7 +211,7 @@ const DB = {
     await db.collection('tests').doc(testId).update({ questionCount: questions.length });
   },
 
-  /* RESULTS */
+  /* ── RESULTS ── */
   async saveResult(data) {
     const ref = await db.collection('results').add({
       ...data,
@@ -223,41 +219,26 @@ const DB = {
     });
     try {
       const tRef = db.collection('tests').doc(data.testId);
-      const tDoc = await tRef.get();
-      if (tDoc.exists) {
-        const old = tDoc.data();
-        const prevAvg = old.averageScore || 0;
-        const prevAtt = old.attempts    || 0;
-        const newAvg  = Math.round((prevAvg * prevAtt + (data.score || 0)) / (prevAtt + 1));
-        await tRef.update({
-          attempts:     firebase.firestore.FieldValue.increment(1),
-          averageScore: newAvg,
-        });
+      const td = await tRef.get();
+      if (td.exists) {
+        const prev = td.data();
+        const n = (prev.attempts||0) + 1;
+        const avg = Math.round(((prev.averageScore||0) * (prev.attempts||0) + (data.score||0)) / n);
+        await tRef.update({ attempts: n, averageScore: avg });
       }
-    } catch (e) { console.warn('stats update:', e.message); }
+    } catch(e) { console.warn('result stats:', e.message); }
     return ref.id;
   },
 
   async getMyResults(userId, limit = 20) {
     const snap = await db.collection('results').where('userId', '==', userId).get();
-    const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    list.sort((a, b) => (b.completedAt?.seconds || 0) - (a.completedAt?.seconds || 0));
+    const list = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a,b) => (b.completedAt?.seconds||0) - (a.completedAt?.seconds||0));
     return limit ? list.slice(0, limit) : list;
-  },
-
-  async getResults(filters = {}) {
-    let q = db.collection('results');
-    if (filters.userId) q = q.where('userId', '==', filters.userId);
-    else if (filters.testId) q = q.where('testId', '==', filters.testId);
-    const snap = await q.get();
-    let list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    list.sort((a, b) => (b.completedAt?.seconds || 0) - (a.completedAt?.seconds || 0));
-    if (filters.limit) list = list.slice(0, filters.limit);
-    return list;
   }
 };
 
-/* ── Global eksport ── */
+/* ── Globals ── */
 window.auth        = auth;
 window.db          = db;
 window.DB          = DB;
@@ -269,6 +250,4 @@ window.fmtDate     = fmtDate;
 window.fmtTime     = fmtTime;
 window.randCode    = randCode;
 window.goTo        = goTo;
-window.BASE_PATH   = BASE_PATH;
-window.FieldValue  = firebase.firestore.FieldValue;
-                         
+                                      
