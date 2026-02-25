@@ -21,10 +21,10 @@
     <div style="font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">TestPro</div>
   </div>
   <div class="sidebar-inner">
-    <a href="dashboard.html" class="sidebar-nav-item">📊 Dashboard</a>
-    <a href="create.html" class="sidebar-nav-item">✏️ Test yaratish</a>
-    <a href="history.html" class="sidebar-nav-item active">📜 Tarix</a>
-    <a href="profile.html" class="sidebar-nav-item">👤 Profil</a>
+    <a onclick="goTo('dashboard.html');return false" href="#" class="sidebar-nav-item">📊 Dashboard</a>
+    <a onclick="goTo('create.html');return false" href="#" class="sidebar-nav-item">✏️ Test yaratish</a>
+    <a onclick="goTo('history.html');return false" href="#" class="sidebar-nav-item active">📜 Tarix</a>
+    <a onclick="goTo('profile.html');return false" href="#" class="sidebar-nav-item">👤 Profil</a>
   </div>
   <div class="sidebar-footer">
     <div class="user-chip">
@@ -46,7 +46,7 @@
   <div id="empty" class="empty" style="display:none">
     <div class="empty-icon">📭</div>
     <h3>Hali test ishlanmagan</h3>
-    <a href="index.html" class="btn btn-primary btn-sm" style="margin-top:1rem">Testlarga o'tish</a>
+    <a onclick="goTo('index.html');return false" href="#" class="btn btn-primary btn-sm" style="margin-top:1rem">Testlarga o'tish</a>
   </div>
 </main>
 
