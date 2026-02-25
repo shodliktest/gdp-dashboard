@@ -107,7 +107,7 @@
     </div>
 
     <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem">
-      <a href="dashboard.html" class="btn btn-secondary">🏠 Dashboard</a>
+      <a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-secondary">🏠 Dashboard</a>
       <button class="btn btn-primary" id="review-btn">📋 Tahlil</button>
     </div>
 
@@ -136,8 +136,17 @@ const testId = params.get('id');
   try {
     [testDoc, questions] = await Promise.all([DB.getTest(testId), DB.getQuestions(testId)]);
     if (!testDoc) { showErr('Test topilmadi'); return; }
-    if (testDoc.visibility === 'private' && (!currentUser || currentUser.uid !== testDoc.authorId)) {
-      showErr('Bu test shaxsiy. Kirish ruxsati yo\'q.'); return;
+    // Private access: owner, admin, or anyone with the code
+    if (testDoc.visibility === 'private') {
+      const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
+      const isOwner = currentUser && currentUser.uid === testDoc.authorId;
+      const isUnlocked = unlocked.includes(testId);
+      if (!isOwner && !isUnlocked) {
+        // Check if admin
+        const profile = currentUser ? await DB.getUser(currentUser.uid).catch(()=>null) : null;
+        const isAdmin = profile?.role === 'admin';
+        if (!isAdmin) { showErr('Bu test shaxsiy. Kod orqali kirish uchun dashboardga qayting.'); return; }
+      }
     }
     if (testDoc.visibility === 'code') {
       const unlocked = JSON.parse(localStorage.getItem('tp_unlocked') || '[]');
@@ -252,7 +261,7 @@ window.finish = async function(timeUp) {
   }
 
   if (testDoc.showResult !== false) showResult(score, correct, total, passed, dur);
-  else location.href = 'dashboard.html';
+  else goTo('dashboard.html');
 };
 
 function showResult(score, correct, wrong_cnt, passed, dur) {
@@ -315,7 +324,7 @@ function buildReview() {
 }
 
 function showErr(msg) {
-  document.getElementById('loading-screen').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><h3>${msg}</h3><a href="dashboard.html" class="btn btn-primary" style="margin-top:1rem">Dashboard →</a></div>`;
+  document.getElementById('loading-screen').innerHTML = `<div class="empty"><div class="empty-icon">❌</div><h3>${msg}</h3><a onclick="goTo('dashboard.html');return false" href="#" class="btn btn-primary" style="margin-top:1rem">Dashboard →</a></div>`;
 }
 </script>
 </body>
