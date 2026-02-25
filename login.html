@@ -1,218 +1,187 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>TestPro — Kirish</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
 <style>
-body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.auth-wrap{width:100%;max-width:440px}
-.auth-logo{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:2rem;display:block}
-.auth-card{background:var(--bg-card);border:1px solid var(--border-2);border-radius:var(--radius-lg);padding:2rem;box-shadow:var(--shadow)}
-[data-theme="dark"] .auth-card{background:var(--bg-2);border-color:var(--border)}
-.auth-tabs{display:flex;gap:0;background:var(--bg-2);border-radius:var(--radius-sm);padding:3px;margin-bottom:1.75rem}
-.auth-tab{flex:1;text-align:center;padding:0.6rem;font-size:0.85rem;font-weight:600;color:var(--text-3);border-radius:8px;cursor:pointer;transition:all var(--t);border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif}
-.auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)}
-[data-theme="dark"] .auth-tab.active{background:var(--bg)}
-.auth-divider{display:flex;align-items:center;gap:0.85rem;margin:1.25rem 0;color:var(--text-3);font-size:0.78rem}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-2)}
-.pwd-wrap{position:relative}
-.pwd-wrap .form-input{padding-right:3rem}
-.pwd-eye{position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-3);font-size:1rem;line-height:1;padding:0.2rem}
-.google-btn{width:100%;justify-content:center;gap:0.75rem;padding:0.78rem}
-.g-icon{width:20px;height:20px;background:linear-gradient(135deg,#4285F4 0%,#34A853 40%,#FBBC05 70%,#EA4335 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:900;flex-shrink:0}
-.theme-pill{position:fixed;top:1.25rem;right:1.25rem}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;
+  background:linear-gradient(135deg,#f5f3ff 0%,#fce7f3 50%,#eff6ff 100%);
+  display:flex;align-items:center;justify-content:center;padding:1rem}
+[data-theme="dark"] body{background:linear-gradient(135deg,#0d0820,#140a20,#080d1a);color:#e8e0ff}
+.card{background:#fff;border-radius:22px;padding:2rem 1.75rem;width:100%;max-width:400px;
+  box-shadow:0 20px 60px rgba(124,58,237,.15)}
+[data-theme="dark"] .card{background:#130d26;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.logo{font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:900;text-align:center;
+  background:linear-gradient(135deg,#7c3aed,#ec4899);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.35rem}
+.sub{text-align:center;font-size:.8rem;color:#9ca3af;margin-bottom:1.75rem}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:1.5rem;
+  background:rgba(124,58,237,.07);border-radius:12px;padding:.3rem}
+.tab{padding:.55rem;border-radius:9px;border:none;cursor:pointer;font-weight:700;
+  font-size:.82rem;font-family:'Plus Jakarta Sans',sans-serif;
+  background:transparent;color:#9ca3af;transition:all .2s}
+.tab.on{background:#fff;color:#7c3aed;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+[data-theme="dark"] .tab.on{background:rgba(255,255,255,.12);color:#c4b5fd}
+.form-group{margin-bottom:.85rem}
+label{display:block;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:.32rem}
+[data-theme="dark"] label{color:#c4b5fd}
+input{width:100%;padding:.72rem .9rem;border-radius:11px;border:1.5px solid rgba(0,0,0,.1);
+  background:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;
+  color:#111827;outline:none;transition:border-color .2s}
+[data-theme="dark"] input{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#e8e0ff}
+input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.12)}
+.btn{width:100%;padding:.82rem;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
+  font-weight:800;font-size:.9rem;font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all .2s;margin-top:.35rem}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,.35)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.alert{padding:.65rem .9rem;border-radius:10px;font-size:.8rem;font-weight:600;
+  margin-bottom:.85rem;text-align:center}
+.alert-e{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+.alert-s{background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.2)}
+.divider{display:flex;align-items:center;gap:.65rem;margin:.85rem 0;color:#9ca3af;font-size:.75rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(0,0,0,.09)}
+[data-theme="dark"] .divider::before,[data-theme="dark"] .divider::after{background:rgba(255,255,255,.1)}
+.back{text-align:center;margin-top:.9rem;font-size:.78rem;color:#9ca3af}
+.back a{color:#7c3aed;font-weight:700;cursor:pointer}
+.tbtn{position:fixed;top:.85rem;right:.85rem;width:34px;height:34px;
+  border-radius:9px;border:1.5px solid rgba(0,0,0,.1);background:#fff;cursor:pointer;font-size:.88rem}
+[data-theme="dark"] .tbtn{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.15)}
 </style>
 </head>
-<body id="auth-page">
-<div class="theme-pill"><button class="theme-toggle">🌙</button></div>
+<body>
+<button class="tbtn" id="tbtn">🌙</button>
 
-<div class="auth-wrap fade-in-up">
-  <a onclick="goTo('index.html');return false" href="#" class="auth-logo">TestPro</a>
+<div class="card">
+  <div class="logo">TestPro</div>
+  <div class="sub">Bilimingizni sinang va o'stiring</div>
 
-  <div class="auth-card">
-    <div style="text-align:center;margin-bottom:1.75rem">
-      <h2 id="auth-h" style="font-size:1.4rem;margin-bottom:0.3rem">Xush kelibsiz!</h2>
-      <p id="auth-sub" style="font-size:0.85rem;color:var(--text-2)">Hisobingizga kiring</p>
-    </div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-in">Kirish</button>
-      <button class="auth-tab" id="tab-up">Ro'yxatdan o'tish</button>
-    </div>
-
-    <div id="auth-alert"></div>
-
-    <!-- LOGIN -->
-    <form id="form-login">
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="in-email" class="form-input" placeholder="siz@email.com" required autocomplete="email"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Parol</label>
-        <div class="pwd-wrap">
-          <input type="password" id="in-pwd" class="form-input" placeholder="••••••••" required/>
-          <button type="button" class="pwd-eye" onclick="togglePwd('in-pwd',this)">👁️</button>
-        </div>
-      </div>
-      <div style="text-align:right;margin-bottom:1.1rem">
-        <a href="#" id="forgot-link" style="font-size:0.8rem;color:var(--accent)">Parolni unutdim?</a>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem" data-lbl="Kirish →">Kirish →</button>
-    </form>
-
-    <!-- REGISTER -->
-    <form id="form-reg" style="display:none">
-      <div class="form-group">
-        <label class="form-label">To'liq ism</label>
-        <input type="text" id="up-name" class="form-input" placeholder="Ism Familiya" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="up-email" class="form-input" placeholder="siz@email.com" required autocomplete="email"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Parol</label>
-        <div class="pwd-wrap">
-          <input type="password" id="up-pwd" class="form-input" placeholder="Kamida 6 ta belgi" required/>
-          <button type="button" class="pwd-eye" onclick="togglePwd('up-pwd',this)">👁️</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Parolni tasdiqlang</label>
-        <div class="pwd-wrap">
-          <input type="password" id="up-confirm" class="form-input" placeholder="Takrorlang" required/>
-          <button type="button" class="pwd-eye" onclick="togglePwd('up-confirm',this)">👁️</button>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem" data-lbl="Ro'yxatdan o'tish →">Ro'yxatdan o'tish →</button>
-      <p style="font-size:0.74rem;color:var(--text-3);text-align:center;margin-top:0.85rem">Ro'yxatdan o'tish orqali <a href="#">Shartlarga</a> rozilik bildirasiz</p>
-    </form>
-
-    <div class="auth-divider">yoki</div>
-
-    <button id="google-btn" class="btn btn-secondary google-btn">
-      <div class="g-icon">G</div> Google bilan davom etish
-    </button>
-
-    <p style="text-align:center;margin-top:1.25rem;font-size:0.82rem;color:var(--text-3)">
-      <a onclick="goTo('index.html');return false" href="#">← Bosh sahifaga qaytish</a>
-    </p>
+  <div class="tabs">
+    <button class="tab on" id="tab-login" onclick="switchTab('login')">Kirish</button>
+    <button class="tab" id="tab-reg" onclick="switchTab('reg')">Ro'yxatdan o'tish</button>
   </div>
+
+  <div id="alert-box"></div>
+
+  <!-- LOGIN -->
+  <div id="login-form">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="l-email" placeholder="email@example.com"/>
+    </div>
+    <div class="form-group">
+      <label>Parol</label>
+      <input type="password" id="l-pass" placeholder="Parolingiz"/>
+    </div>
+    <button class="btn" id="login-btn">Kirish →</button>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="reg-form" style="display:none">
+    <div class="form-group">
+      <label>Ism Familiya</label>
+      <input type="text" id="r-name" placeholder="Ism Familiya"/>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="r-email" placeholder="email@example.com"/>
+    </div>
+    <div class="form-group">
+      <label>Parol (kamida 6 ta belgi)</label>
+      <input type="password" id="r-pass" placeholder="Parol o'ylab toping"/>
+    </div>
+    <button class="btn" id="reg-btn">Ro'yxatdan o'tish →</button>
+  </div>
+
+  <div class="divider">yoki</div>
+  <div class="back"><a onclick="goTo('index.html')">← Bosh sahifaga qaytish</a></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase.js"></script>
-<script src="js/theme.js"></script>
 <script>
-function togglePwd(id, btn) {
-  const inp = document.getElementById(id);
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
-}
-function showAlert(msg, type='error') {
-  document.getElementById('auth-alert').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-}
-function clearAlert() { document.getElementById('auth-alert').innerHTML = ''; }
-function setBusy(btn, busy) {
-  btn.disabled = busy;
-  btn.textContent = busy ? '⏳ Yuklanmoqda...' : (btn.dataset.lbl || btn.textContent);
-}
+const T={get(){return localStorage.getItem('tp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')},
+  set(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tp_theme',t);
+    document.getElementById('tbtn').textContent=t==='dark'?'☀️':'🌙'},
+  toggle(){this.set(this.get()==='dark'?'light':'dark')}};
+T.set(T.get());
+document.getElementById('tbtn').onclick=()=>T.toggle();
 
-// Tab switching
-const tIn = document.getElementById('tab-in');
-const tUp = document.getElementById('tab-up');
-const fIn = document.getElementById('form-login');
-const fUp = document.getElementById('form-reg');
-tIn.addEventListener('click', () => {
-  tIn.classList.add('active'); tUp.classList.remove('active');
-  fIn.style.display='block'; fUp.style.display='none';
-  document.getElementById('auth-h').textContent = 'Xush kelibsiz!';
-  document.getElementById('auth-sub').textContent = 'Hisobingizga kiring';
+/* If already logged in, go to dashboard */
+AuthHelpers.getCurrentUser().then(u=>{if(u)goTo('dashboard.html');}).catch(()=>{});
+
+function showAlert(msg,type='e'){
+  document.getElementById('alert-box').innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
+}
+function clearAlert(){document.getElementById('alert-box').innerHTML='';}
+
+function switchTab(t){
+  document.getElementById('login-form').style.display=t==='login'?'block':'none';
+  document.getElementById('reg-form').style.display=t==='reg'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('on',t==='login');
+  document.getElementById('tab-reg').classList.toggle('on',t==='reg');
   clearAlert();
-});
-tUp.addEventListener('click', () => {
-  tUp.classList.add('active'); tIn.classList.remove('active');
-  fUp.style.display='block'; fIn.style.display='none';
-  document.getElementById('auth-h').textContent = 'Hisob yaratish';
-  document.getElementById('auth-sub').textContent = 'Bepul ro\'yxatdan o\'ting';
-  clearAlert();
-});
+}
 
-// Login
-fIn.addEventListener('submit', async e => {
-  e.preventDefault(); clearAlert();
-  const btn = fIn.querySelector('[type="submit"]');
-  setBusy(btn, true);
-  try {
-    await auth.signInWithEmailAndPassword(
-      document.getElementById('in-email').value.trim(),
-      document.getElementById('in-pwd').value
-    );
-    window.goTo('dashboard.html');
-  } catch(err) {
-    const msgs = { 'auth/user-not-found':"Email topilmadi", 'auth/wrong-password':"Parol noto'g'ri", 'auth/invalid-email':"Email noto'g'ri", 'auth/too-many-requests':"Ko'p urinish. Keyinroq sinang" };
-    showAlert(msgs[err.code] || err.message);
-    setBusy(btn, false);
+/* LOGIN */
+document.getElementById('login-btn').onclick=async()=>{
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  if(!email||!pass){showAlert('Email va parolni kiriting');return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.textContent='⏳ Kirilmoqda...';
+  try{
+    await auth.signInWithEmailAndPassword(email,pass);
+    goTo('dashboard.html');
+  }catch(e){
+    const msgs={
+      'auth/user-not-found':'Foydalanuvchi topilmadi',
+      'auth/wrong-password':'Parol noto\'g\'ri',
+      'auth/invalid-email':'Email noto\'g\'ri',
+      'auth/too-many-requests':'Ko\'p urinish. Bir oz kuting',
+      'auth/invalid-credential':'Email yoki parol noto\'g\'ri'
+    };
+    showAlert(msgs[e.code]||e.message);
+    btn.disabled=false;btn.textContent='Kirish →';
   }
-});
+};
 
-// Register
-fUp.addEventListener('submit', async e => {
-  e.preventDefault(); clearAlert();
-  const btn = fUp.querySelector('[type="submit"]');
-  const name = document.getElementById('up-name').value.trim();
-  const email = document.getElementById('up-email').value.trim();
-  const pwd = document.getElementById('up-pwd').value;
-  const conf = document.getElementById('up-confirm').value;
-  if (pwd !== conf) { showAlert('Parollar mos kelmadi'); return; }
-  if (pwd.length < 6) { showAlert('Parol kamida 6 ta belgi'); return; }
-  setBusy(btn, true);
-  try {
-    const cred = await auth.createUserWithEmailAndPassword(email, pwd);
-    await cred.user.updateProfile({ displayName: name });
-    await DB.createUser(cred.user.uid, { name, email });
-    window.goTo('dashboard.html');
-  } catch(err) {
-    const msgs = { 'auth/email-already-in-use':"Bu email allaqachon ro'yxatdan o'tgan", 'auth/weak-password':"Parol zaif" };
-    showAlert(msgs[err.code] || err.message);
-    setBusy(btn, false);
+/* REGISTER */
+document.getElementById('reg-btn').onclick=async()=>{
+  const name=document.getElementById('r-name').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  if(!name||!email||!pass){showAlert('Barcha maydonlarni to\'ldiring');return;}
+  if(pass.length<6){showAlert('Parol kamida 6 ta belgi bo\'lishi kerak');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true;btn.textContent='⏳ Ro\'yxatdan o\'tilmoqda...';
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    await cred.user.updateProfile({displayName:name});
+    await DB.createUser(cred.user.uid,{name,email,avatarUrl:''});
+    goTo('dashboard.html');
+  }catch(e){
+    const msgs={
+      'auth/email-already-in-use':'Bu email allaqachon ro\'yxatda',
+      'auth/invalid-email':'Email noto\'g\'ri',
+      'auth/weak-password':'Parol juda zaif'
+    };
+    showAlert(msgs[e.code]||e.message);
+    btn.disabled=false;btn.textContent='Ro\'yxatdan o\'tish →';
   }
-});
+};
 
-// Google
-document.getElementById('google-btn').addEventListener('click', async () => {
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const cred = await auth.signInWithPopup(provider);
-    const user = cred.user;
-    const exists = await DB.getUser(user.uid);
-    if (!exists) await DB.createUser(user.uid, { name: user.displayName||'User', email: user.email });
-    window.goTo('dashboard.html');
-  } catch(err) { showAlert(err.message); }
-});
-
-// Forgot
-document.getElementById('forgot-link').addEventListener('click', async e => {
-  e.preventDefault();
-  const email = document.getElementById('in-email').value.trim();
-  if (!email) { showAlert('Avval email kiriting', 'warn'); return; }
-  try {
-    await auth.sendPasswordResetEmail(email);
-    showAlert('✅ Parolni tiklash havolasi yuborildi', 'success');
-  } catch(err) { showAlert(err.message); }
-});
-
-// If already logged in
-AuthHelpers.getCurrentUser().then(u => { if (u) goTo('dashboard.html'); });
-
-// Handle hash
-if (location.hash === '#register') tUp.click();
+/* Enter key */
+['l-email','l-pass'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-btn').click();});});
+['r-name','r-email','r-pass'].forEach(id=>{document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('reg-btn').click();});});
 </script>
 </body>
 </html>
