@@ -1,451 +1,218 @@
 <!DOCTYPE html>
 <html lang="uz" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TestPro — Kirish</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-
-  <style>
-    .auth-page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    /* Left panel */
-    .auth-left {
-      background: var(--grad-1);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 4rem;
-      overflow: hidden;
-    }
-
-    .auth-left::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 50%;
-      top: -150px; left: -150px;
-    }
-
-    .auth-left::after {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 50%;
-      bottom: -100px; right: -80px;
-    }
-
-    .auth-brand {
-      font-family: 'Syne', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: white;
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .auth-tagline {
-      color: rgba(255,255,255,0.82);
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: 3rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .auth-features {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .auth-feature-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      color: rgba(255,255,255,0.9);
-      font-size: 0.9rem;
-    }
-
-    .auth-feature-icon {
-      width: 32px; height: 32px;
-      background: rgba(255,255,255,0.15);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.95rem;
-      flex-shrink: 0;
-    }
-
-    /* Right panel */
-    .auth-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem 2rem;
-      background: var(--bg);
-      overflow-y: auto;
-    }
-
-    .auth-box {
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .auth-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .auth-header h2 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .auth-header p {
-      color: var(--text-2);
-      font-size: 0.9rem;
-    }
-
-    /* Tabs */
-    .auth-tabs {
-      display: flex;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 4px;
-      margin-bottom: 2rem;
-    }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 0.65rem;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-3);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all var(--transition);
-      border: none;
-      background: none;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .auth-tab.active {
-      background: var(--bg);
-      color: var(--accent);
-      box-shadow: 0 2px 8px var(--shadow);
-    }
-
-    .hidden { display: none; }
-
-    /* Divider */
-    .auth-divider {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
-      color: var(--text-3);
-      font-size: 0.8rem;
-    }
-
-    .auth-divider::before,
-    .auth-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* Google btn */
-    .btn-google {
-      width: 100%;
-      justify-content: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      gap: 0.75rem;
-      padding: 0.85rem;
-    }
-
-    .btn-google:hover {
-      background: var(--surface-2);
-      border-color: var(--accent);
-      transform: translateY(-1px);
-    }
-
-    .google-icon {
-      width: 18px;
-      height: 18px;
-      background: linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.65rem;
-      font-weight: 700;
-    }
-
-    .auth-footer-link {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      color: var(--text-3);
-    }
-
-    .auth-footer-link a {
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-    .theme-pill {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      z-index: 100;
-    }
-
-    /* Password toggle */
-    .input-group {
-      position: relative;
-    }
-
-    .input-group .form-input {
-      padding-right: 3rem;
-    }
-
-    .input-toggle-btn {
-      position: absolute;
-      right: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-3);
-      padding: 0.25rem;
-      line-height: 1;
-      font-size: 1rem;
-    }
-
-    .input-toggle-btn:hover { color: var(--text); }
-
-    @media (max-width: 768px) {
-      .auth-page {
-        grid-template-columns: 1fr;
-      }
-      .auth-left { display: none; }
-      .auth-right { padding: 4rem 1.5rem 2rem; }
-    }
-  </style>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TestPro — Kirish</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<style>
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.auth-wrap{width:100%;max-width:440px}
+.auth-logo{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:900;background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;margin-bottom:2rem;display:block}
+.auth-card{background:var(--bg-card);border:1px solid var(--border-2);border-radius:var(--radius-lg);padding:2rem;box-shadow:var(--shadow)}
+[data-theme="dark"] .auth-card{background:var(--bg-2);border-color:var(--border)}
+.auth-tabs{display:flex;gap:0;background:var(--bg-2);border-radius:var(--radius-sm);padding:3px;margin-bottom:1.75rem}
+.auth-tab{flex:1;text-align:center;padding:0.6rem;font-size:0.85rem;font-weight:600;color:var(--text-3);border-radius:8px;cursor:pointer;transition:all var(--t);border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif}
+.auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)}
+[data-theme="dark"] .auth-tab.active{background:var(--bg)}
+.auth-divider{display:flex;align-items:center;gap:0.85rem;margin:1.25rem 0;color:var(--text-3);font-size:0.78rem}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-2)}
+.pwd-wrap{position:relative}
+.pwd-wrap .form-input{padding-right:3rem}
+.pwd-eye{position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-3);font-size:1rem;line-height:1;padding:0.2rem}
+.google-btn{width:100%;justify-content:center;gap:0.75rem;padding:0.78rem}
+.g-icon{width:20px;height:20px;background:linear-gradient(135deg,#4285F4 0%,#34A853 40%,#FBBC05 70%,#EA4335 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.65rem;font-weight:900;flex-shrink:0}
+.theme-pill{position:fixed;top:1.25rem;right:1.25rem}
+</style>
 </head>
 <body id="auth-page">
+<div class="theme-pill"><button class="theme-toggle">🌙</button></div>
 
-  <!-- Theme toggle pill -->
-  <div class="theme-pill">
-    <button class="theme-toggle">🌙</button>
-  </div>
+<div class="auth-wrap fade-in-up">
+  <a onclick="goTo('index.html');return false" href="#" class="auth-logo">TestPro</a>
 
-  <div class="auth-page">
-
-    <!-- Left panel -->
-    <div class="auth-left">
-      <div class="auth-brand">TestPro</div>
-      <div class="auth-tagline">
-        Professional test yarating, o'tkazing va natijalarni real-time tahlil qiling.
-      </div>
-
-      <div class="auth-features">
-        <div class="auth-feature-item">
-          <div class="auth-feature-icon">🎯</div>
-          <span>Ko'p turdagi savollar</span>
-        </div>
-        <div class="auth-feature-item">
-          <div class="auth-feature-icon">📊</div>
-          <span>Real-time natijalar va grafik</span>
-        </div>
-        <div class="auth-feature-item">
-          <div class="auth-feature-icon">🔐</div>
-          <span>Xavfsiz Firebase autentifikatsiya</span>
-        </div>
-        <div class="auth-feature-item">
-          <div class="auth-feature-icon">⚡</div>
-          <span>Tez va qulay interfeys</span>
-        </div>
-      </div>
+  <div class="auth-card">
+    <div style="text-align:center;margin-bottom:1.75rem">
+      <h2 id="auth-h" style="font-size:1.4rem;margin-bottom:0.3rem">Xush kelibsiz!</h2>
+      <p id="auth-sub" style="font-size:0.85rem;color:var(--text-2)">Hisobingizga kiring</p>
     </div>
 
-    <!-- Right panel -->
-    <div class="auth-right">
-      <div class="auth-box">
-
-        <div class="auth-header">
-          <a href="index.html" style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;
-             background:var(--grad-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-             background-clip:text;display:inline-block;margin-bottom:1.5rem">TestPro</a>
-          <h2 id="auth-title">Xush kelibsiz!</h2>
-          <p id="auth-subtitle">Hisobingizga kiring</p>
-        </div>
-
-        <!-- Tabs -->
-        <div class="auth-tabs">
-          <button class="auth-tab active" id="tab-login">Kirish</button>
-          <button class="auth-tab" id="tab-register">Ro'yxatdan o'tish</button>
-        </div>
-
-        <!-- Alert -->
-        <div id="auth-alert"></div>
-
-        <!-- ── LOGIN FORM ── -->
-        <form id="login-form">
-          <div class="form-group">
-            <label class="form-label" for="login-email">Email</label>
-            <input id="login-email" type="email" class="form-input" placeholder="siz@email.com" required autocomplete="email" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="login-password">Parol</label>
-            <div class="input-group">
-              <input id="login-password" type="password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
-              <button type="button" class="input-toggle-btn" onclick="togglePwd('login-password', this)">👁️</button>
-            </div>
-          </div>
-
-          <div style="text-align:right;margin-bottom:1.25rem">
-            <a href="#" id="forgot-link" style="font-size:0.83rem;color:var(--accent)">Parolni unutdingizmi?</a>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.9rem" data-label="Kirish →">
-            Kirish →
-          </button>
-        </form>
-
-        <!-- ── REGISTER FORM ── -->
-        <form id="register-form" class="hidden">
-          <div class="form-group">
-            <label class="form-label" for="reg-name">To'liq ismingiz</label>
-            <input id="reg-name" type="text" class="form-input" placeholder="Shodlik Toshmatov" required autocomplete="name" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="reg-email">Email</label>
-            <input id="reg-email" type="email" class="form-input" placeholder="siz@email.com" required autocomplete="email" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="reg-password">Parol</label>
-            <div class="input-group">
-              <input id="reg-password" type="password" class="form-input" placeholder="Kamida 6 belgi" required autocomplete="new-password" />
-              <button type="button" class="input-toggle-btn" onclick="togglePwd('reg-password', this)">👁️</button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="reg-confirm">Parolni tasdiqlang</label>
-            <div class="input-group">
-              <input id="reg-confirm" type="password" class="form-input" placeholder="Takrorlang" required autocomplete="new-password" />
-              <button type="button" class="input-toggle-btn" onclick="togglePwd('reg-confirm', this)">👁️</button>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.9rem" data-label="Hisob ochish →">
-            Hisob ochish →
-          </button>
-
-          <p style="font-size:0.78rem;color:var(--text-3);text-align:center;margin-top:1rem;line-height:1.5">
-            Ro'yxatdan o'tish orqali <a href="#">Foydalanish shartlari</a> va
-            <a href="#">Maxfiylik siyosati</a>ga rozilik bildirasiz.
-          </p>
-        </form>
-
-        <!-- Divider -->
-        <div class="auth-divider">yoki</div>
-
-        <!-- Google -->
-        <button id="google-login" class="btn btn-google btn-secondary">
-          <div class="google-icon">G</div>
-          Google bilan davom etish
-        </button>
-
-        <div class="auth-footer-link">
-          <a href="index.html">← Bosh sahifaga qaytish</a>
-        </div>
-
-      </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-in">Kirish</button>
+      <button class="auth-tab" id="tab-up">Ro'yxatdan o'tish</button>
     </div>
 
+    <div id="auth-alert"></div>
+
+    <!-- LOGIN -->
+    <form id="form-login">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="in-email" class="form-input" placeholder="siz@email.com" required autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parol</label>
+        <div class="pwd-wrap">
+          <input type="password" id="in-pwd" class="form-input" placeholder="••••••••" required/>
+          <button type="button" class="pwd-eye" onclick="togglePwd('in-pwd',this)">👁️</button>
+        </div>
+      </div>
+      <div style="text-align:right;margin-bottom:1.1rem">
+        <a href="#" id="forgot-link" style="font-size:0.8rem;color:var(--accent)">Parolni unutdim?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem" data-lbl="Kirish →">Kirish →</button>
+    </form>
+
+    <!-- REGISTER -->
+    <form id="form-reg" style="display:none">
+      <div class="form-group">
+        <label class="form-label">To'liq ism</label>
+        <input type="text" id="up-name" class="form-input" placeholder="Ism Familiya" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="up-email" class="form-input" placeholder="siz@email.com" required autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parol</label>
+        <div class="pwd-wrap">
+          <input type="password" id="up-pwd" class="form-input" placeholder="Kamida 6 ta belgi" required/>
+          <button type="button" class="pwd-eye" onclick="togglePwd('up-pwd',this)">👁️</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parolni tasdiqlang</label>
+        <div class="pwd-wrap">
+          <input type="password" id="up-confirm" class="form-input" placeholder="Takrorlang" required/>
+          <button type="button" class="pwd-eye" onclick="togglePwd('up-confirm',this)">👁️</button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem" data-lbl="Ro'yxatdan o'tish →">Ro'yxatdan o'tish →</button>
+      <p style="font-size:0.74rem;color:var(--text-3);text-align:center;margin-top:0.85rem">Ro'yxatdan o'tish orqali <a href="#">Shartlarga</a> rozilik bildirasiz</p>
+    </form>
+
+    <div class="auth-divider">yoki</div>
+
+    <button id="google-btn" class="btn btn-secondary google-btn">
+      <div class="g-icon">G</div> Google bilan davom etish
+    </button>
+
+    <p style="text-align:center;margin-top:1.25rem;font-size:0.82rem;color:var(--text-3)">
+      <a onclick="goTo('index.html');return false" href="#">← Bosh sahifaga qaytish</a>
+    </p>
   </div>
+</div>
 
-  <!-- Password toggle -->
-  <script>
-    function togglePwd(id, btn) {
-      const input = document.getElementById(id);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.textContent = '🙈';
-      } else {
-        input.type = 'password';
-        btn.textContent = '👁️';
-      }
-    }
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/theme.js"></script>
+<script>
+function togglePwd(id, btn) {
+  const inp = document.getElementById(id);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
+function showAlert(msg, type='error') {
+  document.getElementById('auth-alert').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+function clearAlert() { document.getElementById('auth-alert').innerHTML = ''; }
+function setBusy(btn, busy) {
+  btn.disabled = busy;
+  btn.textContent = busy ? '⏳ Yuklanmoqda...' : (btn.dataset.lbl || btn.textContent);
+}
 
-    // Tab title update
-    document.getElementById('tab-login').addEventListener('click', () => {
-      document.getElementById('auth-title').textContent = 'Xush kelibsiz!';
-      document.getElementById('auth-subtitle').textContent = 'Hisobingizga kiring';
-    });
+// Tab switching
+const tIn = document.getElementById('tab-in');
+const tUp = document.getElementById('tab-up');
+const fIn = document.getElementById('form-login');
+const fUp = document.getElementById('form-reg');
+tIn.addEventListener('click', () => {
+  tIn.classList.add('active'); tUp.classList.remove('active');
+  fIn.style.display='block'; fUp.style.display='none';
+  document.getElementById('auth-h').textContent = 'Xush kelibsiz!';
+  document.getElementById('auth-sub').textContent = 'Hisobingizga kiring';
+  clearAlert();
+});
+tUp.addEventListener('click', () => {
+  tUp.classList.add('active'); tIn.classList.remove('active');
+  fUp.style.display='block'; fIn.style.display='none';
+  document.getElementById('auth-h').textContent = 'Hisob yaratish';
+  document.getElementById('auth-sub').textContent = 'Bepul ro\'yxatdan o\'ting';
+  clearAlert();
+});
 
-    document.getElementById('tab-register').addEventListener('click', () => {
-      document.getElementById('auth-title').textContent = 'Hisob oching';
-      document.getElementById('auth-subtitle').textContent = 'Bepul ro\'yxatdan o\'ting';
-    });
+// Login
+fIn.addEventListener('submit', async e => {
+  e.preventDefault(); clearAlert();
+  const btn = fIn.querySelector('[type="submit"]');
+  setBusy(btn, true);
+  try {
+    await auth.signInWithEmailAndPassword(
+      document.getElementById('in-email').value.trim(),
+      document.getElementById('in-pwd').value
+    );
+    window.goTo('dashboard.html');
+  } catch(err) {
+    const msgs = { 'auth/user-not-found':"Email topilmadi", 'auth/wrong-password':"Parol noto'g'ri", 'auth/invalid-email':"Email noto'g'ri", 'auth/too-many-requests':"Ko'p urinish. Keyinroq sinang" };
+    showAlert(msgs[err.code] || err.message);
+    setBusy(btn, false);
+  }
+});
 
-    // Forgot password
-    document.getElementById('forgot-link').addEventListener('click', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      if (!email) {
-        document.getElementById('auth-alert').innerHTML = '<div class="alert alert-info">Email manzilingizni kiriting, so\'ng "Parolni unutdingizmi?" tugmasini bosing.</div>';
-        return;
-      }
-      try {
-        await Auth.resetPassword(email);
-        document.getElementById('auth-alert').innerHTML = '<div class="alert alert-success">✅ Parolni tiklash havolasi emailingizga yuborildi.</div>';
-      } catch (err) {
-        document.getElementById('auth-alert').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
-      }
-    });
+// Register
+fUp.addEventListener('submit', async e => {
+  e.preventDefault(); clearAlert();
+  const btn = fUp.querySelector('[type="submit"]');
+  const name = document.getElementById('up-name').value.trim();
+  const email = document.getElementById('up-email').value.trim();
+  const pwd = document.getElementById('up-pwd').value;
+  const conf = document.getElementById('up-confirm').value;
+  if (pwd !== conf) { showAlert('Parollar mos kelmadi'); return; }
+  if (pwd.length < 6) { showAlert('Parol kamida 6 ta belgi'); return; }
+  setBusy(btn, true);
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pwd);
+    await cred.user.updateProfile({ displayName: name });
+    await DB.createUser(cred.user.uid, { name, email });
+    window.goTo('dashboard.html');
+  } catch(err) {
+    const msgs = { 'auth/email-already-in-use':"Bu email allaqachon ro'yxatdan o'tgan", 'auth/weak-password':"Parol zaif" };
+    showAlert(msgs[err.code] || err.message);
+    setBusy(btn, false);
+  }
+});
 
-    // Check URL hash for direct register tab
-    if (window.location.hash === '#register') {
-      document.getElementById('tab-register').click();
-    }
-  </script>
+// Google
+document.getElementById('google-btn').addEventListener('click', async () => {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const cred = await auth.signInWithPopup(provider);
+    const user = cred.user;
+    const exists = await DB.getUser(user.uid);
+    if (!exists) await DB.createUser(user.uid, { name: user.displayName||'User', email: user.email });
+    window.goTo('dashboard.html');
+  } catch(err) { showAlert(err.message); }
+});
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+// Forgot
+document.getElementById('forgot-link').addEventListener('click', async e => {
+  e.preventDefault();
+  const email = document.getElementById('in-email').value.trim();
+  if (!email) { showAlert('Avval email kiriting', 'warn'); return; }
+  try {
+    await auth.sendPasswordResetEmail(email);
+    showAlert('✅ Parolni tiklash havolasi yuborildi', 'success');
+  } catch(err) { showAlert(err.message); }
+});
 
-  <script src="js/firebase.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/theme.js"></script>
+// If already logged in
+AuthHelpers.getCurrentUser().then(u => { if (u) goTo('dashboard.html'); });
 
+// Handle hash
+if (location.hash === '#register') tUp.click();
+</script>
 </body>
 </html>
